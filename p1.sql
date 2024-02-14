@@ -52,17 +52,22 @@ CREATE TABLE Employees (
 		('nurse', 'doctor', 'cashier', 'pharmacist', 'receptionist', 'administrative personnel', 'security personnel', 'regular employee'),
     StartDate DATE,
     EndDate DATE DEFAULT NULL,
+    CHECK (Job IN ('nurse', 'doctor', 'cashier', 'pharmacist', 'receptionist', 'administrative personnel', 'security personnel', 'regular employee')),
+    CHECK ((PersonID IS NOT NULL AND FacilityID IS NOT NULL) OR (PersonID IS NULL AND FacilityID IS NULL)),
     FOREIGN KEY (PersonID) REFERENCES Persons(PersonID),
     FOREIGN KEY (FacilityID) REFERENCES Facilities(FacilityID)
 );
 
 -- Create Vaccines Table
 CREATE TABLE Vaccines (
+	PersonID INTEGER,
     VaccineID INTEGER PRIMARY KEY, 
     DateOfVaccination DATE,
     DoseOfVaccination INTEGER, 
+    CHECK (DoseOfVaccination >= 0), #Checks if valid
     Location TEXT, #Example: Olympic Stadium Montréal.
-    Type VARCHAR(50) 		# Pfizer, Moderna, AstraZeneca, Johnson & Johnson,
+    Type VARCHAR(50),		# Pfizer, Moderna, AstraZeneca, Johnson & Johnson,
+    FOREIGN KEY (PersonID) REFERENCES  Persons(PersonID)
     #FOREIGN KEY (VaccineID) REFERENCES Persons(PersonID)
 );
 
@@ -72,10 +77,15 @@ CREATE TABLE Infections (
     PersonID INTEGER,
     InfectionType VARCHAR(50), #Example: COVID-19, SARS-Cov-2 Variant, or other types.
     DateOfInfection DATE,
+	CHECK (DateOfInfection <= CURRENT_DATE), #Checks if date is valid
     FOREIGN KEY (PersonID) REFERENCES Persons(PersonID)
 );
 
-CREATE TABLE EmployeeWorksAtFacility (
+
+#_____________________________________________________
+# ALL RELATIONSHIPS
+
+CREATE TABLE WorksAtFacility (
     EmployeeID INTEGER,
     FacilityID INTEGER,
     PRIMARY KEY (EmployeeID, FacilityID),
@@ -84,7 +94,7 @@ CREATE TABLE EmployeeWorksAtFacility (
 );
 
 -- Persons LIVES_WITH Employees
-CREATE TABLE PersonLivesWithEmployee (
+CREATE TABLE LivesWithEmployee (
     PersonID INTEGER,
     EmployeeID INTEGER,
     PRIMARY KEY (PersonID, EmployeeID),
@@ -93,7 +103,7 @@ CREATE TABLE PersonLivesWithEmployee (
 );
 
 -- Persons HAS_VACCINES
-CREATE TABLE PersonHasVaccines (
+CREATE TABLE HasVaccines (
     PersonID INTEGER,
     VaccineID INTEGER,
     PRIMARY KEY (PersonID, VaccineID),
@@ -102,7 +112,7 @@ CREATE TABLE PersonHasVaccines (
 );
 
 -- Persons HAS_INFECTIONS
-CREATE TABLE PersonHasInfections (
+CREATE TABLE HasInfections (
     PersonID INTEGER,
     InfectionID INTEGER,
     PRIMARY KEY (PersonID, InfectionID),
