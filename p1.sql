@@ -5,16 +5,17 @@ CREATE TABLE Persons (
     LastName TEXT,
     DateOfBirth DATE,
     SocialSecurity VARCHAR(20) UNIQUE,
-    MedicareCard VARCHAR(20) NOT NULL UNIQUE,
+    MedicareCard VARCHAR(20) UNIQUE,
     PhoneNumber VARCHAR(15),
-    Address VARCHAR(255),
-    City VARCHAR(255),
-    Province VARCHAR(255),
-    PostalCode VARCHAR(10),
+    ResidenceID INTEGER,
+    #Address VARCHAR(255),
+    #City VARCHAR(255),
+    #Province VARCHAR(255),
+    #PostalCode VARCHAR(10),
     Citizenship VARCHAR(50),
-    Email VARCHAR(255)
+    Email VARCHAR(255),
+    FOREIGN KEY(ResidenceID) REFERENCES Residence(ResidenceID)
 );
-
 
 -- Create Facilities Table
 CREATE TABLE Facilities (
@@ -24,7 +25,7 @@ CREATE TABLE Facilities (
     City VARCHAR(255),
     Province VARCHAR(255),
     PostalCode VARCHAR(10),
-    PhoneNumber VARCHAR(15),
+    FacilityPhoneNumber VARCHAR(15),
     WebAddress VARCHAR(255),
     FacilityType ENUM ('Hospital', 'CLSC', 'clinic', 'pharmacy', 'special installment'),
     Capacity INTEGER
@@ -38,7 +39,7 @@ CREATE TABLE Residence (
     City VARCHAR(255),
     Province VARCHAR(255),
     PostalCode VARCHAR(10),
-    PhoneNumber VARCHAR(15),
+	ResidencePhoneNumber VARCHAR(15),
     AmountBedrooms INTEGER
 );
 
@@ -48,12 +49,14 @@ CREATE TABLE Employees (
     EmployeeID INTEGER PRIMARY KEY,
     PersonID INTEGER,
     FacilityID INTEGER,
+    ResidenceID INTEGER,
     Job ENUM 
 		('nurse', 'doctor', 'cashier', 'pharmacist', 'receptionist', 'administrative personnel', 'security personnel', 'regular employee'),
     StartDate DATE,
     EndDate DATE DEFAULT NULL,
     CHECK (Job IN ('nurse', 'doctor', 'cashier', 'pharmacist', 'receptionist', 'administrative personnel', 'security personnel', 'regular employee')),
     CHECK ((PersonID IS NOT NULL AND FacilityID IS NOT NULL) OR (PersonID IS NULL AND FacilityID IS NULL)),
+    FOREIGN KEY (ResidenceID) REFERENCES Residence(ResidenceID),
     FOREIGN KEY (PersonID) REFERENCES Persons(PersonID),
     FOREIGN KEY (FacilityID) REFERENCES Facilities(FacilityID)
 );
@@ -63,8 +66,7 @@ CREATE TABLE Vaccines (
 	PersonID INTEGER,
     VaccineID INTEGER PRIMARY KEY, 
     DateOfVaccination DATE,
-    DoseOfVaccination INTEGER, 
-    CHECK (DoseOfVaccination >= 0), #Checks if valid
+    DoseNumber INTEGER, 
     Location TEXT, #Example: Olympic Stadium Montréal.
     Type VARCHAR(50),		# Pfizer, Moderna, AstraZeneca, Johnson & Johnson,
     FOREIGN KEY (PersonID) REFERENCES  Persons(PersonID)
@@ -73,10 +75,10 @@ CREATE TABLE Vaccines (
 
 -- Create Infections Table
 CREATE TABLE Infections (
-    InfectionID INTEGER PRIMARY KEY,
-    PersonID INTEGER,
-    InfectionType VARCHAR(50), #Example: COVID-19, SARS-Cov-2 Variant, or other types.
+    PersonID INTEGER PRIMARY KEY,
     DateOfInfection DATE,
+    InfectionNumber INTEGER,
+	InfectionType VARCHAR(50), #Example: COVID-19, SARS-Cov-2 Variant, or other types.
 	CHECK (DateOfInfection <= CURRENT_DATE), #Checks if date is valid
     FOREIGN KEY (PersonID) REFERENCES Persons(PersonID)
 );
@@ -95,13 +97,12 @@ CREATE TABLE WorksAtFacility (
 
 -- Persons LIVES_WITH Employees
 CREATE TABLE LivesWithEmployee (
+	EmployeeID INTEGER,
     PersonID INTEGER,
-    EmployeeID INTEGER,
     PRIMARY KEY (PersonID, EmployeeID),
-    FOREIGN KEY (PersonID) REFERENCES Persons(PersonID),
-    FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID)
+    FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID),
+    FOREIGN KEY (PersonID) REFERENCES Persons(PersonID)
 );
-
 -- Persons HAS_VACCINES
 CREATE TABLE HasVaccines (
     PersonID INTEGER,
