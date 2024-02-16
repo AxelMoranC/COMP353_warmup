@@ -17,6 +17,9 @@ CREATE TABLE Persons (
     FOREIGN KEY(ResidenceID) REFERENCES Residence(ResidenceID)
 );
 
+DROP TABLE Persons;
+
+
 -- Create Facilities Table
 CREATE TABLE Facilities (
     FacilityID INTEGER PRIMARY KEY,
@@ -31,6 +34,8 @@ CREATE TABLE Facilities (
     Capacity INTEGER
 );
 
+DROP TABLE Facilities;
+
 -- Create Residence Table
 CREATE TABLE Residence (
     ResidenceID INTEGER PRIMARY KEY,
@@ -42,6 +47,8 @@ CREATE TABLE Residence (
 	ResidencePhoneNumber VARCHAR(15),
     AmountBedrooms INTEGER
 );
+
+DROP TABLE Residence;
 
 
 -- Create Employees Table that work for vaccination stuff
@@ -60,6 +67,8 @@ CREATE TABLE Employees (
     FOREIGN KEY (PersonID) REFERENCES Persons(PersonID),
     FOREIGN KEY (FacilityID) REFERENCES Facilities(FacilityID)
 );
+
+DROP TABLE Employees;
 
 -- Create Vaccines Table
 CREATE TABLE Vaccines (
@@ -103,6 +112,7 @@ CREATE TABLE LivesWithEmployee (
 	PRIMARY KEY (EmployeeID, PersonID),
 	EmployeeID INTEGER,
     PersonID INTEGER,
+    Relationship TEXT,
     FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID),
     FOREIGN KEY (PersonID) REFERENCES Persons(PersonID)
 );

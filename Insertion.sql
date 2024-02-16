@@ -95,8 +95,8 @@ INSERT INTO Infections (PersonID, DateOfInfection, InfectionNumber, InfectionTyp
 
 
  -- Insert data for people that lives with some employees
-INSERT INTO LivesWithEmployee (EmployeeID, PersonID) VALUES
-	(40061543,12),
-    (40111111,13),
-    (40000020,14),
-    (40241588,15);
+INSERT INTO LivesWithEmployee (EmployeeID, PersonID, Relationship) VALUES
+	(40061543,12 , 'Partner'),
+    (40111111,13 , 'Dependent'),
+    (40000020,14 , 'Parent'),
+    (40241588,15 , 'Roommate');
