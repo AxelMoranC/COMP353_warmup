@@ -9,7 +9,7 @@ CREATE TABLE Persons (
     PhoneNumber VARCHAR(15),
     ResidenceID INTEGER,
     #Address VARCHAR(255),
-    #City VARCHAR(255),
+    #City VARCHAR(255),	
     #Province VARCHAR(255),
     #PostalCode VARCHAR(10),
     Citizenship VARCHAR(50),
@@ -54,8 +54,8 @@ CREATE TABLE Employees (
 		('nurse', 'doctor', 'cashier', 'pharmacist', 'receptionist', 'administrative personnel', 'security personnel', 'regular employee'),
     StartDate DATE,
     EndDate DATE DEFAULT NULL,
-    CHECK (Job IN ('nurse', 'doctor', 'cashier', 'pharmacist', 'receptionist', 'administrative personnel', 'security personnel', 'regular employee')),
-    CHECK ((PersonID IS NOT NULL AND FacilityID IS NOT NULL) OR (PersonID IS NULL AND FacilityID IS NULL)),
+   # CHECK (Job IN ('nurse', 'doctor', 'cashier', 'pharmacist', 'receptionist', 'administrative personnel', 'security personnel', 'regular employee')),
+   # CHECK ((PersonID IS NOT NULL AND FacilityID IS NOT NULL) OR (PersonID IS NULL AND FacilityID IS NULL)),
     FOREIGN KEY (ResidenceID) REFERENCES Residence(ResidenceID),
     FOREIGN KEY (PersonID) REFERENCES Persons(PersonID),
     FOREIGN KEY (FacilityID) REFERENCES Facilities(FacilityID)
@@ -64,7 +64,7 @@ CREATE TABLE Employees (
 -- Create Vaccines Table
 CREATE TABLE Vaccines (
 	PersonID INTEGER,
-    VaccineID INTEGER PRIMARY KEY, 
+    VaccineID INTEGER, 
     DateOfVaccination DATE,
     DoseNumber INTEGER, 
     Location TEXT, #Example: Olympic Stadium Montréal.
@@ -73,9 +73,11 @@ CREATE TABLE Vaccines (
     #FOREIGN KEY (VaccineID) REFERENCES Persons(PersonID)
 );
 
+DROP TABLE Vaccines;
+
 -- Create Infections Table
 CREATE TABLE Infections (
-    PersonID INTEGER PRIMARY KEY,
+    PersonID INTEGER,
     DateOfInfection DATE,
     InfectionNumber INTEGER,
 	InfectionType VARCHAR(50), #Example: COVID-19, SARS-Cov-2 Variant, or other types.
@@ -83,6 +85,7 @@ CREATE TABLE Infections (
     FOREIGN KEY (PersonID) REFERENCES Persons(PersonID)
 );
 
+DROP TABLE Infections;
 
 #_____________________________________________________
 # ALL RELATIONSHIPS
@@ -97,12 +100,15 @@ CREATE TABLE WorksAtFacility (
 
 -- Persons LIVES_WITH Employees
 CREATE TABLE LivesWithEmployee (
+	PRIMARY KEY (EmployeeID, PersonID),
 	EmployeeID INTEGER,
     PersonID INTEGER,
-    PRIMARY KEY (PersonID, EmployeeID),
     FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID),
     FOREIGN KEY (PersonID) REFERENCES Persons(PersonID)
 );
+
+DROP TABLE LivesWithEmployee;
+
 -- Persons HAS_VACCINES
 CREATE TABLE HasVaccines (
     PersonID INTEGER,

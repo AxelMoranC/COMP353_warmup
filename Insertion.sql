@@ -1,5 +1,5 @@
 -- Insert data into Persons table
-INSERT INTO Persons (FirstName, LastName, DateOfBirth, SocialSecurity, MedicareCard, PhoneNumber, Citizenship, Email) VALUES
+INSERT INTO Persons (PersonID, FirstName, LastName, DateOfBirth, SocialSecurity, MedicareCard, PhoneNumber, Citizenship, Email) VALUES
   (1,'John', 'Doe', '1990-05-15', '123456789', 'M987654321', '514-206-1720', 'Canadian', 'john.doe@gmail.com'),
   (2,'Marquez', 'Valdes', '1985-08-20', '124567890', 'M876543210', '514-262-3333','Canadian', 'marquez.valdes@gmail.com'),
   (3,'Robert', 'Camacho', '2000-03-01', '402417090', 'M888888888', '514-292-1611', 'Canadian', 'robert.camacho@mail.concordia.ca'),
@@ -11,10 +11,10 @@ INSERT INTO Persons (FirstName, LastName, DateOfBirth, SocialSecurity, MedicareC
   (9,'Juba', 'Smith', '1974-05-08', '111111111', 'M881234567', '450-671-1911',  'American', 'SmithAlways@outlook.com'),
   (10,'Shanvin', 'Luo', '1999-01-01', '678456782', 'M098734561', '514-262-3335','American', 'CuO_1245@gmail.com'),
   (11,'Roburnto', 'David', '1956-11-11', '314562345', 'M876543211', '514-262-3338', 'Peruvian', 'rob123@gmail.com'),
-  (12,'Timothy', 'Wang', '1999-01-21', '688954612', ' ', '514-333-4444','Canadian', 'Timothy.Wang@gmail.com'),
-  (13,'Francois', 'Lacelle', '1978-10-10', '229031456', ' ', '438-383-6785','Canadian', 'Francois_Lacelle@gmail.com'),
-  (14,'Anthony', 'Dumont', '1960-12-12', '196012121', ' ', '450-665-1819', 'American', 'Anthony.Dumont@mail.concordia.com'),
-  (15,'Anna', 'Labella', '1984-05-12', '198405128', ' ', '438-448-5957', 'Peruvian', 'Anna_Labella@hotmail.com');
+  (12,'Timothy', 'Wang', '1999-01-21', '688954612', 'M1 ', '514-333-4444','Canadian', 'Timothy.Wang@gmail.com'),
+  (13,'Francois', 'Lacelle', '1978-10-10', '229031456', 'M2 ', '438-383-6785','Canadian', 'Francois_Lacelle@gmail.com'),
+  (14,'Anthony', 'Dumont', '1960-12-12', '196012121', 'M3 ', '450-665-1819', 'American', 'Anthony.Dumont@mail.concordia.com'),
+  (15,'Anna', 'Labella', '1984-05-12', '198405128', 'M4 ', '438-448-5957', 'Peruvian', 'Anna_Labella@hotmail.com');
 
  -- Insert data into Residence table
 INSERT INTO Residence (ResidenceID, HouseType, Address, City, Province, PostalCode, ResidencePhoneNumber, AmountBedrooms) VALUES
@@ -95,8 +95,8 @@ INSERT INTO Infections (PersonID, DateOfInfection, InfectionNumber, InfectionTyp
 
 
  -- Insert data for people that lives with some employees
-INSERT INTO LivesWithEmployees (EmployeeID, PersonID) VALUES
-	(1,12),
-    (3,13),
-    (4,14),
-    (8,15);
+INSERT INTO LivesWithEmployee (EmployeeID, PersonID) VALUES
+	(40061543,12),
+    (40111111,13),
+    (40000020,14),
+    (40241588,15);
