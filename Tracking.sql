@@ -4,13 +4,16 @@
 -- operate, the total number of employees currently working for the facility, and the 
 -- total number of people who live with the current employees. 
 SELECT 
-    F.Province, F.FacilityName AS 'Name', F.Capacity AS 'Maximum Capacity',
-    COUNT(DISTINCT E.MedicareCard) AS 'Number Of Employees',
-    COUNT( Distinct L.PersonID) AS 'Number Of People who lives with employees'
+    F.Province, 
+    F.FacilityName AS 'Facility Name', 
+    F.Capacity AS 'Maximum Capacity',
+    COUNT(DISTINCT E.MedicareCard) AS 'Number of Employees',
+    COUNT(DISTINCT L.PersonID) AS 'Number of People Living with Employees'
 FROM Facilities F
 LEFT JOIN Employees E ON F.FacilityName = E.FacilityName AND E.EndDate IS NULL
 LEFT JOIN LivesWithEmployee L ON E.MedicareCard = L.MedicareCard
-GROUP BY F.Province, F.FacilityName, F.Capacity;
+GROUP BY F.Province, F.FacilityName, F.Capacity
+ORDER BY F.Province, F.FacilityName;
 
 
 # ii)
