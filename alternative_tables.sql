@@ -16,7 +16,7 @@ DROP TABLE Facilities;
 
 -- Create Residence Table
 CREATE TABLE Residence (
-    #ResidenceID INTEGER PRIMARY KEY,
+    ResidenceID INTEGER PRIMARY KEY,
     HouseType ENUM ('apartment','condominium', 'semidetached house','house'),
     Address VARCHAR(255),
     City VARCHAR(255),
@@ -38,17 +38,18 @@ CREATE TABLE Persons (
     SocialSecurity VARCHAR(20) NOT NULL UNIQUE,
     MedicareCard VARCHAR(20) NOT NULL UNIQUE,
     PhoneNumber VARCHAR(15),
-    #LivesWithEmployee TEXT,
     Citizenship VARCHAR(50),
     Email VARCHAR(255),
-	Address VARCHAR(255),
-    City VARCHAR(255),	
-    Province VARCHAR(255),
-    PostalCode VARCHAR(10),
-	FOREIGN KEY(Address) REFERENCES Residence(Address),
-	FOREIGN KEY(City) REFERENCES Residence(City),
-	FOREIGN KEY(Province) REFERENCES Residence(Province),
-    FOREIGN KEY (PostalCode) REFERENCES Residence(PostalCode)
+    ResidenceID INTEGER,
+-- 	Address VARCHAR(255),
+--     City VARCHAR(255),	
+--     Province VARCHAR(255),
+--     PostalCode VARCHAR(10),
+    FOREIGN KEY (ResidenceID) REFERENCES Residence(ResidenceID)
+-- 	FOREIGN KEY(Address) REFERENCES Residence(Address),
+-- 	FOREIGN KEY(City) REFERENCES Residence(City),
+-- 	FOREIGN KEY(Province) REFERENCES Residence(Province),
+--     FOREIGN KEY (PostalCode) REFERENCES Residence(PostalCode)
 );
 
 DROP TABLE Persons;
