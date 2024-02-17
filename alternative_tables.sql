@@ -1,7 +1,7 @@
 -- Create Facilities Table
 CREATE TABLE Facilities (
     #FacilityID INTEGER PRIMARY KEY,
-    FacilityName TEXT,
+    FacilityName VARCHAR(255) PRIMARY KEY,
     Address VARCHAR(255),
     City VARCHAR(255),
     Province VARCHAR(255),
@@ -83,7 +83,7 @@ CREATE TABLE HasVaccines (
     FOREIGN KEY (PersonID) REFERENCES  Persons(PersonID)
 );
 
-DROP TABLE Vaccines;
+DROP TABLE HasVaccines;
 
 -- Create Infections Table
 CREATE TABLE HadInfections (
@@ -95,7 +95,7 @@ CREATE TABLE HadInfections (
     FOREIGN KEY (PersonID) REFERENCES Persons(PersonID)
 );
 
-DROP TABLE Infections;
+DROP TABLE HadInfections;
 
 #_____________________________________________________
 # ALL RELATIONSHIPS
