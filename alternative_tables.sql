@@ -65,7 +65,6 @@ CREATE TABLE Employees (
     StartDate DATE,
     EndDate DATE DEFAULT NULL,
     CHECK (Job IN ('nurse', 'doctor', 'cashier', 'pharmacist', 'receptionist', 'administrative personnel', 'security personnel', 'regular employee')),
-    CHECK ((PersonID IS NOT NULL AND FacilityID IS NOT NULL) OR (PersonID IS NULL AND FacilityID IS NULL)),
     FOREIGN KEY (MedicareCard) REFERENCES Persons(MedicareCard),
     FOREIGN KEY (FacilityName) REFERENCES Facilities(FacilityName)
 );
