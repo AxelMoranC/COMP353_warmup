@@ -16,11 +16,11 @@ DROP TABLE Facilities;
 
 -- Create Residence Table
 CREATE TABLE Residence (
-    ResidenceID INTEGER PRIMARY KEY,
+	PRIMARY KEY(Address,City,province,PostalCode),
     HouseType ENUM ('apartment','condominium', 'semidetached house','house'),
-    Address VARCHAR(255),
-    City VARCHAR(255),
-    Province VARCHAR(255),
+    Address VARCHAR(50),
+    City VARCHAR(50),
+    Province VARCHAR(50),
     PostalCode VARCHAR(10),
 	ResidencePhoneNumber VARCHAR(15),
     AmountBedrooms INTEGER
@@ -40,13 +40,11 @@ CREATE TABLE Persons (
     PhoneNumber VARCHAR(15),
     Citizenship VARCHAR(50),
     Email VARCHAR(255),
-    ResidenceID INTEGER,
--- 	Address VARCHAR(255),
---     City VARCHAR(255),	
---     Province VARCHAR(255),
---     PostalCode VARCHAR(10),
-    FOREIGN KEY (ResidenceID) REFERENCES Residence(ResidenceID)
--- 	FOREIGN KEY(Address) REFERENCES Residence(Address),
+	Address VARCHAR(50),
+    City VARCHAR(50),	
+    Province VARCHAR(50),
+    PostalCode VARCHAR(10),
+	FOREIGN KEY(Address, City, Province, PostalCode) REFERENCES Residence(Address, City, Province, PostalCode)
 -- 	FOREIGN KEY(City) REFERENCES Residence(City),
 -- 	FOREIGN KEY(Province) REFERENCES Residence(Province),
 --     FOREIGN KEY (PostalCode) REFERENCES Residence(PostalCode)
@@ -58,7 +56,7 @@ DROP TABLE Persons;
 -- Create Employees Table that work for vaccination stuff
 CREATE TABLE Employees (
     MedicareCard VARCHAR(20) NOT NULL,
-    FacilityName VARCHAR(255),
+    FacilityName VARCHAR(255) NOT NULL,
     #ResidenceID INTEGER,
     #Address VARCHAR(255),
     Job ENUM 
@@ -75,7 +73,6 @@ DROP TABLE Employees;
 -- Create Vaccines Table
 CREATE TABLE HasVaccines (
 	PersonID INTEGER,
-    VaccineID INTEGER, 
     DateOfVaccination DATE,
     DoseNumber INTEGER, 
     Location TEXT, #Example: Olympic Stadium Montréal.
@@ -91,7 +88,7 @@ CREATE TABLE HadInfections (
     DateOfInfection DATE,
     InfectionNumber INTEGER,
 	InfectionType VARCHAR(50), #Example: COVID-19, SARS-Cov-2 Variant, or other types.
-	CHECK (DateOfInfection <= CURRENT_DATE), #Checks if date is valid
+	#CHECK (DateOfInfection >= CURRENT_DATE), #Checks if date is valid
     FOREIGN KEY (PersonID) REFERENCES Persons(PersonID)
 );
 
@@ -103,7 +100,6 @@ DROP TABLE HadInfections;
 -- Persons LIVES_WITH Employees
 -- So, people who are not employees
 CREATE TABLE LivesWithEmployee (
-	PRIMARY KEY (MedicareCard, PersonID),
 	MedicareCard VARCHAR(20) NOT NULL,
     PersonID INTEGER,
     Relationship TEXT,
