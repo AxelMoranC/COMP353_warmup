@@ -21,7 +21,21 @@ ORDER BY F.Province, F.FacilityName;
 -- currently working for the facility, the number of roommates, the number of 
 -- dependents, the number of parents, and the total number of people who currently 
 -- live with the employee. 
-
+    
+-- for Hospital Maisonneuve Rosemont facility
+SELECT 
+    E.MedicareCard,
+    E.FacilityName,
+    SUM(CASE WHEN L.Relationship = 'Roommate' THEN 1 ELSE 0 END) AS 'Number of Roommates',
+    SUM(CASE WHEN L.Relationship = 'Dependent' THEN 1 ELSE 0 END) AS 'Number of Dependents',
+    SUM(CASE WHEN L.Relationship = 'Parent' THEN 1 ELSE 0 END) AS 'Number of Parents',
+    SUM(CASE WHEN L.Relationship = 'Partner' THEN 1 ELSE 0 END) AS 'Number of Partners',
+    COUNT(L.PersonID) AS 'Total Number of People Living with Employee'
+FROM Employees E
+LEFT JOIN LivesWithEmployee L ON E.MedicareCard = L.MedicareCard
+WHERE E.FacilityName = 'Hospital Maisonneuve Rosemont' AND E.EndDate IS NULL
+GROUP BY E.MedicareCard, E.FacilityName
+ORDER BY E.MedicareCard;
 
 # iii)
 -- For a given facility, provide a list of all employees who currently live with at least 
