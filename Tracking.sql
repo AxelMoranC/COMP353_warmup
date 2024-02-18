@@ -237,3 +237,41 @@ ORDER BY I.DateOfInfection DESC, P.FirstName ASC, P.LastName ASC;
 
 
 # viii)
+-- For every employee in the system who is currently working and got infected at least 
+-- 3 times, give the employee’s first-name, last-name, start date, facility name, role 
+-- (nurse, doctor, etc.), Medicare card number, Social Security Number, telephone number, 
+-- email address, the total number of infections, the total number of people 
+-- who currently live with the employee, the residence type, and the total number of 
+-- bedrooms of the residence he/she lives in. Results should be displayed in ascending 
+-- order of the total number of infections, then by first name, then by last name. 
+
+SELECT
+    P.FirstName AS `First Name`,
+    P.Lastname AS `Last Name`,
+    E.StartDate AS `Start Of Employment`,
+    E.FacilityName AS `Facility Employment`,
+    E.Job AS `Role`,
+    E.MedicareCard AS `Medicare Card`,
+    P.SocialSecurity AS `Social Security Number`,
+    P.PhoneNumber AS `Phone Number`,
+    P.Email,
+	( #To calculate for number of infections a person had.
+        SELECT COUNT(*)
+        FROM HadInfections H
+        WHERE H.PersonID = P.PersonID
+    ) AS `Total Number Of Infections`,
+    
+    COUNT(DISTINCT L.PersonID) AS `Total Number Of people Who Lives with him/her/them`,
+    R.HouseType AS `House Type`,
+    R.AmountBedrooms AS `Amount Of Bedrooms`
+    
+FROM Employees E
+JOIN Persons P ON P.MedicareCard = E.MedicareCard
+JOIN Facilities F ON F.FacilityName = E.FacilityName
+LEFT JOIN LivesWithEmployee L ON E.MedicareCard = L.MedicareCard AND P.MedicareCard = L.MedicareCard
+JOIN Residence R ON ((R.Address = P.Address) AND (R.City = P.City) AND (R.Province = P.Province) AND (R.PostalCode = P.PostalCode))
+WHERE E.EndDate IS NULL 
+GROUP BY P.FirstName, P.LastName, E.StartDate, F.FacilityName, E.Job, P.MedicareCard, P.SocialSecurity, R.HouseType, R.AmountBedrooms
+HAVING `Total Number Of Infections` >= 3 
+ORDER BY `Total Number Of Infections` ASC, `First Name` ASC, `Last Name` ASC;
+
