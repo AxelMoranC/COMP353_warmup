@@ -48,6 +48,21 @@ ORDER BY E.MedicareCard;
 
 
 # iv)
+-- For every province, give the total number of employees who are currently working 
+-- and also the total number of employees who are currently working and are currently 
+-- infected by COVID-19. Results should be displayed in ascending order by total 
+-- number of employees working for the province and infected by COVID-19. 
+
+-- NOTE: We assume current infection if it's after february 1st, as asymptomatic cases can occur.
+SELECT F.Province, 
+	   COUNT(DISTINCT E.MedicareCard) AS `Number Of Employees`,
+       COUNT(DISTINCT CASE WHEN H.InfectionType = 'COVID-19' AND H.DateOfInfection >= '2024-02-01' THEN E.MedicareCard END) AS `Employees who are Working and Infected`
+FROM Facilities F
+JOIN Employees E ON E.FacilityName = F.FacilityName AND E.EndDate IS NULL
+JOIN Persons P ON P.MedicareCard = E.MedicareCard
+LEFT JOIN HadInfections H ON H.PersonID = P.PersonID
+GROUP BY F.Province 
+ORDER BY `Employees who are Working and Infected` ASC;
 
 
 # v)
