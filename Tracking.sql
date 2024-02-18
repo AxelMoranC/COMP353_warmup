@@ -181,7 +181,248 @@ ORDER BY E.MedicareCard;
 -- infected employee, address, city, and province. Results should be displayed sorted 
 -- in ascending order by province, then city, then address. 
 
+-- for Hospital Maisonneuve Rosemont
+SELECT 
+    P.FirstName,
+    P.LastName,
+    COUNT(DISTINCT L.PersonID) AS 'Total Employees Living with Infected',
+    R.Address,
+    R.City,
+    R.Province
+FROM Persons P
+JOIN LivesWithEmployee L ON P.PersonID = L.PersonID
+JOIN Infections I ON P.PersonID = I.PersonID
+JOIN Employees E ON P.PersonID = E.PersonID
+JOIN Residence R ON P.ResidenceID = R.ResidenceID
+WHERE I.InfectionType = 'COVID-19'
+AND E.FacilityID = (SELECT FacilityID FROM Facilities WHERE FacilityName = 'Hospital Maisonneuve Rosemont') 
+AND E.EndDate IS NULL
+AND EXISTS (
+    SELECT 1 FROM LivesWithEmployee L2
+    WHERE L2.MedicareCard = E.MedicareCard
+    AND L2.PersonID != P.PersonID
+)
+GROUP BY P.FirstName, P.LastName, R.Address, R.City, R.Province
+ORDER BY R.Province, R.City, R.Address;
 
+
+-- for CLSC H
+SELECT 
+    P.FirstName,
+    P.LastName,
+    COUNT(DISTINCT L.PersonID) AS 'Total Employees Living with Infected',
+    R.Address,
+    R.City,
+    R.Province
+FROM Persons P
+JOIN LivesWithEmployee L ON P.PersonID = L.PersonID
+JOIN Infections I ON P.PersonID = I.PersonID
+JOIN Employees E ON P.PersonID = E.PersonID
+JOIN Residence R ON P.ResidenceID = R.ResidenceID
+WHERE I.InfectionType = 'COVID-19'
+AND E.FacilityID = (SELECT FacilityID FROM Facilities WHERE FacilityName = 'CLSC H') 
+AND E.EndDate IS NULL
+AND EXISTS (
+    SELECT 1 FROM LivesWithEmployee L2
+    WHERE L2.MedicareCard = E.MedicareCard
+    AND L2.PersonID != P.PersonID
+)
+GROUP BY P.FirstName, P.LastName, R.Address, R.City, R.Province
+ORDER BY R.Province, R.City, R.Address;
+
+-- for Lakeshore
+SELECT 
+    P.FirstName,
+    P.LastName,
+    COUNT(DISTINCT L.PersonID) AS 'Total Employees Living with Infected',
+    R.Address,
+    R.City,
+    R.Province
+FROM Persons P
+JOIN LivesWithEmployee L ON P.PersonID = L.PersonID
+JOIN Infections I ON P.PersonID = I.PersonID
+JOIN Employees E ON P.PersonID = E.PersonID
+JOIN Residence R ON P.ResidenceID = R.ResidenceID
+WHERE I.InfectionType = 'COVID-19'
+AND E.FacilityID = (SELECT FacilityID FROM Facilities WHERE FacilityName = 'Lakeshore') 
+AND E.EndDate IS NULL
+AND EXISTS (
+    SELECT 1 FROM LivesWithEmployee L2
+    WHERE L2.MedicareCard = E.MedicareCard
+    AND L2.PersonID != P.PersonID
+)
+GROUP BY P.FirstName, P.LastName, R.Address, R.City, R.Province
+ORDER BY R.Province, R.City, R.Address;
+
+-- for Justine
+SELECT 
+    SELECT 
+    P.FirstName,
+    P.LastName,
+    COUNT(DISTINCT L.PersonID) AS 'Total Employees Living with Infected',
+    R.Address,
+    R.City,
+    R.Province
+FROM Persons P
+JOIN LivesWithEmployee L ON P.PersonID = L.PersonID
+JOIN Infections I ON P.PersonID = I.PersonID
+JOIN Employees E ON P.PersonID = E.PersonID
+JOIN Residence R ON P.ResidenceID = R.ResidenceID
+WHERE I.InfectionType = 'COVID-19'
+AND E.FacilityID = (SELECT FacilityID FROM Facilities WHERE FacilityName = 'Justine') 
+AND E.EndDate IS NULL
+AND EXISTS (
+    SELECT 1 FROM LivesWithEmployee L2
+    WHERE L2.MedicareCard = E.MedicareCard
+    AND L2.PersonID != P.PersonID
+)
+GROUP BY P.FirstName, P.LastName, R.Address, R.City, R.Province
+ORDER BY R.Province, R.City, R.Address;
+
+-- for UniDollar
+SELECT 
+    SELECT 
+    P.FirstName,
+    P.LastName,
+    COUNT(DISTINCT L.PersonID) AS 'Total Employees Living with Infected',
+    R.Address,
+    R.City,
+    R.Province
+FROM Persons P
+JOIN LivesWithEmployee L ON P.PersonID = L.PersonID
+JOIN Infections I ON P.PersonID = I.PersonID
+JOIN Employees E ON P.PersonID = E.PersonID
+JOIN Residence R ON P.ResidenceID = R.ResidenceID
+WHERE I.InfectionType = 'COVID-19'
+AND E.FacilityID = (SELECT FacilityID FROM Facilities WHERE FacilityName = 'UniDollar') 
+AND E.EndDate IS NULL
+AND EXISTS (
+    SELECT 1 FROM LivesWithEmployee L2
+    WHERE L2.MedicareCard = E.MedicareCard
+    AND L2.PersonID != P.PersonID
+)
+GROUP BY P.FirstName, P.LastName, R.Address, R.City, R.Province
+ORDER BY R.Province, R.City, R.Address;
+
+-- for General Hospital
+SELECT 
+    P.FirstName,
+    P.LastName,
+    COUNT(DISTINCT L.PersonID) AS 'Total Employees Living with Infected',
+    R.Address,
+    R.City,
+    R.Province
+FROM Persons P
+JOIN LivesWithEmployee L ON P.PersonID = L.PersonID
+JOIN Infections I ON P.PersonID = I.PersonID
+JOIN Employees E ON P.PersonID = E.PersonID
+JOIN Residence R ON P.ResidenceID = R.ResidenceID
+WHERE I.InfectionType = 'COVID-19'
+AND E.FacilityID = (SELECT FacilityID FROM Facilities WHERE FacilityName = 'General Hospital') 
+AND E.EndDate IS NULL
+AND EXISTS (
+    SELECT 1 FROM LivesWithEmployee L2
+    WHERE L2.MedicareCard = E.MedicareCard
+    AND L2.PersonID != P.PersonID
+)
+GROUP BY P.FirstName, P.LastName, R.Address, R.City, R.Province
+ORDER BY R.Province, R.City, R.Address;
+
+-- for Faubourg Clinic
+SELECT 
+    P.FirstName,
+    P.LastName,
+    COUNT(DISTINCT L.PersonID) AS 'Total Employees Living with Infected',
+    R.Address,
+    R.City,
+    R.Province
+FROM Persons P
+JOIN LivesWithEmployee L ON P.PersonID = L.PersonID
+JOIN Infections I ON P.PersonID = I.PersonID
+JOIN Employees E ON P.PersonID = E.PersonID
+JOIN Residence R ON P.ResidenceID = R.ResidenceID
+WHERE I.InfectionType = 'COVID-19'
+AND E.FacilityID = (SELECT FacilityID FROM Facilities WHERE FacilityName = 'Faubourg Clinic') 
+AND E.EndDate IS NULL
+AND EXISTS (
+    SELECT 1 FROM LivesWithEmployee L2
+    WHERE L2.MedicareCard = E.MedicareCard
+    AND L2.PersonID != P.PersonID
+)
+GROUP BY P.FirstName, P.LastName, R.Address, R.City, R.Province
+ORDER BY R.Province, R.City, R.Address;
+
+-- for Sunset Center
+SELECT 
+    P.FirstName,
+    P.LastName,
+    COUNT(DISTINCT L.PersonID) AS 'Total Employees Living with Infected',
+    R.Address,
+    R.City,
+    R.Province
+FROM Persons P
+JOIN LivesWithEmployee L ON P.PersonID = L.PersonID
+JOIN Infections I ON P.PersonID = I.PersonID
+JOIN Employees E ON P.PersonID = E.PersonID
+JOIN Residence R ON P.ResidenceID = R.ResidenceID
+WHERE I.InfectionType = 'COVID-19'
+AND E.FacilityID = (SELECT FacilityID FROM Facilities WHERE FacilityName = 'Sunset Center') 
+AND E.EndDate IS NULL
+AND EXISTS (
+    SELECT 1 FROM LivesWithEmployee L2
+    WHERE L2.MedicareCard = E.MedicareCard
+    AND L2.PersonID != P.PersonID
+)
+GROUP BY P.FirstName, P.LastName, R.Address, R.City, R.Province
+ORDER BY R.Province, R.City, R.Address;
+
+-- for Green Pharmacy
+SELECT 
+    P.FirstName,
+    P.LastName,
+    COUNT(DISTINCT L.PersonID) AS 'Total Employees Living with Infected',
+    R.Address,
+    R.City,
+    R.Province
+FROM Persons P
+JOIN LivesWithEmployee L ON P.PersonID = L.PersonID
+JOIN Infections I ON P.PersonID = I.PersonID
+JOIN Employees E ON P.PersonID = E.PersonID
+JOIN Residence R ON P.ResidenceID = R.ResidenceID
+WHERE I.InfectionType = 'COVID-19'
+AND E.FacilityID = (SELECT FacilityID FROM Facilities WHERE FacilityName = 'Green Pharmacy') 
+AND E.EndDate IS NULL
+AND EXISTS (
+    SELECT 1 FROM LivesWithEmployee L2
+    WHERE L2.MedicareCard = E.MedicareCard
+    AND L2.PersonID != P.PersonID
+)
+GROUP BY P.FirstName, P.LastName, R.Address, R.City, R.Province
+ORDER BY R.Province, R.City, R.Address;
+
+-- for Santiago Bernabeu
+SELECT 
+    P.FirstName,
+    P.LastName,
+    COUNT(DISTINCT L.PersonID) AS 'Total Employees Living with Infected',
+    R.Address,
+    R.City,
+    R.Province
+FROM Persons P
+JOIN LivesWithEmployee L ON P.PersonID = L.PersonID
+JOIN Infections I ON P.PersonID = I.PersonID
+JOIN Employees E ON P.PersonID = E.PersonID
+JOIN Residence R ON P.ResidenceID = R.ResidenceID
+WHERE I.InfectionType = 'COVID-19'
+AND E.FacilityID = (SELECT FacilityID FROM Facilities WHERE FacilityName = 'Santiago Bernabeu') 
+AND E.EndDate IS NULL
+AND EXISTS (
+    SELECT 1 FROM LivesWithEmployee L2
+    WHERE L2.MedicareCard = E.MedicareCard
+    AND L2.PersonID != P.PersonID
+)
+GROUP BY P.FirstName, P.LastName, R.Address, R.City, R.Province
+ORDER BY R.Province, R.City, R.Address;
 
 # iv)
 -- For every province, give the total number of employees who are currently working 
