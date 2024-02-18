@@ -202,8 +202,32 @@ ORDER BY `Employees who are Working and Infected` ASC;
 
 
 # v)
-
-
+-- For the facility Hospital Maisonneuve Rosemont, give the details of all the nurses and doctors
+--  who are currently working and got infected at least once with COVID-19. 
+-- the total number of people who are currently living with the infected employee.
+--  Results should be displayed sorted in descending order by date of infection
+--  then ascending order by first name, then ascending order by last name.
+	
+SELECT 
+    P.FirstName,
+    P.LastName,
+    E.Job AS 'Role',
+    E.MedicareCard,
+    P.SocialSecurity,
+    P.PhoneNumber AS 'Telephone Number',
+    P.Email,
+    I.DateOfInfection,
+    COUNT(DISTINCT L.PersonID) AS 'Total People Living with Infected Employee'
+FROM Persons P
+JOIN Employees E ON P.MedicareCard = E.MedicareCard
+JOIN HadInfections I ON P.PersonID = I.PersonID
+LEFT JOIN LivesWithEmployee L ON P.MedicareCard = L.MedicareCard
+WHERE E.FacilityName = 'Hospital Maisonneuve Rosemont' 
+AND E.EndDate IS NULL
+AND E.Job IN ('nurse', 'doctor')
+AND I.InfectionType = 'COVID-19'
+GROUP BY P.FirstName, P.LastName, E.Job, E.MedicareCard, P.SocialSecurity, P.PhoneNumber, P.Email, I.DateOfInfection
+ORDER BY I.DateOfInfection DESC, P.FirstName ASC, P.LastName ASC;
 
 #vi)
 
