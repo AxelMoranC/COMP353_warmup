@@ -37,6 +37,142 @@ WHERE E.FacilityName = 'Hospital Maisonneuve Rosemont' AND E.EndDate IS NULL
 GROUP BY E.MedicareCard, E.FacilityName
 ORDER BY E.MedicareCard;
 
+-- for CLSC H Facility
+SELECT 
+    E.MedicareCard,
+    E.FacilityName,
+    SUM(CASE WHEN L.Relationship = 'Roommate' THEN 1 ELSE 0 END) AS 'Number of Roommates',
+    SUM(CASE WHEN L.Relationship = 'Dependent' THEN 1 ELSE 0 END) AS 'Number of Dependents',
+    SUM(CASE WHEN L.Relationship = 'Parent' THEN 1 ELSE 0 END) AS 'Number of Parents',
+    SUM(CASE WHEN L.Relationship = 'Partner' THEN 1 ELSE 0 END) AS 'Number of Partners',
+    COUNT(L.PersonID) AS 'Total Number of People Living with Employee'
+FROM Employees E
+LEFT JOIN LivesWithEmployee L ON E.MedicareCard = L.MedicareCard
+WHERE E.FacilityName = 'CLSC H' AND E.EndDate IS NULL
+GROUP BY E.MedicareCard, E.FacilityName
+ORDER BY E.MedicareCard;
+
+-- for Lakeshore Facility
+SELECT 
+    E.MedicareCard,
+    E.FacilityName,
+    SUM(CASE WHEN L.Relationship = 'Roommate' THEN 1 ELSE 0 END) AS 'Number of Roommates',
+    SUM(CASE WHEN L.Relationship = 'Dependent' THEN 1 ELSE 0 END) AS 'Number of Dependents',
+    SUM(CASE WHEN L.Relationship = 'Parent' THEN 1 ELSE 0 END) AS 'Number of Parents',
+    SUM(CASE WHEN L.Relationship = 'Partner' THEN 1 ELSE 0 END) AS 'Number of Partners',
+    COUNT(L.PersonID) AS 'Total Number of People Living with Employee'
+FROM Employees E
+LEFT JOIN LivesWithEmployee L ON E.MedicareCard = L.MedicareCard
+WHERE E.FacilityName = 'Lakeshore' AND E.EndDate IS NULL
+GROUP BY E.MedicareCard, E.FacilityName
+ORDER BY E.MedicareCard;
+
+-- for Justine Facility
+SELECT 
+    E.MedicareCard,
+    E.FacilityName,
+    SUM(CASE WHEN L.Relationship = 'Roommate' THEN 1 ELSE 0 END) AS 'Number of Roommates',
+    SUM(CASE WHEN L.Relationship = 'Dependent' THEN 1 ELSE 0 END) AS 'Number of Dependents',
+    SUM(CASE WHEN L.Relationship = 'Parent' THEN 1 ELSE 0 END) AS 'Number of Parents',
+    SUM(CASE WHEN L.Relationship = 'Partner' THEN 1 ELSE 0 END) AS 'Number of Partners',
+    COUNT(L.PersonID) AS 'Total Number of People Living with Employee'
+FROM Employees E
+LEFT JOIN LivesWithEmployee L ON E.MedicareCard = L.MedicareCard
+WHERE E.FacilityName = 'Justine' AND E.EndDate IS NULL
+GROUP BY E.MedicareCard, E.FacilityName
+ORDER BY E.MedicareCard;
+
+
+-- for UniDollar Facility
+SELECT 
+    E.MedicareCard,
+    E.FacilityName,
+    SUM(CASE WHEN L.Relationship = 'Roommate' THEN 1 ELSE 0 END) AS 'Number of Roommates',
+    SUM(CASE WHEN L.Relationship = 'Dependent' THEN 1 ELSE 0 END) AS 'Number of Dependents',
+    SUM(CASE WHEN L.Relationship = 'Parent' THEN 1 ELSE 0 END) AS 'Number of Parents',
+    SUM(CASE WHEN L.Relationship = 'Partner' THEN 1 ELSE 0 END) AS 'Number of Partners',
+    COUNT(L.PersonID) AS 'Total Number of People Living with Employee'
+FROM Employees E
+LEFT JOIN LivesWithEmployee L ON E.MedicareCard = L.MedicareCard
+WHERE E.FacilityName = 'UniDollar' AND E.EndDate IS NULL
+GROUP BY E.MedicareCard, E.FacilityName
+ORDER BY E.MedicareCard;
+
+-- for General Hospital Facility
+SELECT 
+    E.MedicareCard,
+    E.FacilityName,
+    SUM(CASE WHEN L.Relationship = 'Roommate' THEN 1 ELSE 0 END) AS 'Number of Roommates',
+    SUM(CASE WHEN L.Relationship = 'Dependent' THEN 1 ELSE 0 END) AS 'Number of Dependents',
+    SUM(CASE WHEN L.Relationship = 'Parent' THEN 1 ELSE 0 END) AS 'Number of Parents',
+    SUM(CASE WHEN L.Relationship = 'Partner' THEN 1 ELSE 0 END) AS 'Number of Partners',
+    COUNT(L.PersonID) AS 'Total Number of People Living with Employee'
+FROM Employees E
+LEFT JOIN LivesWithEmployee L ON E.MedicareCard = L.MedicareCard
+WHERE E.FacilityName = 'General Hospital' AND E.EndDate IS NULL
+GROUP BY E.MedicareCard, E.FacilityName
+ORDER BY E.MedicareCard;
+
+-- for Faubourg Clinic Facility
+SELECT 
+    E.MedicareCard,
+    E.FacilityName,
+    SUM(CASE WHEN L.Relationship = 'Roommate' THEN 1 ELSE 0 END) AS 'Number of Roommates',
+    SUM(CASE WHEN L.Relationship = 'Dependent' THEN 1 ELSE 0 END) AS 'Number of Dependents',
+    SUM(CASE WHEN L.Relationship = 'Parent' THEN 1 ELSE 0 END) AS 'Number of Parents',
+    SUM(CASE WHEN L.Relationship = 'Partner' THEN 1 ELSE 0 END) AS 'Number of Partners',
+    COUNT(L.PersonID) AS 'Total Number of People Living with Employee'
+FROM Employees E
+LEFT JOIN LivesWithEmployee L ON E.MedicareCard = L.MedicareCard
+WHERE E.FacilityName = 'Faubourg Clinic' AND E.EndDate IS NULL
+GROUP BY E.MedicareCard, E.FacilityName
+ORDER BY E.MedicareCard;
+
+-- for Sunset Center Facility
+SELECT 
+    E.MedicareCard,
+    E.FacilityName,
+    SUM(CASE WHEN L.Relationship = 'Roommate' THEN 1 ELSE 0 END) AS 'Number of Roommates',
+    SUM(CASE WHEN L.Relationship = 'Dependent' THEN 1 ELSE 0 END) AS 'Number of Dependents',
+    SUM(CASE WHEN L.Relationship = 'Parent' THEN 1 ELSE 0 END) AS 'Number of Parents',
+    SUM(CASE WHEN L.Relationship = 'Partner' THEN 1 ELSE 0 END) AS 'Number of Partners',
+    COUNT(L.PersonID) AS 'Total Number of People Living with Employee'
+FROM Employees E
+LEFT JOIN LivesWithEmployee L ON E.MedicareCard = L.MedicareCard
+WHERE E.FacilityName = 'Sunset Center' AND E.EndDate IS NULL
+GROUP BY E.MedicareCard, E.FacilityName
+ORDER BY E.MedicareCard;
+
+-- for Green Pharmacy Facility
+SELECT 
+    E.MedicareCard,
+    E.FacilityName,
+    SUM(CASE WHEN L.Relationship = 'Roommate' THEN 1 ELSE 0 END) AS 'Number of Roommates',
+    SUM(CASE WHEN L.Relationship = 'Dependent' THEN 1 ELSE 0 END) AS 'Number of Dependents',
+    SUM(CASE WHEN L.Relationship = 'Parent' THEN 1 ELSE 0 END) AS 'Number of Parents',
+    SUM(CASE WHEN L.Relationship = 'Partner' THEN 1 ELSE 0 END) AS 'Number of Partners',
+    COUNT(L.PersonID) AS 'Total Number of People Living with Employee'
+FROM Employees E
+LEFT JOIN LivesWithEmployee L ON E.MedicareCard = L.MedicareCard
+WHERE E.FacilityName = 'Green Pharmacy' AND E.EndDate IS NULL
+GROUP BY E.MedicareCard, E.FacilityName
+ORDER BY E.MedicareCard;
+
+-- for Santiago Bernabeu Facility
+SELECT 
+    E.MedicareCard,
+    E.FacilityName,
+    SUM(CASE WHEN L.Relationship = 'Roommate' THEN 1 ELSE 0 END) AS 'Number of Roommates',
+    SUM(CASE WHEN L.Relationship = 'Dependent' THEN 1 ELSE 0 END) AS 'Number of Dependents',
+    SUM(CASE WHEN L.Relationship = 'Parent' THEN 1 ELSE 0 END) AS 'Number of Parents',
+    SUM(CASE WHEN L.Relationship = 'Partner' THEN 1 ELSE 0 END) AS 'Number of Partners',
+    COUNT(L.PersonID) AS 'Total Number of People Living with Employee'
+FROM Employees E
+LEFT JOIN LivesWithEmployee L ON E.MedicareCard = L.MedicareCard
+WHERE E.FacilityName = 'Santiago Bernabeu' AND E.EndDate IS NULL
+GROUP BY E.MedicareCard, E.FacilityName
+ORDER BY E.MedicareCard;
+
 # iii)
 -- For a given facility, provide a list of all employees who currently live with at least 
 -- another employee who is currently working at the same facility and at least one of 
