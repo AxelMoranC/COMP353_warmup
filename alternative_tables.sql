@@ -92,7 +92,7 @@ CREATE TABLE HadInfections (
     FOREIGN KEY (PersonID) REFERENCES Persons(PersonID)
 );
 
-DROP TABLE HadInfections;
+DROP TABLE Infected;
 
 #_____________________________________________________
 # ALL RELATIONSHIPS
