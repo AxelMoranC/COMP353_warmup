@@ -191,11 +191,11 @@ SELECT
     R.Province
 FROM Persons P
 JOIN LivesWithEmployee L ON P.PersonID = L.PersonID
-JOIN Infections I ON P.PersonID = I.PersonID
-JOIN Employees E ON P.PersonID = E.PersonID
-JOIN Residence R ON P.ResidenceID = R.ResidenceID
+JOIN HadInfections I ON P.PersonID = I.PersonID
+JOIN Employees E ON P.MedicareCard = E.MedicareCard
+JOIN Residence R ON P.Address = R.Address AND P.City = R.City AND P.Province = R.Province AND P.PostalCode = R.PostalCode
 WHERE I.InfectionType = 'COVID-19'
-AND E.FacilityID = (SELECT FacilityID FROM Facilities WHERE FacilityName = 'Hospital Maisonneuve Rosemont') 
+AND E.FacilityName = (SELECT FacilityName FROM Facilities WHERE FacilityName = 'Hospital Maisonneuve Rosemont') 
 AND E.EndDate IS NULL
 AND EXISTS (
     SELECT 1 FROM LivesWithEmployee L2
@@ -216,11 +216,11 @@ SELECT
     R.Province
 FROM Persons P
 JOIN LivesWithEmployee L ON P.PersonID = L.PersonID
-JOIN Infections I ON P.PersonID = I.PersonID
-JOIN Employees E ON P.PersonID = E.PersonID
-JOIN Residence R ON P.ResidenceID = R.ResidenceID
+JOIN HadInfections I ON P.PersonID = I.PersonID
+JOIN Employees E ON P.MedicareCard = E.MedicareCard
+JOIN Residence R ON P.Address = R.Address AND P.City = R.City AND P.Province = R.Province AND P.PostalCode = R.PostalCode
 WHERE I.InfectionType = 'COVID-19'
-AND E.FacilityID = (SELECT FacilityID FROM Facilities WHERE FacilityName = 'CLSC H') 
+AND E.FacilityName = (SELECT FacilityName FROM Facilities WHERE FacilityName = 'CLSC H') 
 AND E.EndDate IS NULL
 AND EXISTS (
     SELECT 1 FROM LivesWithEmployee L2
@@ -240,11 +240,11 @@ SELECT
     R.Province
 FROM Persons P
 JOIN LivesWithEmployee L ON P.PersonID = L.PersonID
-JOIN Infections I ON P.PersonID = I.PersonID
-JOIN Employees E ON P.PersonID = E.PersonID
-JOIN Residence R ON P.ResidenceID = R.ResidenceID
+JOIN HadInfections I ON P.PersonID = I.PersonID
+JOIN Employees E ON P.MedicareCard = E.MedicareCard
+JOIN Residence R ON P.Address = R.Address AND P.City = R.City AND P.Province = R.Province AND P.PostalCode = R.PostalCode
 WHERE I.InfectionType = 'COVID-19'
-AND E.FacilityID = (SELECT FacilityID FROM Facilities WHERE FacilityName = 'Lakeshore') 
+AND E.FacilityName = (SELECT FacilityName FROM Facilities WHERE FacilityName = 'Lakeshore') 
 AND E.EndDate IS NULL
 AND EXISTS (
     SELECT 1 FROM LivesWithEmployee L2
@@ -256,7 +256,6 @@ ORDER BY R.Province, R.City, R.Address;
 
 -- for Justine
 SELECT 
-    SELECT 
     P.FirstName,
     P.LastName,
     COUNT(DISTINCT L.PersonID) AS 'Total Employees Living with Infected',
@@ -265,11 +264,11 @@ SELECT
     R.Province
 FROM Persons P
 JOIN LivesWithEmployee L ON P.PersonID = L.PersonID
-JOIN Infections I ON P.PersonID = I.PersonID
-JOIN Employees E ON P.PersonID = E.PersonID
-JOIN Residence R ON P.ResidenceID = R.ResidenceID
+JOIN HadInfections I ON P.PersonID = I.PersonID
+JOIN Employees E ON P.MedicareCard = E.MedicareCard
+JOIN Residence R ON P.Address = R.Address AND P.City = R.City AND P.Province = R.Province AND P.PostalCode = R.PostalCode
 WHERE I.InfectionType = 'COVID-19'
-AND E.FacilityID = (SELECT FacilityID FROM Facilities WHERE FacilityName = 'Justine') 
+AND E.FacilityName = (SELECT FacilityName FROM Facilities WHERE FacilityName = 'Justine') 
 AND E.EndDate IS NULL
 AND EXISTS (
     SELECT 1 FROM LivesWithEmployee L2
@@ -281,7 +280,6 @@ ORDER BY R.Province, R.City, R.Address;
 
 -- for UniDollar
 SELECT 
-    SELECT 
     P.FirstName,
     P.LastName,
     COUNT(DISTINCT L.PersonID) AS 'Total Employees Living with Infected',
@@ -290,11 +288,11 @@ SELECT
     R.Province
 FROM Persons P
 JOIN LivesWithEmployee L ON P.PersonID = L.PersonID
-JOIN Infections I ON P.PersonID = I.PersonID
-JOIN Employees E ON P.PersonID = E.PersonID
-JOIN Residence R ON P.ResidenceID = R.ResidenceID
+JOIN HadInfections I ON P.PersonID = I.PersonID
+JOIN Employees E ON P.MedicareCard = E.MedicareCard
+JOIN Residence R ON P.Address = R.Address AND P.City = R.City AND P.Province = R.Province AND P.PostalCode = R.PostalCode
 WHERE I.InfectionType = 'COVID-19'
-AND E.FacilityID = (SELECT FacilityID FROM Facilities WHERE FacilityName = 'UniDollar') 
+AND E.FacilityName = (SELECT FacilityName FROM Facilities WHERE FacilityName = 'UniDollar') 
 AND E.EndDate IS NULL
 AND EXISTS (
     SELECT 1 FROM LivesWithEmployee L2
@@ -314,11 +312,11 @@ SELECT
     R.Province
 FROM Persons P
 JOIN LivesWithEmployee L ON P.PersonID = L.PersonID
-JOIN Infections I ON P.PersonID = I.PersonID
-JOIN Employees E ON P.PersonID = E.PersonID
-JOIN Residence R ON P.ResidenceID = R.ResidenceID
+JOIN HadInfections I ON P.PersonID = I.PersonID
+JOIN Employees E ON P.MedicareCard = E.MedicareCard
+JOIN Residence R ON P.Address = R.Address AND P.City = R.City AND P.Province = R.Province AND P.PostalCode = R.PostalCode
 WHERE I.InfectionType = 'COVID-19'
-AND E.FacilityID = (SELECT FacilityID FROM Facilities WHERE FacilityName = 'General Hospital') 
+AND E.FacilityName = (SELECT FacilityName FROM Facilities WHERE FacilityName = 'General Hospital') 
 AND E.EndDate IS NULL
 AND EXISTS (
     SELECT 1 FROM LivesWithEmployee L2
@@ -338,11 +336,11 @@ SELECT
     R.Province
 FROM Persons P
 JOIN LivesWithEmployee L ON P.PersonID = L.PersonID
-JOIN Infections I ON P.PersonID = I.PersonID
-JOIN Employees E ON P.PersonID = E.PersonID
-JOIN Residence R ON P.ResidenceID = R.ResidenceID
+JOIN HadInfections I ON P.PersonID = I.PersonID
+JOIN Employees E ON P.MedicareCard = E.MedicareCard
+JOIN Residence R ON P.Address = R.Address AND P.City = R.City AND P.Province = R.Province AND P.PostalCode = R.PostalCode
 WHERE I.InfectionType = 'COVID-19'
-AND E.FacilityID = (SELECT FacilityID FROM Facilities WHERE FacilityName = 'Faubourg Clinic') 
+AND E.FacilityName = (SELECT FacilityName FROM Facilities WHERE FacilityName = 'Faubourg Clinic')  
 AND E.EndDate IS NULL
 AND EXISTS (
     SELECT 1 FROM LivesWithEmployee L2
@@ -362,11 +360,11 @@ SELECT
     R.Province
 FROM Persons P
 JOIN LivesWithEmployee L ON P.PersonID = L.PersonID
-JOIN Infections I ON P.PersonID = I.PersonID
-JOIN Employees E ON P.PersonID = E.PersonID
-JOIN Residence R ON P.ResidenceID = R.ResidenceID
+JOIN HadInfections I ON P.PersonID = I.PersonID
+JOIN Employees E ON P.MedicareCard = E.MedicareCard
+JOIN Residence R ON P.Address = R.Address AND P.City = R.City AND P.Province = R.Province AND P.PostalCode = R.PostalCode
 WHERE I.InfectionType = 'COVID-19'
-AND E.FacilityID = (SELECT FacilityID FROM Facilities WHERE FacilityName = 'Sunset Center') 
+AND E.FacilityName = (SELECT FacilityName FROM Facilities WHERE FacilityName = 'Sunset Center') 
 AND E.EndDate IS NULL
 AND EXISTS (
     SELECT 1 FROM LivesWithEmployee L2
@@ -386,11 +384,11 @@ SELECT
     R.Province
 FROM Persons P
 JOIN LivesWithEmployee L ON P.PersonID = L.PersonID
-JOIN Infections I ON P.PersonID = I.PersonID
-JOIN Employees E ON P.PersonID = E.PersonID
-JOIN Residence R ON P.ResidenceID = R.ResidenceID
+JOIN HadInfections I ON P.PersonID = I.PersonID
+JOIN Employees E ON P.MedicareCard = E.MedicareCard
+JOIN Residence R ON P.Address = R.Address AND P.City = R.City AND P.Province = R.Province AND P.PostalCode = R.PostalCode
 WHERE I.InfectionType = 'COVID-19'
-AND E.FacilityID = (SELECT FacilityID FROM Facilities WHERE FacilityName = 'Green Pharmacy') 
+AND E.FacilityName = (SELECT FacilityName FROM Facilities WHERE FacilityName = 'Green Pharmacy') 
 AND E.EndDate IS NULL
 AND EXISTS (
     SELECT 1 FROM LivesWithEmployee L2
@@ -410,11 +408,11 @@ SELECT
     R.Province
 FROM Persons P
 JOIN LivesWithEmployee L ON P.PersonID = L.PersonID
-JOIN Infections I ON P.PersonID = I.PersonID
-JOIN Employees E ON P.PersonID = E.PersonID
-JOIN Residence R ON P.ResidenceID = R.ResidenceID
+JOIN HadInfections I ON P.PersonID = I.PersonID
+JOIN Employees E ON P.MedicareCard = E.MedicareCard
+JOIN Residence R ON P.Address = R.Address AND P.City = R.City AND P.Province = R.Province AND P.PostalCode = R.PostalCode
 WHERE I.InfectionType = 'COVID-19'
-AND E.FacilityID = (SELECT FacilityID FROM Facilities WHERE FacilityName = 'Santiago Bernabeu') 
+AND E.FacilityName = (SELECT FacilityName FROM Facilities WHERE FacilityName = 'Santiago Bernabeu') 
 AND E.EndDate IS NULL
 AND EXISTS (
     SELECT 1 FROM LivesWithEmployee L2
@@ -423,6 +421,7 @@ AND EXISTS (
 )
 GROUP BY P.FirstName, P.LastName, R.Address, R.City, R.Province
 ORDER BY R.Province, R.City, R.Address;
+
 
 # iv)
 -- For every province, give the total number of employees who are currently working 
