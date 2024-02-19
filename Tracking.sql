@@ -478,9 +478,16 @@ ORDER BY I.DateOfInfection DESC, P.FirstName ASC, P.LastName ASC;
 --  For each vaccine type, give the total number of doses taken by either the employees 
 -- in the system or by the people recorded in the system who live with the employees. 
 -- Results should be displayed in descending order by total number of doses. 
-SELECT V.Type, COUNT(*) AS `Total Doses`
-FROM Hasvaccines V
-GROUP BY V.Type
+
+	-- Added modifications to ensure that the person taking the vaccines is really an employee or someone living with them.
+SELECT Type, COUNT(*) AS `Total Doses`
+FROM HasVaccines V
+WHERE EXISTS (
+    SELECT * FROM Employees E,Persons P WHERE P.PersonID = V.PersonID AND P.MedicareCard = E.MedicareCard
+    UNION
+    SELECT * FROM LivesWithEmployee L WHERE L.PersonID = V.PersonID
+)
+GROUP BY Type
 ORDER BY `Total Doses` DESC;
 
 
