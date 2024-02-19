@@ -475,7 +475,20 @@ ORDER BY I.DateOfInfection DESC, P.FirstName ASC, P.LastName ASC;
 
 
 # vii)
+-- For each vaccine type, give the total number of doses taken by 
+-- either the employees in the system or by the people recorded in the system who live with the employees. 
+-- Results should be displayed in descending order by total number of doses.
 
+SELECT VaccineType, SUM(DoseOfVaccination) AS TotalDoses
+FROM (
+    SELECT VaccineType, DoseOfVaccination
+    FROM EmployeeVaccinationRecords
+    UNION ALL
+    SELECT VaccineType, DoseOfVaccination
+    FROM PeopleVaccinationRecords
+) AS CombinedRecords
+GROUP BY VaccineType
+ORDER BY TotalDoses DESC;
 
 # viii)
 -- For every employee in the system who is currently working and got infected at least 
