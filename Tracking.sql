@@ -471,6 +471,47 @@ GROUP BY P.FirstName, P.LastName, E.Job, E.MedicareCard, P.SocialSecurity, P.Pho
 ORDER BY I.DateOfInfection DESC, P.FirstName ASC, P.LastName ASC;
 
 #vi)
+-- Vi)
+SELECT 
+    P.FirstName,
+    P.LastName,
+    E.Job,
+    P.MedicareCard,
+    P.SocialSecurity,
+    P.PhoneNumber,
+    P.Email,
+    COUNT(DISTINCT L.PersonID) AS 'Number of People Living with Employee'
+FROM 
+    Employees E
+JOIN 
+    Persons P ON E.MedicareCard = P.MedicareCard
+LEFT JOIN 
+    LivesWithEmployee L ON P.MedicareCard = L.MedicareCard
+LEFT JOIN 
+    HasVaccines V ON P.PersonID = V.PersonID
+LEFT JOIN 
+    HadInfections I ON P.PersonID = I.PersonID
+WHERE 
+    E.FacilityName = 'Hospital Maisonneuve Rosemont' AND
+    E.EndDate IS NULL AND
+    V.PersonID IS NULL AND
+    I.PersonID IS NULL
+GROUP BY 
+    P.FirstName, P.LastName, E.Job, P.MedicareCard, P.SocialSecurity, P.PhoneNumber, P.Email
+ORDER BY 
+    E.Job ASC, P.FirstName ASC, P.LastName ASC;
+
+-- queries to add data to test the query for vi)
+INSERT INTO Persons (PersonID, FirstName, LastName, DateOfBirth, SocialSecurity, MedicareCard, PhoneNumber, Citizenship, Email, Address, City, Province, PostalCode) VALUES
+(1001, 'Nora', 'Fields', '1987-03-21', 'SSN1001', 'MCN1001', '514-100-2001', 'Canadian', 'nora.fields@email.com', '123 West', 'Montreal', 'Quebec', 'H4S 3L4'),
+(1002, 'Evan', 'Smith', '1992-07-14', 'SSN1002', 'MCN1002', '514-100-2002', 'Canadian', 'evan.smith@email.com', '456 Maple', 'Laval', 'Quebec', 'G12 J37');
+
+INSERT INTO Employees (MedicareCard, FacilityName, Job, StartDate, EndDate) VALUES
+('MCN1001', 'Hospital Maisonneuve Rosemont', 'nurse', '2022-01-01', NULL),
+('MCN1002', 'Hospital Maisonneuve Rosemont', 'doctor', '2022-01-01', NULL);
+
+INSERT INTO LivesWithEmployee (MedicareCard, PersonID, Relationship) VALUES
+('MCN1001', 1002, 'Partner');
 
 
 
@@ -531,3 +572,14 @@ GROUP BY P.FirstName, P.LastName, E.StartDate, F.FacilityName, E.Job, P.Medicare
 HAVING `Total Number Of Infections` >= 3 
 ORDER BY `Total Number Of Infections` ASC, `First Name` ASC, `Last Name` ASC;
 
+
+
+--------------------------------------------------------------------------------------------
+-- all select count(*) from R
+select count(*) from Persons;
+select count(*) from Facilities;
+select count(*) from HadInfections;
+select count(*) from HasVaccines;
+select count(*) from Employees;
+select count(*) from Residence;
+select count(*) from LivesWithEmployee;
