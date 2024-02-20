@@ -182,245 +182,252 @@ ORDER BY E.MedicareCard;
 -- in ascending order by province, then city, then address. 
 
 -- for Hospital Maisonneuve Rosemont
+
 SELECT 
     P.FirstName,
     P.LastName,
-    COUNT(DISTINCT L.PersonID) AS 'Total Employees Living with Infected',
-    R.Address,
-    R.City,
-    R.Province
-FROM Persons P
-JOIN LivesWithEmployee L ON P.PersonID = L.PersonID
-JOIN HadInfections I ON P.PersonID = I.PersonID
-JOIN Employees E ON P.MedicareCard = E.MedicareCard
-JOIN Residence R ON P.Address = R.Address AND P.City = R.City AND P.Province = R.Province AND P.PostalCode = R.PostalCode
-WHERE I.InfectionType = 'COVID-19'
-AND E.FacilityName = (SELECT FacilityName FROM Facilities WHERE FacilityName = 'Hospital Maisonneuve Rosemont') 
+    COUNT(DISTINCT LWE.PersonID) AS 'Total Employees Living with Infected',
+    P.Address,
+    P.City,
+    P.Province
+FROM Employees E
+JOIN Persons P ON E.MedicareCard = P.MedicareCard
+JOIN LivesWithEmployee LWE ON P.MedicareCard = LWE.MedicareCard
+JOIN Employees E2 ON LWE.MedicareCard = E2.MedicareCard
+JOIN HadInfections HI ON LWE.PersonID = HI.PersonID
+WHERE E.FacilityName = 'Hospital Maisonneuve Rosemont'
+AND E2.FacilityName = E.FacilityName
+AND HI.InfectionType = 'COVID-19'
 AND E.EndDate IS NULL
-AND EXISTS (
-    SELECT 1 FROM LivesWithEmployee L2
-    WHERE L2.MedicareCard = E.MedicareCard
-    AND L2.PersonID != P.PersonID
-)
-GROUP BY P.FirstName, P.LastName, R.Address, R.City, R.Province
-ORDER BY R.Province, R.City, R.Address;
+AND E2.EndDate IS NULL
+GROUP BY P.FirstName, P.LastName, P.Address, P.City, P.Province
+ORDER BY P.Province ASC, P.City ASC, P.Address ASC;
+
 
 
 -- for CLSC H
 SELECT 
     P.FirstName,
     P.LastName,
-    COUNT(DISTINCT L.PersonID) AS 'Total Employees Living with Infected',
-    R.Address,
-    R.City,
-    R.Province
-FROM Persons P
-JOIN LivesWithEmployee L ON P.PersonID = L.PersonID
-JOIN HadInfections I ON P.PersonID = I.PersonID
-JOIN Employees E ON P.MedicareCard = E.MedicareCard
-JOIN Residence R ON P.Address = R.Address AND P.City = R.City AND P.Province = R.Province AND P.PostalCode = R.PostalCode
-WHERE I.InfectionType = 'COVID-19'
-AND E.FacilityName = (SELECT FacilityName FROM Facilities WHERE FacilityName = 'CLSC H') 
+    COUNT(DISTINCT LWE.PersonID) AS 'Total Employees Living with Infected',
+    P.Address,
+    P.City,
+    P.Province
+FROM Employees E
+JOIN Persons P ON E.MedicareCard = P.MedicareCard
+JOIN LivesWithEmployee LWE ON P.MedicareCard = LWE.MedicareCard
+JOIN Employees E2 ON LWE.MedicareCard = E2.MedicareCard
+JOIN HadInfections HI ON LWE.PersonID = HI.PersonID
+WHERE E.FacilityName = 'CLSC H'
+AND E2.FacilityName = E.FacilityName
+AND HI.InfectionType = 'COVID-19'
 AND E.EndDate IS NULL
-AND EXISTS (
-    SELECT 1 FROM LivesWithEmployee L2
-    WHERE L2.MedicareCard = E.MedicareCard
-    AND L2.PersonID != P.PersonID
-)
-GROUP BY P.FirstName, P.LastName, R.Address, R.City, R.Province
-ORDER BY R.Province, R.City, R.Address;
+AND E2.EndDate IS NULL
+GROUP BY P.FirstName, P.LastName, P.Address, P.City, P.Province
+ORDER BY P.Province ASC, P.City ASC, P.Address ASC;
+
 
 -- for Lakeshore
 SELECT 
     P.FirstName,
     P.LastName,
-    COUNT(DISTINCT L.PersonID) AS 'Total Employees Living with Infected',
-    R.Address,
-    R.City,
-    R.Province
-FROM Persons P
-JOIN LivesWithEmployee L ON P.PersonID = L.PersonID
-JOIN HadInfections I ON P.PersonID = I.PersonID
-JOIN Employees E ON P.MedicareCard = E.MedicareCard
-JOIN Residence R ON P.Address = R.Address AND P.City = R.City AND P.Province = R.Province AND P.PostalCode = R.PostalCode
-WHERE I.InfectionType = 'COVID-19'
-AND E.FacilityName = (SELECT FacilityName FROM Facilities WHERE FacilityName = 'Lakeshore') 
+    COUNT(DISTINCT LWE.PersonID) AS 'Total Employees Living with Infected',
+    P.Address,
+    P.City,
+    P.Province
+FROM Employees E
+JOIN Persons P ON E.MedicareCard = P.MedicareCard
+JOIN LivesWithEmployee LWE ON P.MedicareCard = LWE.MedicareCard
+JOIN Employees E2 ON LWE.MedicareCard = E2.MedicareCard
+JOIN HadInfections HI ON LWE.PersonID = HI.PersonID
+WHERE E.FacilityName = 'Lakeshore'
+AND E2.FacilityName = E.FacilityName
+AND HI.InfectionType = 'COVID-19'
 AND E.EndDate IS NULL
-AND EXISTS (
-    SELECT 1 FROM LivesWithEmployee L2
-    WHERE L2.MedicareCard = E.MedicareCard
-    AND L2.PersonID != P.PersonID
-)
-GROUP BY P.FirstName, P.LastName, R.Address, R.City, R.Province
-ORDER BY R.Province, R.City, R.Address;
+AND E2.EndDate IS NULL
+GROUP BY P.FirstName, P.LastName, P.Address, P.City, P.Province
+ORDER BY P.Province ASC, P.City ASC, P.Address ASC;
+
 
 -- for Justine
 SELECT 
     P.FirstName,
     P.LastName,
-    COUNT(DISTINCT L.PersonID) AS 'Total Employees Living with Infected',
-    R.Address,
-    R.City,
-    R.Province
-FROM Persons P
-JOIN LivesWithEmployee L ON P.PersonID = L.PersonID
-JOIN HadInfections I ON P.PersonID = I.PersonID
-JOIN Employees E ON P.MedicareCard = E.MedicareCard
-JOIN Residence R ON P.Address = R.Address AND P.City = R.City AND P.Province = R.Province AND P.PostalCode = R.PostalCode
-WHERE I.InfectionType = 'COVID-19'
-AND E.FacilityName = (SELECT FacilityName FROM Facilities WHERE FacilityName = 'Justine') 
+    COUNT(DISTINCT LWE.PersonID) AS 'Total Employees Living with Infected',
+    P.Address,
+    P.City,
+    P.Province
+FROM Employees E
+JOIN Persons P ON E.MedicareCard = P.MedicareCard
+JOIN LivesWithEmployee LWE ON P.MedicareCard = LWE.MedicareCard
+JOIN Employees E2 ON LWE.MedicareCard = E2.MedicareCard
+JOIN HadInfections HI ON LWE.PersonID = HI.PersonID
+WHERE E.FacilityName = 'Justine'
+AND E2.FacilityName = E.FacilityName
+AND HI.InfectionType = 'COVID-19'
 AND E.EndDate IS NULL
-AND EXISTS (
-    SELECT 1 FROM LivesWithEmployee L2
-    WHERE L2.MedicareCard = E.MedicareCard
-    AND L2.PersonID != P.PersonID
-)
-GROUP BY P.FirstName, P.LastName, R.Address, R.City, R.Province
-ORDER BY R.Province, R.City, R.Address;
+AND E2.EndDate IS NULL
+GROUP BY P.FirstName, P.LastName, P.Address, P.City, P.Province
+ORDER BY P.Province ASC, P.City ASC, P.Address ASC;
 
 -- for UniDollar
 SELECT 
     P.FirstName,
     P.LastName,
-    COUNT(DISTINCT L.PersonID) AS 'Total Employees Living with Infected',
-    R.Address,
-    R.City,
-    R.Province
-FROM Persons P
-JOIN LivesWithEmployee L ON P.PersonID = L.PersonID
-JOIN HadInfections I ON P.PersonID = I.PersonID
-JOIN Employees E ON P.MedicareCard = E.MedicareCard
-JOIN Residence R ON P.Address = R.Address AND P.City = R.City AND P.Province = R.Province AND P.PostalCode = R.PostalCode
-WHERE I.InfectionType = 'COVID-19'
-AND E.FacilityName = (SELECT FacilityName FROM Facilities WHERE FacilityName = 'UniDollar') 
+    COUNT(DISTINCT LWE.PersonID) AS 'Total Employees Living with Infected',
+    P.Address,
+    P.City,
+    P.Province
+FROM Employees E
+JOIN Persons P ON E.MedicareCard = P.MedicareCard
+JOIN LivesWithEmployee LWE ON P.MedicareCard = LWE.MedicareCard
+JOIN Employees E2 ON LWE.MedicareCard = E2.MedicareCard
+JOIN HadInfections HI ON LWE.PersonID = HI.PersonID
+WHERE E.FacilityName = 'UniDollar'
+AND E2.FacilityName = E.FacilityName
+AND HI.InfectionType = 'COVID-19'
 AND E.EndDate IS NULL
-AND EXISTS (
-    SELECT 1 FROM LivesWithEmployee L2
-    WHERE L2.MedicareCard = E.MedicareCard
-    AND L2.PersonID != P.PersonID
-)
-GROUP BY P.FirstName, P.LastName, R.Address, R.City, R.Province
-ORDER BY R.Province, R.City, R.Address;
+AND E2.EndDate IS NULL
+GROUP BY P.FirstName, P.LastName, P.Address, P.City, P.Province
+ORDER BY P.Province ASC, P.City ASC, P.Address ASC;
 
 -- for General Hospital
 SELECT 
     P.FirstName,
     P.LastName,
-    COUNT(DISTINCT L.PersonID) AS 'Total Employees Living with Infected',
-    R.Address,
-    R.City,
-    R.Province
-FROM Persons P
-JOIN LivesWithEmployee L ON P.PersonID = L.PersonID
-JOIN HadInfections I ON P.PersonID = I.PersonID
-JOIN Employees E ON P.MedicareCard = E.MedicareCard
-JOIN Residence R ON P.Address = R.Address AND P.City = R.City AND P.Province = R.Province AND P.PostalCode = R.PostalCode
-WHERE I.InfectionType = 'COVID-19'
-AND E.FacilityName = (SELECT FacilityName FROM Facilities WHERE FacilityName = 'General Hospital') 
+    COUNT(DISTINCT LWE.PersonID) AS 'Total Employees Living with Infected',
+    P.Address,
+    P.City,
+    P.Province
+FROM Employees E
+JOIN Persons P ON E.MedicareCard = P.MedicareCard
+JOIN LivesWithEmployee LWE ON P.MedicareCard = LWE.MedicareCard
+JOIN Employees E2 ON LWE.MedicareCard = E2.MedicareCard
+JOIN HadInfections HI ON LWE.PersonID = HI.PersonID
+WHERE E.FacilityName = 'General Hospital'
+AND E2.FacilityName = E.FacilityName
+AND HI.InfectionType = 'COVID-19'
 AND E.EndDate IS NULL
-AND EXISTS (
-    SELECT 1 FROM LivesWithEmployee L2
-    WHERE L2.MedicareCard = E.MedicareCard
-    AND L2.PersonID != P.PersonID
-)
-GROUP BY P.FirstName, P.LastName, R.Address, R.City, R.Province
-ORDER BY R.Province, R.City, R.Address;
+AND E2.EndDate IS NULL
+GROUP BY P.FirstName, P.LastName, P.Address, P.City, P.Province
+ORDER BY P.Province ASC, P.City ASC, P.Address ASC;
 
 -- for Faubourg Clinic
 SELECT 
     P.FirstName,
     P.LastName,
-    COUNT(DISTINCT L.PersonID) AS 'Total Employees Living with Infected',
-    R.Address,
-    R.City,
-    R.Province
-FROM Persons P
-JOIN LivesWithEmployee L ON P.PersonID = L.PersonID
-JOIN HadInfections I ON P.PersonID = I.PersonID
-JOIN Employees E ON P.MedicareCard = E.MedicareCard
-JOIN Residence R ON P.Address = R.Address AND P.City = R.City AND P.Province = R.Province AND P.PostalCode = R.PostalCode
-WHERE I.InfectionType = 'COVID-19'
-AND E.FacilityName = (SELECT FacilityName FROM Facilities WHERE FacilityName = 'Faubourg Clinic')  
+    COUNT(DISTINCT LWE.PersonID) AS 'Total Employees Living with Infected',
+    P.Address,
+    P.City,
+    P.Province
+FROM Employees E
+JOIN Persons P ON E.MedicareCard = P.MedicareCard
+JOIN LivesWithEmployee LWE ON P.MedicareCard = LWE.MedicareCard
+JOIN Employees E2 ON LWE.MedicareCard = E2.MedicareCard
+JOIN HadInfections HI ON LWE.PersonID = HI.PersonID
+WHERE E.FacilityName = 'Faubourg Clinic'
+AND E2.FacilityName = E.FacilityName
+AND HI.InfectionType = 'COVID-19'
 AND E.EndDate IS NULL
-AND EXISTS (
-    SELECT 1 FROM LivesWithEmployee L2
-    WHERE L2.MedicareCard = E.MedicareCard
-    AND L2.PersonID != P.PersonID
-)
-GROUP BY P.FirstName, P.LastName, R.Address, R.City, R.Province
-ORDER BY R.Province, R.City, R.Address;
+AND E2.EndDate IS NULL
+GROUP BY P.FirstName, P.LastName, P.Address, P.City, P.Province
+ORDER BY P.Province ASC, P.City ASC, P.Address ASC;
 
 -- for Sunset Center
 SELECT 
     P.FirstName,
     P.LastName,
-    COUNT(DISTINCT L.PersonID) AS 'Total Employees Living with Infected',
-    R.Address,
-    R.City,
-    R.Province
-FROM Persons P
-JOIN LivesWithEmployee L ON P.PersonID = L.PersonID
-JOIN HadInfections I ON P.PersonID = I.PersonID
-JOIN Employees E ON P.MedicareCard = E.MedicareCard
-JOIN Residence R ON P.Address = R.Address AND P.City = R.City AND P.Province = R.Province AND P.PostalCode = R.PostalCode
-WHERE I.InfectionType = 'COVID-19'
-AND E.FacilityName = (SELECT FacilityName FROM Facilities WHERE FacilityName = 'Sunset Center') 
+    COUNT(DISTINCT LWE.PersonID) AS 'Total Employees Living with Infected',
+    P.Address,
+    P.City,
+    P.Province
+FROM Employees E
+JOIN Persons P ON E.MedicareCard = P.MedicareCard
+JOIN LivesWithEmployee LWE ON P.MedicareCard = LWE.MedicareCard
+JOIN Employees E2 ON LWE.MedicareCard = E2.MedicareCard
+JOIN HadInfections HI ON LWE.PersonID = HI.PersonID
+WHERE E.FacilityName = 'Sunset Center'
+AND E2.FacilityName = E.FacilityName
+AND HI.InfectionType = 'COVID-19'
 AND E.EndDate IS NULL
-AND EXISTS (
-    SELECT 1 FROM LivesWithEmployee L2
-    WHERE L2.MedicareCard = E.MedicareCard
-    AND L2.PersonID != P.PersonID
-)
-GROUP BY P.FirstName, P.LastName, R.Address, R.City, R.Province
-ORDER BY R.Province, R.City, R.Address;
+AND E2.EndDate IS NULL
+GROUP BY P.FirstName, P.LastName, P.Address, P.City, P.Province
+ORDER BY P.Province ASC, P.City ASC, P.Address ASC;
 
 -- for Green Pharmacy
 SELECT 
     P.FirstName,
     P.LastName,
-    COUNT(DISTINCT L.PersonID) AS 'Total Employees Living with Infected',
-    R.Address,
-    R.City,
-    R.Province
-FROM Persons P
-JOIN LivesWithEmployee L ON P.PersonID = L.PersonID
-JOIN HadInfections I ON P.PersonID = I.PersonID
-JOIN Employees E ON P.MedicareCard = E.MedicareCard
-JOIN Residence R ON P.Address = R.Address AND P.City = R.City AND P.Province = R.Province AND P.PostalCode = R.PostalCode
-WHERE I.InfectionType = 'COVID-19'
-AND E.FacilityName = (SELECT FacilityName FROM Facilities WHERE FacilityName = 'Green Pharmacy') 
+    COUNT(DISTINCT LWE.PersonID) AS 'Total Employees Living with Infected',
+    P.Address,
+    P.City,
+    P.Province
+FROM Employees E
+JOIN Persons P ON E.MedicareCard = P.MedicareCard
+JOIN LivesWithEmployee LWE ON P.MedicareCard = LWE.MedicareCard
+JOIN Employees E2 ON LWE.MedicareCard = E2.MedicareCard
+JOIN HadInfections HI ON LWE.PersonID = HI.PersonID
+WHERE E.FacilityName = 'Green Pharmacy'
+AND E2.FacilityName = E.FacilityName
+AND HI.InfectionType = 'COVID-19'
 AND E.EndDate IS NULL
-AND EXISTS (
-    SELECT 1 FROM LivesWithEmployee L2
-    WHERE L2.MedicareCard = E.MedicareCard
-    AND L2.PersonID != P.PersonID
-)
-GROUP BY P.FirstName, P.LastName, R.Address, R.City, R.Province
-ORDER BY R.Province, R.City, R.Address;
+AND E2.EndDate IS NULL
+GROUP BY P.FirstName, P.LastName, P.Address, P.City, P.Province
+ORDER BY P.Province ASC, P.City ASC, P.Address ASC;
 
 -- for Santiago Bernabeu
 SELECT 
     P.FirstName,
     P.LastName,
-    COUNT(DISTINCT L.PersonID) AS 'Total Employees Living with Infected',
-    R.Address,
-    R.City,
-    R.Province
-FROM Persons P
-JOIN LivesWithEmployee L ON P.PersonID = L.PersonID
-JOIN HadInfections I ON P.PersonID = I.PersonID
-JOIN Employees E ON P.MedicareCard = E.MedicareCard
-JOIN Residence R ON P.Address = R.Address AND P.City = R.City AND P.Province = R.Province AND P.PostalCode = R.PostalCode
-WHERE I.InfectionType = 'COVID-19'
-AND E.FacilityName = (SELECT FacilityName FROM Facilities WHERE FacilityName = 'Santiago Bernabeu') 
+    COUNT(DISTINCT LWE.PersonID) AS 'Total Employees Living with Infected',
+    P.Address,
+    P.City,
+    P.Province
+FROM Employees E
+JOIN Persons P ON E.MedicareCard = P.MedicareCard
+JOIN LivesWithEmployee LWE ON P.MedicareCard = LWE.MedicareCard
+JOIN Employees E2 ON LWE.MedicareCard = E2.MedicareCard
+JOIN HadInfections HI ON LWE.PersonID = HI.PersonID
+WHERE E.FacilityName = 'Santiago Bernabeu'
+AND E2.FacilityName = E.FacilityName
+AND HI.InfectionType = 'COVID-19'
 AND E.EndDate IS NULL
-AND EXISTS (
-    SELECT 1 FROM LivesWithEmployee L2
-    WHERE L2.MedicareCard = E.MedicareCard
-    AND L2.PersonID != P.PersonID
-)
-GROUP BY P.FirstName, P.LastName, R.Address, R.City, R.Province
-ORDER BY R.Province, R.City, R.Address;
+AND E2.EndDate IS NULL
+GROUP BY P.FirstName, P.LastName, P.Address, P.City, P.Province
+ORDER BY P.Province ASC, P.City ASC, P.Address ASC;
+
+
+-- insert data for iii)
+-- Example insertion for one more residence, repeat or modify as needed
+INSERT INTO Residence (HouseType, Address, City, Province, PostalCode, ResidencePhoneNumber, AmountBedrooms) VALUES
+('house', '1000 Unique St', 'Montreal', 'Quebec', 'A1A 1A1', '514-000-0000', 4),
+('condominium', '2000 Sample Ave', 'Laval', 'Quebec', 'B2B 2B2', '514-111-1111', 3),
+('apartment', '10 Facility Ave', 'City1', 'Province1', 'P0C0D0', '514-101-1010', 2),
+('house', '20 Facility St', 'City2', 'Province2', 'P1C1D1', '514-102-1020', 3);
+-- Add more residences as per the requirement of your scenario
+-- Adding new persons
+INSERT INTO Persons (PersonID, FirstName, LastName, DateOfBirth, SocialSecurity, MedicareCard, PhoneNumber, Citizenship, Email, Address, City, Province, PostalCode) VALUES
+(2001, 'John', 'Doe', '1980-01-01', 'SSN2001', 'MCN2001', '514-200-2001', 'Canadian', 'john.doe@email.com', '1000 Unique St', 'Montreal', 'Quebec', 'A1A 1A1'),
+(2002, 'Jane', 'Doe', '1982-02-02', 'SSN2002', 'MCN2002', '514-200-2002', 'Canadian', 'jane.doe@email.com', '1000 Unique St', 'Montreal', 'Quebec', 'A1A 1A1'),
+(3001, 'Employee1', 'Facility1', '1990-01-01', 'SSN3001', 'MCN3001', '514-300-3001', 'Canadian', 'employee1@facility1.com', '10 Facility Ave', 'City1', 'Province1', 'P0C0D0'),
+(3002, 'Employee2', 'Facility1', '1991-02-02', 'SSN3002', 'MCN3002', '514-300-3002', 'Canadian', 'employee2@facility1.com', '10 Facility Ave', 'City1', 'Province1', 'P0C0D0');
+-- Repeat for other facilities and ensure some of these new persons are living together
+-- Assigning employees to facilities
+INSERT INTO Employees (MedicareCard, FacilityName, Job, StartDate, EndDate) VALUES
+('MCN2001', 'Hospital Maisonneuve Rosemont', 'doctor', '2022-01-01', NULL),
+('MCN2002', 'Hospital Maisonneuve Rosemont', 'nurse', '2022-02-01', NULL),
+('MCN3001', 'CLSC H', 'doctor', '2023-01-01', NULL),
+('MCN3002', 'CLSC H', 'nurse', '2023-01-02', NULL);
+-- Repeat for each facility with modifications as necessary
+-- Marking some employees as infected
+INSERT INTO HadInfections (PersonID, DateOfInfection, InfectionNumber, InfectionType) VALUES
+(2001, '2023-01-01', 1, 'COVID-19'),
+(3001, '2023-01-15', 1, 'COVID-19');
+-- Ensure there's at least one infection per facility among the living arrangements
+-- Linking employees living together
+INSERT INTO LivesWithEmployee (MedicareCard, PersonID, Relationship) VALUES
+('MCN2001', 2002, 'Partner'),
+('MCN3001', 3002, 'Partner');
 
 
 # iv)
