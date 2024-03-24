@@ -4,30 +4,21 @@
 session_start();
 
 // Set session variables for database connection details
-$_SESSION['db_servername'] = "localhost";
-$_SESSION['db_username'] = "username";
-$_SESSION['db_password'] = "password";
-$_SESSION['db_database'] = "dbname";
+$_SESSION['db_servername'] = "qjc353.encs.concordia.ca";
+$_SESSION['db_username'] = "qjc353_4";
+$_SESSION['db_password'] = "compaari";
+$_SESSION['db_database'] = "qjc353_4";
 
-// Function to establish database connection
-function connectToDatabase() {
-    $conn = mysqli_connect($_SESSION['db_servername'], $_SESSION['db_username'], $_SESSION['db_password'], $_SESSION['db_database']);
-    if (!$conn) {
-        die("Connection failed: " . mysqli_connect_error());
-    }
-    return $conn;
-}
 
-// Function to close database connection
+// Function to close database connection --ONLY FOR MYSQLi
 function closeDatabaseConnection($conn) {
     mysqli_close($conn);
 }
 
-// Usage
-$conn = connectToDatabase();
+// Function to close database connection --ONLY FOR PDO
+function closeDatabaseConnectionPDO() {
+    //$conn_pdo->query('KILL CONNECTION_ID()');
+    $conn_pdo = null;
+}
 
-// Perform database operations using $conn
-
-// After use, close the connection
-closeDatabaseConnection($conn);
 ?>
