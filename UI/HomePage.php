@@ -2,6 +2,12 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+    <link rel="stylesheet" href="Styling/web.css">
+
+
 <th><a href="index.php"><button >Index</button></a></th>
 <th><a href="Student.php"> <button >Student</button></a></th>
     <th><a href="Employee.php"> <button >Employee</button></a></th>
