@@ -11,9 +11,9 @@ $_SESSION['db_database'] = "qjc353_4";
 
 
 // Function to close database connection --ONLY FOR MYSQLi
-function closeDatabaseConnection($conn) {
+/**function closeDatabaseConnection($conn) {
     mysqli_close($conn);
-}
+} */
 
 // Function to close database connection --ONLY FOR PDO
 function closeDatabaseConnectionPDO() {

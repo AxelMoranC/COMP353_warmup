@@ -2,20 +2,34 @@
 // Include database connection
 require_once 'connection.php';
 
+
 // Function to create a new facility
-function createFacility($name, $address, $city, $province, $postalCode, $phoneNumber, $webAddress, $type, $capacity) {
-    global $conn;
-    $sql = "INSERT INTO Facilities (FacilityName, Address, City, Province, PostalCode, FacilityPhoneNumber, WebAddress, FacilityType, Capacity) 
-            VALUES ('$name', '$address', '$city', '$province', '$postalCode', '$phoneNumber', '$webAddress', '$type', $capacity)";
-    if ($conn->query($sql) === TRUE) {
-        return "New facility created successfully";
-    } else {
-        return "Error: " . $sql . "<br>" . $conn->error;
+function createFacility($facilityName, $address, $city, $province, $postalCode, $phoneNumber, $webAddress, $facilityType, $capacity) {
+    global $conn_pdo;
+
+    $sql = "INSERT INTO Facilities 
+                            (FacilityName, Address, City, Province, PostalCode, FacilityPhoneNumber, WebAddress, FacilityType, Capacity) 
+                            VALUES (:facilityName, :address, :city, :province, :postalCode, :phoneNumber, :webAddress, :facilityType, :capacity)";
+    
+    $data = $conn_pdo->prepare($sql);
+    $data->bindParam(':facilityName', $facilityName);
+    $data->bindParam(':address', $address);
+    $data->bindParam(':city', $city);
+    $data->bindParam(':province', $province);
+    $data->bindParam(':postalCode', $postalCode);
+    $data->bindParam(':phoneNumber', $phoneNumber);
+    $data->bindParam(':webAddress', $webAddress);
+    $data->bindParam(':facilityType', $facilityType);
+    $data->bindParam(':capacity', $capacity);
+
+    //return $data->execute();
+    if ($data->execute()) {
+        header("Location: .");
     }
 }
 
 // Function to read facilities
-function readFacilities() {
+/**function readFacilities() {
     global $conn;
     $facilities = [];
     $sql = "SELECT * FROM Facilities";
@@ -26,7 +40,7 @@ function readFacilities() {
         }
     }
     return $facilities;
-}
+}*/
 
 // Function to update a facility
 function updateFacility($id, $name, $address, $city, $province, $postalCode, $phoneNumber, $webAddress, $type, $capacity) {

@@ -1,59 +1,88 @@
-<?php 
-require_once 'connection.php';
+<!--Include a navigatio nbar everywhere we go -->
+<?php include 'navbar.php'; ?>
 
-$statement = $conn_pdo->prepare('SELECT * FROM Facilities;');
-$statement->execute();
+
+
+<!-- Include CRUD_Facility.php file -->
+<?php include 'functions/CRUD_Facility.php'; ?>
+<!--make sure every field is full-->
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Retrieve form data
+    $facilityName = $_POST["facilityName"];
+    $address = $_POST["address"];
+    $city = $_POST["city"];
+    $province = $_POST["province"];
+    $postalCode = $_POST["postalCode"];
+    $phoneNumber = $_POST["phoneNumber"];
+    $webAddress = $_POST["webAddress"];
+    $facilityType = $_POST["facilityType"];
+    $capacity = $_POST["capacity"];
+    
+    // Call from CRUD_Facility.php
+    createFacility($facilityName, $address, $city, $province, $postalCode, $phoneNumber, $webAddress, $facilityType, $capacity);
+    exit; //Exit to ensure nothing happens after execution
+}
 ?>
 
+
+
+<!--HTML-->
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Facilities</title>
+    <title>Create Facility</title>
+    <link rel="stylesheet" href="Styling/facilities.css">
 </head>
 
 <body>
-    <h1>All Facilities</h1>
+    <h1> Create a new Facility <h1>
 
-    <table>
-        <thead>
-            <tr>
-                <td>Facility Name</td>
-                <td> Type </td>
-                <td>Address</td>
-                <td>City</td>
-                <td>Province</td>
-                <td>Capacity</td>
-                <td>Web Address</td>
-                <td>Phone Number</td>
-                <td>Postal Code</td>
-                <td>Edit Facility</td>
-                <td>Delete Facility</td> 
-            </tr>
-        </thead>
-        <tbody>
-            <?php while ($row = $statement->fetch(PDO::FETCH_ASSOC)) { ?>
-                <tr>
-                    <td><?= $row["FacilityName"] ?></td>
-                    <td><?= $row["FacilityType"] ?></td>
-                    <td><?= $row["Address"] ?></td>
-                    <td><?= $row["City"] ?></td>
-                    <td><?= $row["Province"] ?></td>
-                    <td><?= $row["Capacity"] ?></td>
-                    <td><?= $row["WebAddress"] ?></td>
-                    <td><?= $row["FacilityPhoneNumber"] ?></td>
-                    <td><?= $row["PostalCode"] ?></td>
-                    <td><a href="./editFac.php?facilityID=<?= $row["facilityID"] ?>">Edit</a></td> 
-                    <td><a href="./deleteFac.php?facilityID=<?= urlencode($row["facilityID"]) ?>">Delete</a></td>
+        <!--Form used to transfer data to create a new Facility -->
+    <form action="functions/CRUD_Facility.php" method="post">
 
-                </tr>
-            <?php } ?>
-        </tbody>
-    </table>
+        <!--All data within our SQL Table -->
+        <label for="facilityName">Facility Name:</label><br>
+        <input type="text" id="facilityName" name="facilityName" placeholder="Enter facility name" required><br>
+        
+        <label for="address">Address:</label><br>
+        <input type="text" id="address" name="address" placeholder="Enter address" required><br>
+        
+        <label for="city">City:</label><br>
+        <input type="text" id="city" name="city" placeholder="Enter city" required><br>
+        
+        <label for="province">Province:</label><br>
+        <input type="text" id="province" name="province" placeholder="Enter province" required><br>
+        
+        <label for="postalCode">Postal Code:</label><br>
+        <input type="text" id="postalCode" name="postalCode" placeholder="Enter postal code" required><br>
+        
+        <label for="phoneNumber">Phone Number:</label><br>
+        <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Enter phone number" required><br>
+        
+        <label for="webAddress">Web Address:</label><br>
+        <input type="text" id="webAddress" name="webAddress" placeholder="Enter web address" required><br>
+        
+        <label for="facilityType">Facility Type:</label><br>
+        <select id="facilityType" name="facilityType" required>
 
-    <a href="Facility.php">Back to homepage</a>
+            <option value="" disabled selection>Select facility type</option>
+            <option value="Hospital">Hospital</option>
+            <option value="CLSC">CLSC</option>
+            <option value="clinic">Clinic</option>
+            <option value="pharmacy">Pharmacy</option>
+            <option value="special installment">Special Installment</option>
+
+        </select><br>
+        
+        <label for="capacity">Capacity:</label><br>
+        <input type="number" id="capacity" name="capacity" placeholder="Enter capacity" required><br>
+        
+        <button type="submit">Create new Facility</button>
+    </form>
+
 </body>
+
 
 </html>

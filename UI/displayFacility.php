@@ -46,8 +46,8 @@ $statement->execute();
                     <td><?= $row["WebAddress"] ?></td>
                     <td><?= $row["FacilityPhoneNumber"] ?></td>
                     <td><?= $row["PostalCode"] ?></td>
-                    <td><a href="./editFac.php?facilityID=<?= $row["facilityID"] ?>">Edit</a></td> 
-                    <td><a href="./deleteFac.php?facilityID=<?= urlencode($row["facilityID"]) ?>">Delete</a></td>
+                    <td><a href="./editFacility.php?facilityID=<?= $row["facilityID"] ?>">Edit</a></td> 
+                    <td><a href="./deleteFacility.php?facilityID=<?= urlencode($row["facilityID"]) ?>">Delete</a></td>
 
                 </tr>
             <?php } ?>
