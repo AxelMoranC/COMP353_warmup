@@ -1,5 +1,5 @@
 <?php 
-require_once 'database.php';
+require_once 'connection.php';
 
 $statement = $conn->prepare('SELECT * FROM Facilities;');
 $statement->execute();
