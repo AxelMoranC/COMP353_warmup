@@ -16,7 +16,7 @@ $database = "qjc353_4";
 /**1ST OPTION */
 
 // Check MySQLi connection
-try {
+/** try {
     // Create connection
     $conn = new mysqli($servername, $username, $password, $database);
 
@@ -32,7 +32,7 @@ try {
 } catch (Exception $e) {
     // Handle exceptions
     echo "Error: " . $e->getMessage();
-}
+} */
 
 
 
