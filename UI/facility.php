@@ -9,7 +9,7 @@
     <th><a href="Infection.php"><button >Infection</button></a></th>
     <th><a href="Vaccination.php"><button >Vaccination</button></a></th>
     <th><a href="Registration.php"><button >Registration</button></a></th>
-    <th><a href="email.php"><button >Email</button></a></th>
+    <th><a href="Email.php"><button >Email</button></a></th>
 </head>
 
 <body>

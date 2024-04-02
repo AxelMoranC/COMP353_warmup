@@ -20,7 +20,7 @@
             <li><a href="Infection.php">Infection</a></li>
             <li><a href="Vaccination.php">Vaccination</a></li>
             <li><a href="Registration.php">Registration</a></li>
-            <li><a href="email.php">Email</a></li>
+            <li><a href="Email.php">Email</a></li>
         </ul>
     </nav>
     <h1>Welcome to Our Website</h1>
