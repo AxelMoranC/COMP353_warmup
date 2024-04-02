@@ -5,23 +5,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Homepage</title>
+    <!-- Include your stylesheet -->
     <link rel="stylesheet" href="Styling/web.css">
-
-
-<th><a href="index.php"><button >Index</button></a></th>
-<th><a href="Student.php"> <button >Student</button></a></th>
-    <th><a href="Employee.php"> <button >Employee</button></a></th>
-    <th><a href="Facility.php"><button >Facility</button></a></th>
-    <th><a href="Infection.php"><button >Infection</button></a></th>
-    <th><a href="Vaccination.php"><button >Vaccination</button></a></th>
-    <th><a href="Registration.php"><button >Registration</button></a></th>
-    <th><a href="email.php"><button >Email</button></a></th><h1>Employee</h1>
 </head>
 
 <body>
-<a href="createEmployee.php"><button>Create Employee</button></a>
-<a href="displayEmployee.php"><button>Display Employee</button></a>
-<a href="schedule.php"><button>Show Schedule</button></a>
+    <!-- Navigation links -->
+    <nav>
+        <ul>
+            <li><a href="index.php">Index</a></li>
+            <li><a href="Student.php">Student</a></li>
+            <li><a href="Employee.php">Employee</a></li>
+            <li><a href="Facility.php">Facility</a></li>
+            <li><a href="Infection.php">Infection</a></li>
+            <li><a href="Vaccination.php">Vaccination</a></li>
+            <li><a href="Registration.php">Registration</a></li>
+            <li><a href="email.php">Email</a></li>
+        </ul>
+    </nav>
+    <h1>Welcome to Our Website</h1>
+    <p>This is the homepage of our website. Here you can find various sections and navigate to different pages using the links above.</p>
 </body>
 
-</html>';
+</html>
