@@ -1,7 +1,7 @@
 <?php 
 require_once 'connection.php';
 
-$statement = $conn->prepare('SELECT * FROM Facilities;');
+$statement = $conn_pdo->prepare('SELECT * FROM Facilities;');
 $statement->execute();
 ?>
 
