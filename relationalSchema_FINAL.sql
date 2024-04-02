@@ -154,17 +154,17 @@ DROP TABLE EmailLog;
 -- );
 
 -- Table for secondary residences
-CREATE TABLE SecondaryResidence (
+CREATE TABLE ResidenceType (
 	PersonID INTEGER PRIMARY KEY,
     HouseType ENUM ('apartment','condominium', 'semidetached house','house'),
 	Address VARCHAR(50),
     City VARCHAR(50),
     Province VARCHAR(50),
     PostalCode VARCHAR(10), 
-    ResidenceType ENUM ('Primary', 'Residence'),
+    ResidenceType ENUM ('Primary', 'Secondary'),
     StartDateAtAddress DATE,
     FOREIGN KEY (PersonID) REFERENCES Persons(PersonID),
 	FOREIGN KEY(HouseType, Address, City, Province, PostalCode) REFERENCES Residence(HouseType, Address, City, Province, PostalCode)
 );
 
-DROP TABLE SecondaryResidence;
+DROP TABLE ResidenceType;

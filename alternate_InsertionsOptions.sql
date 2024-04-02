@@ -19,6 +19,16 @@ INSERT INTO Residence (HouseType, Address, City, Province, PostalCode, Residence
   ('apartment', '876 Sunflower', 'Ottawa', 'Ontario', 'G6T 7Y8', '206-123-4567', 1),
   ('house', '543 Tulip', 'Lima', 'Lima', '78Z N87', '511-456-7890', 4);
   
+  -- Insert more data into Residence table
+INSERT INTO Residence (HouseType, Address, City, Province, PostalCode, ResidencePhoneNumber, AmountBedrooms) VALUES
+  ('house', '789 Elm St', 'Montreal', 'Quebec', 'H8S 2J4', '514-555-1234', 4),
+  ('apartment', '456 Pine St', 'Toronto', 'Ontario', 'M2N 3A6', '514-777-2345', 2),
+  ('condominium', '321 Oak St', 'Vancouver', 'British Columbia', 'V6B 2J4', '438-888-3456', 3),
+  ('house', '987 Maple St', 'Calgary', 'Alberta', 'T2P 1E4', '450-999-5678', 5),
+  ('apartment', '654 Cedar St', 'Ottawa', 'Ontario', 'K1P 5H1', '514-333-8765', 1);
+
+
+
 -- Insert data into Facilities table
 INSERT INTO Facilities (FacilityName, Address, City, Province, PostalCode, FacilityPhoneNumber, WebAddress, FacilityType, Capacity) VALUES
   ('Hospital Maisonneuve Rosemont', '785 Sherbrooke', 'Montreal', 'Quebec', 'H9S 7N8', '514-666-7894', 'www.maisonneuveRosemont.com', 'Hospital', 200),
@@ -32,6 +42,11 @@ INSERT INTO Facilities (FacilityName, Address, City, Province, PostalCode, Facil
   ('Green Pharmacy', '890 Birch ', 'Montreal', 'Quebec', 'H23 K78', '514-214-6678', 'www.greenpharmacy.com', 'Pharmacy', 10),
   ('Santiago Bernabeu', '901 Suarez ', 'Lima', 'Lima', 'H9S 3H5', '514-345-6789', 'www.santiagobernabeu.com', 'CLSC', 5);
 
+-- Insert more data into Facilities table
+INSERT INTO Facilities (FacilityName, Address, City, Province, PostalCode, FacilityPhoneNumber, WebAddress, FacilityType, Capacity) VALUES
+  ('Healthy Living Clinic', '101 Main St', 'Vancouver', 'British Columbia', 'V6B 3N4', '604-123-4567', 'www.healthylivingclinic.com', 'Clinic', 150),
+  ('Sunrise Pharmacy', '789 Sunset Blvd', 'Toronto', 'Ontario', 'M4C 5H7', '416-987-6543', 'www.sunrisepharmacy.com', 'Pharmacy', 50),
+  ('Safe Haven Hospital', '456 Safe Haven Ave', 'Calgary', 'Alberta', 'T1X 0L3', '403-555-7890', 'www.safehavenhospital.com', 'Hospital', 500);
 
 -- Insert data into Persons table
 -- INSERT INTO Persons (PersonID, FirstName, LastName, DateOfBirth, SocialSecurity, MedicareCard, PhoneNumber, Citizenship, Email, ResidenceID) VALUES
@@ -89,7 +104,16 @@ INSERT INTO Persons (PersonID, FirstName, LastName, DateOfBirth, SocialSecurity,
   (24,'Olivia', 'Clark', '1985-12-20', '110022334', 'M334455660', '716-345-6789', 'Canadian', 'olivia.clark@gmail.com',  '321 Daisy', 'Montreal', 'Quebec', 'HHI 3JK'),
   (25,'Daniel', 'Evans', '1996-04-06', '221133446', 'M9', '206-567-8901', 'Canadian', 'daniel.evans@gmail.com', '978 Loyola', 'Seattle', 'Washington', 'H4S 3L5');
   
-  
+  -- Insert more data into Persons table
+INSERT INTO Persons (PersonID, FirstName, LastName, DateOfBirth, SocialSecurity, MedicareCard, PhoneNumber, Citizenship, Email, Address, City, Province, PostalCode, StartedDateAtAddress) VALUES
+  (16, 'Linda', 'Smith', '1987-09-05', '654987321', 'M654321987', '514-555-1234', 'Canadian', 'linda.smith@example.com', '789 Elm St', 'Montreal', 'Quebec', 'H8S 2J4', '2010-05-20'),
+  (17, 'Michael', 'Johnson', '1975-12-18', '987654321', 'M123456789', '514-777-2345', 'American', 'michael.johnson@example.com', '456 Pine St', 'Toronto', 'Ontario', 'M2N 3A6', '2015-08-12'),
+  (18, 'Sophia', 'Garcia', '1992-03-27', '456123789', 'M987654321', '438-888-3456', 'Canadian', 'sophia.garcia@example.com', '321 Oak St', 'Vancouver', 'British Columbia', 'V6B 2J4', '2018-02-28'),
+  (19, 'David', 'Martinez', '1980-07-10', '789456123', 'M321654987', '450-999-5678', 'Canadian', 'david.martinez@example.com', '987 Maple St', 'Calgary', 'Alberta', 'T2P 1E4', '2017-11-15'),
+  (20, 'Jennifer', 'Brown', '1985-05-30', '321789456', 'M654987321', '514-333-8765', 'American', 'jennifer.brown@example.com', '654 Cedar St', 'Ottawa', 'Ontario', 'K1P 5H1', '2016-06-10');
+
+
+
 -- Insert data into Employees table
 INSERT INTO Employees (MedicareCard, FacilityName, Job, StartDate, EndDate) VALUES
   ('M987654321',  'CLSC H', 'nurse', '2022-01-01', NULL),
@@ -114,6 +138,15 @@ INSERT INTO Employees (MedicareCard, FacilityName, Job, StartDate, EndDate) VALU
   ('M660022116',  'Santiago Bernabeu', 'nurse', '2003-06-10', NULL),
   ('M334455660',  'Faubourg Clinic', 'receptionist', '1996-01-02', '2008-07-15'),
   ('M334455660',  'Sunset Center', 'regular employee', '2011-03-10', '2019-07-04');
+
+-- Insert more data into Employees table
+INSERT INTO Employees (PersonID, FacilityName, Job, StartDate, EndDate) VALUES
+  (16, 'Healthy Living Clinic', 'receptionist', '2023-01-15', NULL),
+  (17, 'Sunrise Pharmacy', 'cashier', '2022-12-01', NULL),
+  (18, 'Safe Haven Hospital', 'nurse', '2020-08-10', NULL),
+  (19, 'Safe Haven Hospital', 'doctor', '2019-05-20', '2023-12-31'),
+  (20, 'Healthy Living Clinic', 'pharmacist', '2021-06-05', NULL);
+
 
 
 -- Insert data into Vaccines table
@@ -153,6 +186,15 @@ VALUES
   (25,'2020-12-01', 1, 'Lakeshore', 'Johnson & Johnson'),
   (25,'2023-04-01', 2, 'Lakeshore', 'Moderna');
   
+  -- Insert more data into Vaccines table
+INSERT INTO HasVaccines (PersonID, DateOfVaccination, DoseNumber, Location, Type) VALUES
+  (16, '2023-02-28', 1, 'Healthy Living Clinic', 'Pfizer'),
+  (17, '2022-12-10', 1, 'Sunrise Pharmacy', 'Moderna'),
+  (18, '2020-08-15', 1, 'Safe Haven Hospital', 'Johnson & Johnson'),
+  (19, '2019-05-30', 1, 'Safe Haven Hospital', 'Pfizer'),
+  (20, '2021-06-20', 1, 'Healthy Living Clinic', 'Moderna');
+
+
   
 -- Insert data into Infections table
 INSERT INTO HadInfections (PersonID, DateOfInfection, InfectionNumber, InfectionType) VALUES
@@ -185,6 +227,17 @@ INSERT INTO HadInfections (PersonID, DateOfInfection, InfectionNumber, Infection
   (24, '2024-04-15', 1, 'COVID-19'),
   (25, '2020-10-05', 1, 'COVID-19');
 
+-- Insert more data into Infections table
+INSERT INTO HadInfections (PersonID, DateOfInfection, InfectionNumber, InfectionType) VALUES
+  (16, '2023-03-15', 1, 'COVID-19'),
+  (17, '2022-11-01', 1, 'SARS-Cov-2 Variant'),
+  (18, '2021-07-20', 1, 'COVID-19'),
+  (19, '2020-12-10', 1, 'COVID-19'),
+  (20, '2021-08-05', 1, 'COVID-19');
+
+
+
+
  -- Insert data for people that lives with some employees
 INSERT INTO LivesWithEmployee (MedicareCard, PersonID, Relationship) VALUES
 	('M987654321',12 , 'Partner'),
@@ -196,3 +249,38 @@ INSERT INTO LivesWithEmployee (MedicareCard, PersonID, Relationship) VALUES
     ('M881234567',21 , 'Roommate'),
 	('M660022116',23 , 'Partner'),
     ('M098734561',25 , 'Rommate');
+
+-- Insert more data into LivesWithEmployee table
+INSERT INTO LivesWithEmployee (MedicareCard, PersonID, Relationship) VALUES
+  ('M654321987', 16, 'roommate'),
+  ('M123456789', 17, 'partner'),
+  ('M987654321', 18, 'parent'),
+  ('M321654987', 19, 'partner'),
+  ('M654987321', 20, 'dependent');
+
+  
+
+
+-- Insert more data into Schedule table
+INSERT INTO Schedule (MedicareCard, FacilityName, Schedule_Date, StartTime, EndTime, is_no_assignment) VALUES
+  ('M654321987', 'Healthy Living Clinic', '2024-04-01', '08:00:00', '12:00:00', 0),
+  ('M123456789', 'Sunrise Pharmacy', '2024-04-02', '09:00:00', '13:00:00', 0),
+  ('M987654321', 'Safe Haven Hospital', '2024-04-03', '10:00:00', '14:00:00', 0),
+  ('M321654987', 'Safe Haven Hospital', '2024-04-04', '11:00:00', '15:00:00', 0),
+  ('M654987321', 'Healthy Living Clinic', '2024-04-05', '12:00:00', '16:00:00', 0);
+
+
+-- Insert more data into EmailLog table
+INSERT INTO EmailLog (email_date, sender, receiver, subject_email, body) VALUES
+  ('2024-03-31 08:00:00', 'Healthy Living Clinic', 'linda.smith@example.com', 'Appointment Reminder', 'Your appointment at Healthy Living Clinic is scheduled for tomorrow at 9:00 AM.'),
+  ('2024-04-01 10:00:00', 'Sunrise Pharmacy', 'michael.johnson@example.com', 'Prescription Ready', 'Dear Michael, your prescription is now ready for pickup at Sunrise Pharmacy.'),
+  ('2024-04-02 12:00:00', 'Safe Haven Hospital', 'sophia.garcia@example.com', 'Follow-up Appointment', 'Dear Sophia, this is a reminder for your follow-up appointment at Safe Haven Hospital on April 3rd.'),
+  ('2024-04-03 14:00:00', 'Safe Haven Hospital', 'david.martinez@example.com', 'Urgent: Test Results', 'David, your test results are ready for review. Please contact us at Safe Haven Hospital.'),
+  ('2024-04-04 16:00:00', 'Healthy Living Clinic', 'jennifer.brown@example.com', 'Wellness Workshop', 'Jennifer, join us for our wellness workshop at Healthy Living Clinic on April 5th.');
+
+
+-- Insert data into ResidenceType table for secondary residences
+INSERT INTO ResidenceType (PersonID, HouseType, Address, City, Province, PostalCode, ResidenceType, StartDateAtAddress) VALUES
+  (16, 'apartment', '789 Elm St', 'Montreal', 'Quebec', 'H8S 2J4', 'Secondary', '2010-05-20'),
+  (17, 'house', '456 Pine St', 'Toronto', 'Ontario', 'M2N 3A6', 'Secondary', '2015-08-12'),
+  (19, 'house', '987 Maple St', 'Calgary', 'Alberta', 'T2P 1E4', 'Secondary', '2017-11-15');
