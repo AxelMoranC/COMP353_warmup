@@ -1,15 +1,14 @@
+<?php include "navbar.php"; ?>
+
 <!DOCTYPE html>
 <html>
 
 <head>
-<th><a href="index.php"><button >Index</button></a></th>
-<th><a href="Student.php"> <button >Student</button></a></th>
-    <th><a href="Employee.php"> <button >Employee</button></a></th>
-    <th><a href="Facility.php"><button >Facility</button></a></th>
-    <th><a href="Infection.php"><button >Infection</button></a></th>
-    <th><a href="Vaccination.php"><button >Vaccination</button></a></th>
-    <th><a href="Registration.php"><button >Registration</button></a></th>
-    <th><a href="Email.php"><button >Email</button></a></th>
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Facilities</title>
+    <!-- Include your stylesheet -->
+    <link rel="stylesheet" href="Styling/facilities.css">
 </head>
 
 <body>
