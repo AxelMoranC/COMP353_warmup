@@ -3,12 +3,12 @@
 
 <head>
     <title>Navigation Bar</title>
-    <link href="Styling/web.css" ref="Stylesheet">
+    <link rel="stylesheet" href="Styling/navigation.css" >
 </head>
 <body>
         <!-- Navigation links -->
-    <nav>
-        <ul>
+    <nav class="navbar">
+        <ul class="nav-list">
             <li><a href="index.php">Index</a></li>
             <li><a href="Student.php">Student</a></li>
             <li><a href="Employee.php">Employee</a></li>
@@ -19,5 +19,4 @@
             <li><a href="email.php">Email</a></li>
         </ul>
     </nav>
-    
 </body>

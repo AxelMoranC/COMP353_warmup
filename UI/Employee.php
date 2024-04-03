@@ -1,27 +1,28 @@
-<!DOCTYPE html>
+<? include "navbar.php"; ?>
+
+
+<!DOCTYPE Html>
+
 <html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homepage</title>
-    <link rel="stylesheet" href="Styling/web.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Facilities</title>
+    <!-- Include your stylesheet -->
 
 
-<th><a href="index.php"><button >Index</button></a></th>
-<th><a href="Student.php"> <button >Student</button></a></th>
-    <th><a href="Employee.php"> <button >Employee</button></a></th>
-    <th><a href="Facility.php"><button >Facility</button></a></th>
-    <th><a href="Infection.php"><button >Infection</button></a></th>
-    <th><a href="Vaccination.php"><button >Vaccination</button></a></th>
-    <th><a href="Registration.php"><button >Registration</button></a></th>
-    <th><a href="Email.php"><button >Email</button></a></th><h1>Employee</h1>
 </head>
 
+
 <body>
-<a href="createEmployee.php"><button>Create Employee</button></a>
-<a href="displayEmployee.php"><button>Display Employee</button></a>
-<a href="schedule.php"><button>Show Schedule</button></a>
+    <h1>For Information regarding Employees in all Facilities:</h1>
+
+    <a href="createEmployee.php"><button>Create a new Employee record</button></a>
+    <a href="displayEmployee.php"><button>Display All Employees' records</button></a>
+    <a href="schedule.php"><button>Show schedule</button></a>
+
+
 </body>
 
-</html>';
+
+</html>
