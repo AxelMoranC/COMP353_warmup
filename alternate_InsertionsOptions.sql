@@ -262,7 +262,7 @@ INSERT INTO LivesWithEmployee (MedicareCard, PersonID, Relationship) VALUES
 
 
 -- Insert more data into Schedule table
-INSERT INTO Schedule (MedicareCard, FacilityName, Schedule_Date, StartTime, EndTime, is_no_assignment) VALUES
+INSERT INTO Schedule (MedicareCard, FacilityID, Schedule_Date, StartTime, EndTime, is_no_assignment) VALUES
   ('M654321987', 'Healthy Living Clinic', '2024-04-01', '08:00:00', '12:00:00', 0),
   ('M123456789', 'Sunrise Pharmacy', '2024-04-02', '09:00:00', '13:00:00', 0),
   ('M987654321', 'Safe Haven Hospital', '2024-04-03', '10:00:00', '14:00:00', 0),
