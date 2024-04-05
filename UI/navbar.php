@@ -9,7 +9,7 @@
         <!-- Navigation links -->
     <nav class="navbar">
         <ul class="nav-list">
-            <li><a href="index.php">Index</a></li>
+            <li><a href="index.php">Home</a></li>
             <li><a href="Student.php">Student</a></li>
             <li><a href="Employee.php">Employee</a></li>
             <li><a href="Facility.php">Facility</a></li>
