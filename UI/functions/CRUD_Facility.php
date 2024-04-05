@@ -58,12 +58,17 @@ function updateFacility($id, $name, $address, $city, $province, $postalCode, $ph
 }
 
 // Function to delete a facility
+// Function to delete a facility
 function deleteFacility($id) {
-    global $conn_pdo;
-    $sql = "DELETE FROM Facilities WHERE FacilityID=$id";
-    if ($conn_pdo->query($sql) === TRUE) {
+    require_once 'connection.php';
+
+    $sql = "DELETE FROM Facilities WHERE FacilityID=:id";
+    $statement = $conn_pdo->prepare($sql);
+    
+    $statement->bindParam(':id', $id);
+    if ($statement->execute()) {
         return "Facility deleted successfully";
     } else {
-        return "Error deleting facility: " ;
+        return "Error deleting facility";
     }
 }
