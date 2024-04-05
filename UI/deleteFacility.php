@@ -1,6 +1,6 @@
 <?php
 echo '
-<form action="deleteFacility.php" method="get">
+<form action="displayFacility.php" method="get">
     <label for="FacilityID">Enter Facility ID to delete:</label><br>
     <input type="text" id="FacilityID" name="FacilityID"><br>
     <input type="submit" value="Delete Facility">

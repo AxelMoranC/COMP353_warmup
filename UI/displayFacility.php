@@ -37,6 +37,7 @@ $statement->execute();
         <tbody>
             <?php while ($row = $statement->fetch(PDO::FETCH_ASSOC)) { ?>
                 <tr>
+                    <td><?= $row["FacilityID"] ?></td>
                     <td><?= $row["FacilityName"] ?></td>
                     <td><?= $row["FacilityType"] ?></td>
                     <td><?= $row["Address"] ?></td>
@@ -46,8 +47,8 @@ $statement->execute();
                     <td><?= $row["WebAddress"] ?></td>
                     <td><?= $row["FacilityPhoneNumber"] ?></td>
                     <td><?= $row["PostalCode"] ?></td>
-                    <td><a href="./editFacility.php?facilityID=<?= $row["facilityID"] ?>">Edit</a></td> 
-                    <td><a href="./deleteFacility.php?facilityID=<?= urlencode($row["facilityID"]) ?>">Delete</a></td>
+                    <td><a href="./editFacility.php?facilityID=<?= $row["FacilityID"] ?>">Edit</a></td> 
+                    <td><a href="./deleteFacility.php?facilityID=<?= urlencode($row["FacilityID"]) ?>">Delete</a></td>
 
                 </tr>
             <?php } ?>
