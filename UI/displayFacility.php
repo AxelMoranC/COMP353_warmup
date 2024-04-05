@@ -5,6 +5,25 @@ $statement = $conn_pdo->prepare('SELECT * FROM Facilities;');
 $statement->execute();
 ?>
 
+<!--Deleting a Facility -->
+<?php 
+require_once 'connection.php';
+require_once 'functions/CRUD_Facility.php'; // Include CRUD_Facility.php
+
+// Check if delete parameter is present in the URL
+if (isset($_GET["deleteID"])) {
+    $facilityID = $_GET["deleteID"];
+    $deleteMessage = deleteFacility($facilityID);
+    echo "<script>alert('$deleteMessage'); window.location.href = 'displayFacility.php';</script>";
+    exit; // Prevent further execution after deletion
+}
+
+// Fetch all facilities
+// $statement = $conn_pdo->prepare('SELECT * FROM Facilities;');
+// $statement->execute();
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -47,9 +66,9 @@ $statement->execute();
                     <td><?= $row["WebAddress"] ?></td>
                     <td><?= $row["FacilityPhoneNumber"] ?></td>
                     <td><?= $row["PostalCode"] ?></td>
-                    <td><a href="./editFacility.php?facilityID=<?= $row["FacilityID"] ?>">Edit</a></td> 
-                    <td><a href="./deleteFacility.php?facilityID=<?= urlencode($row["FacilityID"]) ?>">Delete</a></td>
-
+                    <td><a href="./editFacility.php?FacilityID=<?= $row["FacilityID"] ?>">Edit</a></td> 
+                    <!-- <td><a href="./deleteFacility.php?FacilityID=<?= urlencode($row["FacilityID"]) ?>">Delete</a></td> -->
+                    <td><a href="?deleteID=<?= urlencode($row["FacilityID"]) ?>">Delete</a></td>
                 </tr>
             <?php } ?>
         </tbody>
