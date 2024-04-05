@@ -3,6 +3,8 @@ require_once 'connection.php';
 
 $statement = $conn_pdo->prepare('SELECT * FROM Facilities;');
 $statement->execute();
+
+$conn_pdo = null;
 ?>
 
 <!--Deleting a Facility -->
@@ -54,6 +56,7 @@ if (isset($_GET["deleteID"])) {
     <table>
         <thead>
             <tr>
+                <td>ID</td>
                 <td>Facility Name</td>
                 <td> Type </td>
                 <td>Address</td>

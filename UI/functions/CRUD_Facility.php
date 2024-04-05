@@ -5,7 +5,7 @@
 
 // Function to create a new facility
 function createFacility($facilityName, $address, $city, $province, $postalCode, $phoneNumber, $webAddress, $facilityType, $capacity) {
-    require_once 'connection.php';
+    require_once '../connection.php';
     //global $conn_pdo; 
 
     $sql = "INSERT INTO Facilities 
@@ -29,48 +29,54 @@ function createFacility($facilityName, $address, $city, $province, $postalCode, 
         echo "Added successfully!";
         $conn_pdo = null;
     }
+    else {
+        $conn_pdo = null;
+        echo "<script>alert('Attempting to add facility.....'); window.location.href = 'displayFacility.php';</script>";
+    }
 }
 
-// Function to read facilities
-/**function readFacilities() {
-    global $conn;
-    $facilities = [];
-    $sql = "SELECT * FROM Facilities";
-    $result = $conn->query($sql);
-    if ($result->num_rows > 0) {
-        while($row = $result->fetch_assoc()) {
-            $facilities[] = $row;
-        }
-    }
-    return $facilities;
-}*/
 
 // Function to update a facility
 function updateFacility($id, $name, $address, $city, $province, $postalCode, $phoneNumber, $webAddress, $type, $capacity) {
-    require_once 'connection.php';
+    require_once '../connection.php';
 
     $sql = "UPDATE Facilities SET FacilityName='$name', Address='$address', City='$city', Province='$province', PostalCode='$postalCode', 
             FacilityPhoneNumber='$phoneNumber', WebAddress='$webAddress', FacilityType='$type', Capacity=$capacity WHERE FacilityID=$id";
     
-    if ($conn_pdo->query($sql) === TRUE) {
+    $data = $conn_pdo->prepare($sql);
+
+    $data->bindParam(':facilityName', $name);
+    $data->bindParam(':address', $address);
+    $data->bindParam(':city', $city);
+    $data->bindParam(':province', $province);
+    $data->bindParam(':postalCode', $postalCode);
+    $data->bindParam(':phoneNumber', $phoneNumber);
+    $data->bindParam(':webAddress', $webAddress);
+    $data->bindParam(':facilityType', $type);
+    $data->bindParam(':capacity', $capacity);
+
+    if ($data->execute()) {
+        $conn_pdo = null;
         return "Facility updated successfully";
     } else {
-        return "Error updating facility: " ;
+        $conn_pdo = null;
+        return "Attempting to update facility... " ;
     }
 }
 
 // Function to delete a facility
-// Function to delete a facility
 function deleteFacility($id) {
-    require_once 'connection.php';
+    require_once '../connection.php';
 
     $sql = "DELETE FROM Facilities WHERE FacilityID=:id";
     $statement = $conn_pdo->prepare($sql);
     
     $statement->bindParam(':id', $id);
     if ($statement->execute()) {
+        $conn_pdo = null;
         return "Facility deleted successfully";
     } else {
-        return "Error deleting facility";
+        $conn_pdo = null;
+        return "Attempting to delete facility...";
     }
 }
