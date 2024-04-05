@@ -1,12 +1,14 @@
 <!--Include a navigatio nbar everywhere we go -->
-<?php include 'navbar.php'; ?>
+<?php include 'navbar.php';  ?>
 
 
 
-<!-- Include CRUD_Facility.php file -->
-<?php include 'functions/CRUD_Facility.php'; ?>
+
 <!--make sure every field is full-->
 <?php
+        //Include CRUD_Facility.php file
+        require_once "functions/CRUD_Facility.php";
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Retrieve form data
     $facilityName = $_POST["facilityName"];
@@ -40,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <h1> Create a new Facility <h1>
 
         <!--Form used to transfer data to create a new Facility -->
-    <form action="functions/CRUD_Facility.php" method="post">
+    <form action="./createFacility.php" method="post">
 
         <!--All data within our SQL Table -->
         <label for="facilityName">Facility Name:</label><br>
