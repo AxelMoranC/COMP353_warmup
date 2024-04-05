@@ -47,9 +47,11 @@ function createFacility($facilityName, $address, $city, $province, $postalCode, 
 
 // Function to update a facility
 function updateFacility($id, $name, $address, $city, $province, $postalCode, $phoneNumber, $webAddress, $type, $capacity) {
-    global $conn_pdo;
+    require_once 'connection.php';
+
     $sql = "UPDATE Facilities SET FacilityName='$name', Address='$address', City='$city', Province='$province', PostalCode='$postalCode', 
             FacilityPhoneNumber='$phoneNumber', WebAddress='$webAddress', FacilityType='$type', Capacity=$capacity WHERE FacilityID=$id";
+    
     if ($conn_pdo->query($sql) === TRUE) {
         return "Facility updated successfully";
     } else {

@@ -32,6 +32,20 @@ if (isset($_GET["deleteID"])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Facilities</title>
     <link rel="stylesheet" href="Styling/facilities.css">
+    <!--Script for editing the Facility -->
+    <script>
+        function toggleEditability(row) {
+            var cells = row.querySelectorAll('td');
+            var editButton = row.querySelector('.edit-button');
+            
+            cells.forEach(function(cell) {
+                cell.contentEditable = !cell.contentEditable;
+            });
+
+            editButton.textContent = (editButton.textContent === 'Edit') ? 'Save' : 'Edit';
+        }
+    </script>
+
 </head>
 
 <body>
@@ -56,16 +70,16 @@ if (isset($_GET["deleteID"])) {
         <tbody>
             <?php while ($row = $statement->fetch(PDO::FETCH_ASSOC)) { ?>
                 <tr>
-                    <td><?= $row["FacilityID"] ?></td>
-                    <td><?= $row["FacilityName"] ?></td>
-                    <td><?= $row["FacilityType"] ?></td>
-                    <td><?= $row["Address"] ?></td>
-                    <td><?= $row["City"] ?></td>
-                    <td><?= $row["Province"] ?></td>
-                    <td><?= $row["Capacity"] ?></td>
-                    <td><?= $row["WebAddress"] ?></td>
-                    <td><?= $row["FacilityPhoneNumber"] ?></td>
-                    <td><?= $row["PostalCode"] ?></td>
+                    <td contentEditable="false"><?= $row["FacilityID"] ?></td>
+                    <td contentEditable="false"><?= $row["FacilityName"] ?></td>
+                    <td contentEditable="false"><?= $row["FacilityType"] ?></td>
+                    <td contentEditable="false"><?= $row["Address"] ?></td>
+                    <td contentEditable="false"><?= $row["City"] ?></td>
+                    <td contentEditable="false"><?= $row["Province"] ?></td>
+                    <td contentEditable="false"><?= $row["Capacity"] ?></td>
+                    <td contentEditable="false"><?= $row["WebAddress"] ?></td>
+                    <td contentEditable="false"><?= $row["FacilityPhoneNumber"] ?></td>
+                    <td contentEditable="false"><?= $row["PostalCode"] ?></td>
                     <td><a href="./editFacility.php?FacilityID=<?= $row["FacilityID"] ?>">Edit</a></td> 
                     <!-- <td><a href="./deleteFacility.php?FacilityID=<?= urlencode($row["FacilityID"]) ?>">Delete</a></td> -->
                     <td><a href="?deleteID=<?= urlencode($row["FacilityID"]) ?>">Delete</a></td>
