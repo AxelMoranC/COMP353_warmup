@@ -37,3 +37,24 @@ DELIMITER $$
 DELIMITER ;
 
 DROP TRIGGER IF EXISTS before_insert_employee;
+
+
+-- Create a trigger to check the existence of MedicareCard in Employees table before inserting into Schedule table
+DELIMITER $$
+    CREATE TRIGGER before_insert_schedule
+    BEFORE INSERT ON Schedule
+    FOR EACH ROW
+    BEGIN
+        DECLARE employeeExists INT;
+
+        -- Check if the MedicareCard exists in the Employees table
+        SELECT COUNT(*) INTO employeeExists FROM Employees WHERE MedicareCard = NEW.MedicareCard;
+
+        -- If the employee does not exist, prevent the insertion
+        IF employeeExists = 0 THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cannot add a schedule for a non-existing employee';
+        END IF;
+    END$$
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS before_insert_schedule;
