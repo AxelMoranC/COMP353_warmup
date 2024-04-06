@@ -75,6 +75,7 @@ DELIMITER ;
 
 DROP TRIGGER IF EXISTS before_insert_person_StartedDateAtAddress;
 
+
 -- Trigger to ensure that Start Time in Schedule is not bigger than End Date
 DELIMITER //
 CREATE TRIGGER before_insert_schedule_StartBiggerThanEnd
