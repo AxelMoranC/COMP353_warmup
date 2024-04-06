@@ -36,7 +36,7 @@
             </tr>
 
             <?php
-            while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+            while ($row = $data->fetch(PDO::FETCH_ASSOC)) {
                 echo "<tr>";
                 echo "<td>" . $row["log_id"] . "</td>";
                 echo "<td>" . $row["email_date"] . "</td>";
