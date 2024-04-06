@@ -63,29 +63,41 @@ ORDER BY
 
 -- more data to satisfy this query:
 -- Insert sample data into Residence table for the secondary residences
+INSERT INTO Persons 
+    (FirstName, LastName, DateOfBirth, SocialSecurity, MedicareCard, PhoneNumber, Citizenship, Email, ResidenceID, StartedDateAtAddress) 
+VALUES
+    ('Lebron', 'James', '1990-06-15', '90901', 'ME1', '514-3106-1720', 'Canadian', 'lebron@gmail.com',25, '2016-01-01'),
+    ('Kyrie', 'Irving', '1985-07-20', '90902', 'ME2', '514-542-3333', 'Canadian', 'kyrie@gmail.com', 26, '2016-01-01'),
+    ('Luka', 'Doncic', '2001-03-01', '90903', 'ME3', '514-282-1611', 'Canadian', 'luka@mail.concordia.ca', 27, '2016-01-01'),
+    ('Flight', 'Curry', '2001-07-28', '90904', 'ME4', '514-348-3456', 'Canadian', 'flight@yahoo.com', 28, '2016-01-01'),
+    ('Steph', 'Wardell', '1978-09-16', '90905', 'ME5', '438-186-1211', 'Canadian', 'stephwardell@gmail.com', 29, '2016-01-01'),
+    ('James', 'Harden', '1983-06-20', '90906', 'ME6', '438-710-1513', 'French', 'harednn13@gmail.com', 29, '2016-01-01');
+
 INSERT INTO Residence (HouseType, Address, City, Province, PostalCode, ResidencePhoneNumber, AmountBedrooms) VALUES
-('condominium', '321 Oak St', 'Vancouver', 'British Columbia', 'V6B 2J4', '438-888-3456', 3),
-('house', '987 Maple St', 'Calgary', 'Alberta', 'T2P 1E4', '450-999-5678', 5),
-('apartment', '654 Cedar St', 'Ottawa', 'Ontario', 'K1P 5H1', '514-333-8765', 1),
-('semidetached house', '234 Birch', 'Montreal', 'Quebec', 'G12 K78', '514-777-8888', 3),
-('condominium', '321 Daisy', 'Montreal', 'Quebec', 'HHI 3JK', '716-987-6543', 2);
+('condominium', '321 lebron St', 'Vancouver', 'British Columbia', 'V8B 2J4', '438-888-3456', 3),
+('house', '987 kyrie St', 'Calgary', 'Alberta', 'T8P 1E4', '450-999-5678', 5),
+('apartment', '654 luka St', 'Ottawa', 'Ontario', 'K8P 5H1', '514-333-8765', 1),
+('semidetached house', '234 Wardell', 'Montreal', 'Quebec', 'G82 K78', '514-777-8888', 3),
+('condominium', '321 Harden ST', 'Montreal', 'Quebec', 'H8I 3JK', '716-987-6543', 2);
+select * from Persons;
 
 -- Assuming PersonID 1 to 5 are linked to some Employees, and we're setting up secondary residences for them
 INSERT INTO SecondaryResidence (PersonID, ResidenceID, ResidenceType, StartDateAtAddress) VALUES
-(1, 21, 'Secondary', '2019-01-01'),
-(2, 22, 'Secondary', '2019-02-01'),
-(3, 23, 'Secondary', '2019-03-01'),
-(4, 24, 'Secondary', '2019-04-01'),
-(5, 25, 'Secondary', '2019-05-01');
+(26, 25, 'Secondary', '2019-01-01'),
+(27, 26, 'Secondary', '2019-02-01'),
+(28, 27, 'Secondary', '2019-03-01'),
+(29, 28, 'Secondary', '2019-04-01'),
+(30, 29, 'Secondary', '2019-05-01');
 
 -- Update or insert Employees to ensure they are currently working at FacilityID = 1 and have a valid MedicareCard from Persons table
 INSERT INTO Employees (MedicareCard, FacilityID, Job, StartDate) VALUES
-('M987654321', 1, 'nurse', '2020-01-01'),
-('M876543210', 1, 'doctor', '2020-01-02'),
-('M888888888', 1, 'cashier', '2020-01-03'),
-('M888888880', 1, 'pharmacist', '2020-01-04'),
-('M888888800', 1, 'receptionist', '2020-01-05');
+('ME1', 1, 'nurse', '2020-01-01'),
+('ME2', 1, 'doctor', '2020-01-02'),
+('ME3', 1, 'cashier', '2020-01-03'),
+('ME4', 1, 'pharmacist', '2020-01-04'),
+('ME5', 1, 'receptionist', '2020-01-05');
 
+select * from Residence;
 
 -- query #10
 SELECT 
@@ -165,21 +177,33 @@ ORDER BY
 
 -- add sample data to test out query
 INSERT INTO Persons (FirstName, LastName, DateOfBirth, SocialSecurity, MedicareCard, PhoneNumber, Citizenship, Email, ResidenceID, StartedDateAtAddress) VALUES
-('John', 'Doe', '1975-01-01', 'SSN1111', 'MC11111', '555-1234', 'Canadian', 'john.doe@example.com', 1, '2020-01-01'),
-('Jane', 'Smith', '1980-02-02', 'SSN2222', 'MC22222', '555-5678', 'Canadian', 'jane.smith@example.com', 2, '2020-02-01');
-
+('drmundo', 'Doe', '1965-01-01', 'SSN20201', 'MD1', '555-1234', 'Canadian', 'mundo.doe@example.com', 1, '2020-01-01'),
+('drluka', 'Doo', '1985-01-01', 'SSN20202', 'MD2', '555-1234', 'Canadian', 'drluka@example.com', 2, '2020-01-01'),
+('drsteph', 'Dee', '1945-01-01', 'SSN20203', 'MD3', '555-1234', 'Canadian', 'drsteph@example.com', 3, '2020-01-01'),
+('drjames', 'Dae', '1978-01-01', 'SSN20204', 'MD4', '555-1234', 'Canadian', 'drjames@example.com', 4, '2020-01-01'),
+('drlebron', 'Smith', '1981-02-02', 'SSN20205', 'MD5', '555-5678', 'Canadian', 'drlebron@example.com', 5, '2020-02-01');
+select * from Persons;
 INSERT INTO Employees (MedicareCard, FacilityID, Job, StartDate, EndDate) VALUES
-('MC11111', 1, 'doctor', '2019-01-01', NULL),
-('MC22222', 2, 'doctor', '2019-01-01', NULL);
+('MD1', 1, 'doctor', '2019-01-01', NULL),
+('MD2', 1, 'doctor', '2019-01-01', NULL),
+('MD3', 1, 'doctor', '2019-01-01', NULL),
+('MD4', 2, 'doctor', '2019-01-01', NULL),
+('MD5', 2, 'doctor', '2019-01-01', NULL);
 
 INSERT INTO HadInfections (PersonID, DateOfInfection, InfectionNumber, InfectionType) VALUES
-(26, CURDATE() - INTERVAL 1 WEEK, 1, 'COVID-19'),
-(27, CURDATE() - INTERVAL 10 DAY, 1, 'COVID-19');
+(32, CURDATE() - INTERVAL 1 WEEK, 1, 'COVID-19'),
+(33, CURDATE() - INTERVAL 1 WEEK, 1, 'COVID-19'),
+(34, CURDATE() - INTERVAL 1 WEEK, 1, 'COVID-19'),
+(35, CURDATE() - INTERVAL 1 WEEK, 1, 'COVID-19'),
+(36, CURDATE() - INTERVAL 10 DAY, 1, 'COVID-19');
 
 -- Assume ResidenceID 3 and 4 are valid IDs from your Residence table. Adjust if necessary.
 INSERT INTO SecondaryResidence (PersonID, ResidenceID, ResidenceType, StartDateAtAddress) VALUES
-(26, 3, 'Secondary', '2019-01-01'),
-(27, 4, 'Secondary', '2019-02-01');
+(32, 3, 'Secondary', '2019-01-01'),
+(33, 3, 'Secondary', '2019-01-01'),
+(34, 3, 'Secondary', '2019-01-01'),
+(35, 4, 'Secondary', '2019-01-01'),
+(36, 4, 'Secondary', '2019-02-01');
 
 
 -- query #13
@@ -199,12 +223,56 @@ WHERE
 ORDER BY 
     el.email_date DESC;
 
-
+select * from EmailLog;
 -- sample data added to test out query
-
+-- this can be added to see the results
 INSERT INTO EmailLog (email_date, sender, receiver, subject_email, body) VALUES
 ('2024-03-25 10:00:00', 1, 1, 'Appointment Cancellation', 'Your appointment for 2024-03-30 has been canceled.'),
 ('2024-03-26 11:00:00', 1, 2, 'Assignment Cancellation Notice', 'Notice of cancellation for your assignment on 2024-03-31.'),
 ('2024-03-27 09:00:00', 1, 3, 'Urgent Cancellation', 'Due to unforeseen circumstances, your assignment on 2024-04-01 is now canceled.'),
 ('2024-03-28 08:30:00', 1, 4, 'Cancellation', 'Your scheduled assignment for 2024-04-02 has been canceled.'),
 ('2024-03-29 14:00:00', 1, 5, 'Assignment Cancellation', 'We regret to inform you that your assignment on 2024-04-03 is canceled.');
+
+select * from SecondaryResidence;
+
+-- query #14
+
+SELECT 
+    p.FirstName,
+    p.LastName,
+    e.Job AS Role,
+    COUNT(DISTINCT sr.ResidenceID) AS NumberOfSecondaryResidences
+FROM 
+    Employees e
+INNER JOIN 
+    Persons p ON e.MedicareCard = p.MedicareCard
+INNER JOIN 
+    Schedule s ON e.MedicareCard = s.MedicareCard AND s.Schedule_Date BETWEEN DATE_SUB(CURDATE(), INTERVAL 4 WEEK) AND CURDATE()
+INNER JOIN 
+    SecondaryResidence sr ON p.PersonID = sr.PersonID
+WHERE 
+    e.FacilityID = 1  -- Replace :FacilityID with the specific facility ID
+    AND (e.EndDate IS NULL OR e.EndDate > CURDATE())
+GROUP BY 
+    p.PersonID, e.Job
+HAVING 
+    COUNT(DISTINCT sr.ResidenceID) >= 3
+ORDER BY 
+    e.Job ASC, 
+    COUNT(DISTINCT sr.ResidenceID) DESC;
+
+
+-- sample data added to test out query #14
+
+INSERT INTO SecondaryResidence (PersonID, ResidenceID, ResidenceType, StartDateAtAddress) VALUES
+(32, 4, 'Secondary', '2019-01-01'),
+(33, 4, 'Secondary', '2019-01-01'),
+(34, 4, 'Secondary', '2019-01-01'),
+(32, 5, 'Secondary', '2019-01-01'),
+(33, 5, 'Secondary', '2019-01-01'),
+(34, 5, 'Secondary', '2019-01-01');
+
+INSERT INTO Schedule (MedicareCard, FacilityID, Schedule_Date, StartTime, EndTime) VALUES
+('MD1', 1, '2024-03-15', '08:00', '16:00'),
+('MD2', 1, '2024-03-15', '08:00', '16:00'),
+('MD3', 1, '2024-03-16', '08:00', '16:00');
