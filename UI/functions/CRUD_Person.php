@@ -3,7 +3,7 @@
 
 function addRegister($firstname, $lastname, $dateOfBirth, $socialSecurity, $medicareCard, $phoneNumber, $citizenship,$email, $residenceID, $startedDateAtAddress) 
 {
-    require_once 'connection.php';
+    global $conn_pdo;
     // Prepare SQL statement to insert data into Persons table
     $sql = "INSERT INTO Persons (FirstName, LastName, DateOfBirth, SocialSecurity, MedicareCard, PhoneNumber, Citizenship, Email, ResidenceID, StartedDateAtAddress) 
             VALUES (:firstName, :lastName, :dateOfBirth, :socialSecurity, :medicareCard, :phoneNumber, :citizenship, :email, :residenceID, :startedDateAtAddress)";

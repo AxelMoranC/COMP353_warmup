@@ -51,7 +51,7 @@ if (isset($_GET["ID"]) && isset($_GET["startDate"]) && isset($_GET["endDate"])) 
     $statement->execute();
     $employeeInfo = $statement->fetch();
 
-    var_dump($employeeInfo);
+    //var_dump($employeeInfo);
 
     $conn_pdo = null;
 } else {

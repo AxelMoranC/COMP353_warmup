@@ -8,7 +8,8 @@ DELIMITER $$
     BEGIN
         DECLARE residence_count INT DEFAULT 0;
         
-        SET residence_count = SELECT (COUNT(*) INTO residence_count FROM Residence WHERE ResidenceID = NEW.ResidenceID);
+        SET residence_count = (SELECT COUNT(*) 
+								FROM Residence WHERE ResidenceID = NEW.ResidenceID);
         
         IF residence_count = 0 THEN
             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'ResidenceID does not exist in Residence table';
@@ -26,7 +27,7 @@ DELIMITER $$
     BEGIN
         DECLARE facility_id INT DEFAULT 0;
         
-        SET facility_id = (SELECT COUNT(*) INTO facility_id 
+        SET facility_id = (SELECT COUNT(*) 
                             FROM Facility WHERE FacilityID = NEW.FacilityID);
         
         IF (facility_id = 0 OR facility_id < 0 ) THEN

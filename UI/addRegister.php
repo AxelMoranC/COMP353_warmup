@@ -1,9 +1,8 @@
 <?php include 'navbar.php' ?>
 
 <?php
-
-    //Include CRUD_Facility.php file
-    require_once "functions/CRUD_Facility.php";
+    require_once 'connection.php';
+    require_once "functions/CRUD_Person.php";
 // Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Retrieve form data
@@ -32,7 +31,7 @@ $residences = $statement2->fetchAll(PDO::FETCH_ASSOC);
 
 
 // Close the database connection
-$conn_pdo = null;
+// $conn_pdo = null;
 
 ?>
 

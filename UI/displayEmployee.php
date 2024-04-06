@@ -9,7 +9,9 @@ require_once 'functions/CRUD_Employee.php'; // Include CRUD_Facility.php
 $statement = $conn_pdo->query('SELECT e.MedicareCard, p.FirstName, p.LastName, f.FacilityName, e.Job, e.StartDate, e.EndDate
                                 FROM Employees e
                                 JOIN Persons p ON e.MedicareCard = p.MedicareCard
-                                JOIN Facilities f ON e.FacilityID = f.FacilityID');
+                                JOIN Facilities f ON e.FacilityID = f.FacilityID
+                                GROUP BY e.FacilityID, e.MedicareCard');
+
 $employees = $statement->fetchAll(PDO::FETCH_ASSOC);
 
 

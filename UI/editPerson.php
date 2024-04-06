@@ -7,7 +7,7 @@ require_once 'functions/CRUD_Person.php'; // Include CRUD_Person.php
 // Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Retrieve form data
-    $personID = $_POST["personID"];
+    $personID = $_POST["PersonID"];
     $firstName = $_POST["firstName"];
     $lastName = $_POST["lastName"];
     $dateOfBirth = $_POST["dateOfBirth"];
@@ -24,19 +24,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     echo "<script>alert('$updateMessage'); window.location.href = 'displayPeople.php';</script>";
     exit; // Prevent further execution after updating person
 }
+?>
 
-
+<?php
 // Check if person ID is provided in URL
-if (isset($_GET["personID"])) {
+if (isset($_GET["PersonID"])) {
     // Retrieve person ID from URL
-    $personID = $_GET["personID"];
+    $personID = $_GET["PersonID"];
 
-    // Fetch facility details from the database
+    // Fetch person details from the database
     $statement = $conn_pdo->prepare('SELECT * FROM Persons WHERE PersonID = :personID');
     $statement->bindParam(':personID', $personID);
-
     $statement->execute();
-    $facility = $statement->fetch();
+    $personDetails = $statement->fetch();
 }
 else {
     header("Location: displayPeople.php");    // Redirect to displayPeople.php if person ID is not provided
@@ -54,7 +54,7 @@ $residences = $statement2->fetchAll(PDO::FETCH_ASSOC);
 
 
 // Close the database connection
-$conn_pdo = null;
+//$conn_pdo = null;
 ?>
 
 
@@ -73,7 +73,7 @@ $conn_pdo = null;
     <h1>Edit Person</h1>
 
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-        <input type="hidden" name="personID" value="<?php echo $personID; ?>"> <!-- Hidden input field to store person ID -->
+        <input type="hidden" name="PersonID" value="<?php echo $personID; ?>"> <!-- Hidden input field to store person ID -->
 
         <label for="firstName">First Name:</label><br />
         <input type="text" id="firstName" name="firstName" value="<?php echo $personDetails['FirstName']; ?>" required><br />

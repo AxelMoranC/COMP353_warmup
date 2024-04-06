@@ -6,17 +6,43 @@
 require_once 'connection.php';
 
 // data
-$sql = "SELECT P.FirstName, P.LastName, H.DateOfVaccination, H.DoseNumber, H.Location, H.Type
+$sql = "SELECT P.FirstName, P.LastName, H.PersonID, H.DateOfVaccination, H.DoseNumber, H.Location, H.Type
         FROM HasVaccines H
-        JOIN Persons P ON H.PersonID = P.PersonID";
+        JOIN Persons P ON H.PersonID = P.PersonID
+        GROUP BY P.PersonID, H.DoseNumber
+        ORDER BY P.PersonID, H.DoseNumber ASC";
 
 //SQL
 $statement = $conn_pdo->prepare($sql);
 $statement->execute();
 $vaccinations = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-// Close the database connection
-$conn_pdo = null;
+// Check if deleteId, date, and dose are provided in the URL
+if (isset($_GET['deleteId']) && isset($_GET['date']) && isset($_GET['dose'])) {
+    $personID = $_GET['deleteId'];
+    $dateOfVaccination = $_GET['date'];
+    $doseNumber = $_GET['dose'];
+
+    // Delete the vaccination record from the database
+    $sql = "DELETE FROM HasVaccines WHERE PersonID = :personID AND DateOfVaccination = :dateOfVaccination AND DoseNumber = :doseNumber";
+    $statement = $conn_pdo->prepare($sql);
+    $statement->bindParam(':personID', $personID);
+    $statement->bindParam(':dateOfVaccination', $dateOfVaccination);
+    $statement->bindParam(':doseNumber', $doseNumber);
+
+    if ($statement->execute()) {
+        $conn_pdo = null;
+        // Redirect to the vaccination list page after successful insertion
+        echo "<script>alert('Vaccination tracking deleted successfully!'); window.location.href = 'displayVaccination.php';</script>";
+        exit();
+    } else {
+        $conn_pdo = null;
+        // Handle error if insertion fails
+        echo "<script>alert('Vaccination deletiob FAILED!'); window.location.href = 'displayVaccination.php';</script>";
+    }
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -46,8 +72,19 @@ $conn_pdo = null;
         <tbody>
             <?php foreach ($vaccinations as $vaccination) { ?>
                 <tr>
-                    <td> </td>
-                    <td> </td>
+                    <td><a href="editVaccination.php?id=<?= $vaccination['PersonID'] ?>                                 
+                                 &date=<?= $vaccination['DateOfVaccination'] ?>
+                                 &dose=<?= $vaccination['DoseNumber'] ?>" >
+                                 Edit
+                        </a>
+                    </td>
+                    <td><a href="?deleteId=<?= $vaccination['PersonID'] ?>
+                                &date=<?= $vaccination['DateOfVaccination'] ?>
+                                &dose=<?= $vaccination['DoseNumber'] ?>" 
+                                onclick="return confirm('Are you sure you want to delete this vaccination record?')">
+                                Delete
+                        </a>
+                    </td>
                     <td><?= $vaccination['FirstName'] ?></td>
                     <td><?= $vaccination['LastName'] ?></td>
                     <td><?= $vaccination['DateOfVaccination'] ?></td>
