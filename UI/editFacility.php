@@ -1,3 +1,5 @@
+<?php include 'navbar.php';  ?>
+
 <?php
 require_once 'connection.php';
 require_once 'functions/CRUD_Facility.php'; // Include CRUD_Facility.php
@@ -38,7 +40,7 @@ if (isset($_GET["FacilityID"])) {
 
     $conn_pdo = null;
 } else {
-    echo "Facility ID not provided.";
+    echo "Facility ID not available.";
     $conn_pdo = null;
     exit; // Prevent further execution
 }
@@ -67,10 +69,36 @@ if (isset($_GET["FacilityID"])) {
         <label for="address">Address:</label><br>
         <input type="text" id="address" name="address" value="<?php echo $facility['Address']; ?>" required><br>
         
-        <!-- Add other fields for editing facility details -->
+        <label for="city">City:</label><br>
+        <input type="text" id="city" name="city" value="<?php echo $facility['City']; ?>" required><br>
+        
+        <label for="province">Province:</label><br>
+        <input type="text" id="province" name="province" value="<?php echo $facility['Province']; ?>" required><br>
+        
+        <label for="postalCode">Postal Code:</label><br>
+        <input type="text" id="postalCode" name="postalCode" value="<?php echo $facility['PostalCode']; ?>" required><br>
+        
+        <label for="phoneNumber">Phone Number:</label><br>
+        <input type="tel" id="phoneNumber" name="phoneNumber" value="<?php echo $facility['FacilityPhoneNumber']; ?>" required><br>
+        
+        <label for="webAddress">Web Address:</label><br>
+        <input type="text" id="webAddress" name="webAddress" value="<?php echo $facility['WebAddress']; ?>" required><br>
+        
+        <label for="facilityType">Facility Type:</label><br>
+        <select id="facilityType" name="facilityType" required>
+            <option value="" disabled>Select facility type</option>
+            <option value="Hospital" <?php if ($facility['FacilityType'] === 'Hospital') echo 'selected'; ?>>Hospital</option>
+            <option value="CLSC" <?php if ($facility['FacilityType'] === 'CLSC') echo 'selected'; ?>>CLSC</option>
+            <option value="Clinic" <?php if ($facility['FacilityType'] === 'Clinic') echo 'selected'; ?>>Clinic</option>
+            <option value="Pharmacy" <?php if ($facility['FacilityType'] === 'Pharmacy') echo 'selected'; ?>>Pharmacy</option>
+            <option value="Special Installment" <?php if ($facility['FacilityType'] === 'Special Installment') echo 'selected'; ?>>Special Installment</option>
+        </select><br>
+        
+        <label for="capacity">Capacity:</label><br>
+        <input type="number" id="capacity" name="capacity" value="<?php echo $facility['Capacity']; ?>" required><br>
 
-        <button type="submit">Save Changes</button>
-    </form>
+    <button type="submit">Save Changes</button>
+</form>
 
     <a href="displayFacility.php">Back to Facility List</a>
 </body>

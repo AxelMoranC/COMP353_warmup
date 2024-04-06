@@ -6,8 +6,8 @@
 
 <!--make sure every field is full-->
 <?php
-        //Include CRUD_Facility.php file
-        require_once "functions/CRUD_Facility.php";
+    //Include CRUD_Facility.php file
+    require_once "functions/CRUD_Facility.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Retrieve form data
