@@ -1,4 +1,4 @@
-<? include "navbar.php"; ?>
+<?php include "navbar.php"; ?>
 
 
 <!DOCTYPE Html>
@@ -9,8 +9,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Facilities</title>
     <!-- Include your stylesheet -->
-
-
+    <link rel="stylesheet" href="Styling/employees.css">
 </head>
 
 
@@ -19,7 +18,7 @@
 
     <a href="createEmployee.php"><button>Create a new Employee record</button></a>
     <a href="displayEmployee.php"><button>Display All Employees' records</button></a>
-    <a href="schedule.php"><button>Show schedule</button></a>
+    <a href="schedule.php"><button>Show Schedule</button></a>
 
 
 </body>

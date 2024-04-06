@@ -1,39 +1,24 @@
--- Create Facilities Table
-CREATE TABLE Facilities (
-	FacilityID INT AUTO_INCREMENT PRIMARY KEY,
-    FacilityName VARCHAR(255) NOT NULL,
-    Address VARCHAR(255),
-    City VARCHAR(255),
-    Province VARCHAR(255),
-    PostalCode VARCHAR(10),
-    FacilityPhoneNumber VARCHAR(15),
-    WebAddress VARCHAR(255),
-    FacilityType ENUM ('Hospital', 'CLSC', 'clinic', 'pharmacy', 'special installment'),
-    Capacity INTEGER
-);
-
-
-
 -- Create Residence Table
 CREATE TABLE Residence (
-	ResidenceID INT AUTO_INCREMENT PRIMARY KEY,
+	PRIMARY KEY(ResidenceID, PostalCode),
+	ResidenceID INT AUTO_INCREMENT,
     HouseType ENUM ('apartment','condominium', 'semidetached house','house'),
-    Address VARCHAR(50),
-    City VARCHAR(50),
-    Province VARCHAR(50),
-    PostalCode VARCHAR(10),
+    Address VARCHAR(50) NOT NULL,
+    City VARCHAR(50) NOT NULL,
+    Province VARCHAR(50) NOT NULL,
+    PostalCode VARCHAR(10) NOT NULL UNIQUE,
 	ResidencePhoneNumber VARCHAR(15),
     AmountBedrooms INTEGER
     );
 
 
 
-
 -- Create Persons Table who live with the EMployee
 CREATE TABLE Persons (
-    PersonID INT AUTO_INCREMENT PRIMARY KEY,
-    FirstName TEXT,
-    LastName TEXT,
+	PRIMARY KEY(PersonID,SocialSecurity,MedicareCard),
+    PersonID INT AUTO_INCREMENT,
+    FirstName TEXT NOT NULL,
+    LastName TEXT NOT NULL,
     DateOfBirth DATE,
     SocialSecurity VARCHAR(20) NOT NULL UNIQUE,
     MedicareCard VARCHAR(20) NOT NULL UNIQUE,
@@ -60,7 +45,8 @@ CREATE TABLE Employees (
     StartDate DATE,
     EndDate DATE DEFAULT NULL,
     FOREIGN KEY (MedicareCard) REFERENCES Persons(MedicareCard),
-    FOREIGN KEY (FacilityID) REFERENCES Facilities(FacilityID)
+    FOREIGN KEY (FacilityID) REFERENCES Facilities(FacilityID),
+    CONSTRAINT no_overlapping_dates CHECK (EndDate IS NULL OR StartDate < EndDate)
 );
 
 
@@ -109,7 +95,7 @@ CREATE TABLE LivesWithEmployee (
 CREATE TABLE Schedule (
 	    MedicareCard VARCHAR(20) NOT NULL,
 		ScheduleID INTEGER AUTO_INCREMENT PRIMARY KEY,
-        FacilityID INT,
+        FacilityID INT NOT NULL,
         Schedule_Date DATE,
         StartTime TIME,
         EndTime TIME,

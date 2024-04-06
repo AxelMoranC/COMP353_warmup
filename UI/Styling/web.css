@@ -8,6 +8,15 @@ h1 {
 }
 
 p {
-  color:aqua;
-  
+  color: black;
+  transition: opacity 1s ease-in;  
+}
+
+
+
+
+/* Define the default and visited link color */
+a, a:visited {
+  color: blue; 
+  text-decoration: underline; 
 }

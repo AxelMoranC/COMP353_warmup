@@ -84,8 +84,8 @@ if (isset($_GET["deleteID"])) {
             <?php } ?>
         </tbody>
     </table>
-
-    <a href="Facility.php">Back to homepage</a>
+                <br /><br />
+    <a href="Facility.php" style="font-size : 38px">Back to previous page</a>
 </body>
 
 </html>

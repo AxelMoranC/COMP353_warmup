@@ -1,5 +1,4 @@
 <?php
-
 // Function to create a new facility
 function createFacility($facilityName, $address, $city, $province, $postalCode, $phoneNumber, $webAddress, $facilityType, $capacity) {
     require_once 'connection.php';

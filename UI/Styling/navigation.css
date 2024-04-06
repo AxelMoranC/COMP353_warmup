@@ -26,6 +26,13 @@
     padding: 0;
 }
 
+/* Define the default and visited link color */
+a, a:visited {
+    color: blue; 
+    text-decoration: underline; 
+}
+
+
 body {
     font-family: 'Arial', sans-serif;
 }
