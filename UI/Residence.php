@@ -6,13 +6,13 @@
 <head>
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Facilities</title>
+    <title>All Residences</title>
     <!-- Include your stylesheet -->
     <link rel="stylesheet" href="Styling/web.css">
 </head>
 
 <body>
-<h1>Facility</h1>
+<h1>Residency</h1>
 
 <a href="createResidence.php"><button>Create Residency</button></a>
 <br />
