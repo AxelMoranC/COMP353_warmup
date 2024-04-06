@@ -58,3 +58,17 @@ DELIMITER $$
 DELIMITER ;
 
 DROP TRIGGER IF EXISTS before_insert_schedule;
+
+-- Trigger to ensure Persons Starting living date is not before
+DELIMITER //
+CREATE TRIGGER before_insert_person_StartedDateAtAddress
+BEFORE INSERT ON Persons
+FOR EACH ROW
+BEGIN
+    IF NEW.StartedDateAtAddress > CURDATE() THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'StartedDateAtAddress cannot be in the future';
+    END IF;
+END;
+//
+DELIMITER ;

@@ -60,6 +60,18 @@ function updateSchedule($medicareCard, $facilityID, $scheduleDate, $startTime, $
 
 }
 
+//assign schedule
+function assignSchedule($employeeID, $scheduleID) 
+{
+    global $conn_pdo;
+
+     $data = $conn_pdo->prepare("UPDATE Schedule SET EmployeeID = :employeeID WHERE ScheduleID = :scheduleID");
+     $data->bindParam(':employeeID', $employeeID);
+     $data->bindParam(':scheduleID', $scheduleID);
+     $data->execute();
+
+
+}
 
 // function deleteSchedule($scheduleID) 
 // {
