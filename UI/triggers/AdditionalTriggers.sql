@@ -72,3 +72,21 @@ BEGIN
 END;
 //
 DELIMITER ;
+
+DROP TRIGGER IF EXISTS before_insert_person_StartedDateAtAddress;
+
+-- Trigger to ensure that Start Time in Schedule is not bigger than End Date
+DELIMITER //
+CREATE TRIGGER before_insert_schedule_StartBiggerThanEnd
+BEFORE INSERT ON Schedule
+FOR EACH ROW
+BEGIN
+    IF NEW.startTime > NEW.endTime THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Start time cannot be greater than end time';
+    END IF;
+END;
+//
+DELIMITER ;
+
+DROP TRIGGER IF EXISTs before_insert_schedule_StartBiggerThanEnd;

@@ -17,7 +17,8 @@
 <a href="addRegister.php"><button>Register a new person</button></a>
 <br />
 <a href="displayPeople.php"><button>Show All People in the DB</button></a>
-
+<br />
+<a href="displayResidenceSecondary.php"><button> Secondary Residence</button></a>
 </body>
 
 </html>
