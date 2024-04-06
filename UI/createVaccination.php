@@ -11,6 +11,11 @@ $statement = $conn_pdo->prepare($sql);
 $statement->execute();
 $persons = $statement->fetchAll(PDO::FETCH_ASSOC);
 
+// Fetch all facilities from the database
+$sql2 = "SELECT * FROM Facilities";
+$statement2 = $conn_pdo->prepare($sql2);
+$statement2->execute();
+$facilities = $statement2->fetchAll(PDO::FETCH_ASSOC);
 
 
 // Check if form is submitted -- Create vaccination
@@ -72,7 +77,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="number" id="doseNumber" name="doseNumber" required><br>
 
         <label for="location">Location:</label><br>
-        <input type="text" id="location" name="location" required><br>
+        <select id="location" name="location" required>
+                <option value="">Select Facility</option>
+                <?php foreach ($facilities as $facility) { ?>
+                    <option value="<?php echo $facility['FacilityName']; ?>"><?php echo $facility["FacilityName"]; ?></option>
+                <?php } ?>
+        </select><br>
 
         <label for="vaccineType">Vaccine Type:</label><br>
         <input type="text" id="vaccineType" name="vaccineType" required><br>
