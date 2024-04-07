@@ -49,7 +49,7 @@
             ?>
 
         </table>
-    <a href="email.php"><button>Go back</button></a>
+    <a href="Email.php"><button>Go back</button></a>
         <?php
     } else {
         echo "Error executing query: " . implode(" ", $conn_pdo->errorInfo());
