@@ -7,7 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["delete_ids"])) {
     // Retrieve the selected log IDs
     $delete_ids = $_POST["delete_ids"];
 
-    // Prepare the DELETE query
+    //DELETE query
     $query = "DELETE FROM EmailLog WHERE log_id IN (" . implode(",", $delete_ids) . ")";
 
     try {
@@ -36,7 +36,6 @@ else
 {
     // Redirect back to the email log page after deletion
     header("Location: EmailLog.php");
-
 }
 
 
