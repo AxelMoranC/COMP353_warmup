@@ -143,20 +143,20 @@ function sendInfectedEmployeeWarningEmail($medicareCard) {
             // Send email MAKE UP BULLSHIT WE DON;T WANT TO SEND IT TO ACTUAL EMAILS OR ELSE WE'RE FFFFFFFFF
             //$infectedEmployeeEmail = "qj_comp353_4@encs.concordia.ca";
 
-            $infectedEmail = array(
-                'a_moranc@live.concordia.ca',
-                'Robert.chen@mail.concordia.ca',
-                'ay_man@live.concordia.ca',
-                'a_nduwum@live.concordia.ca',
-            );
+            // $infectedEmail = array(
+            //     'a_moranc@live.concordia.ca',
+            //     'Robert.chen@mail.concordia.ca',
+            //     'ay_man@live.concordia.ca',
+            //     'a_nduwum@live.concordia.ca',
+            // );
 
-            foreach ($infectedEmail as $emails) {
-                sendAndLogEmail($emails, $subject, $message, $employee['FacilityID'], $employee['PersonID']);
-            }
-            //$infectedEmployeeEmail = "qjc353@encs.concordia.ca";
+            // foreach ($infectedEmail as $emails) {
+            //     sendAndLogEmail($emails, $subject, $message, $employee['FacilityID'], $employee['PersonID']);
+            // }
+            $infectedEmployeeEmail = "qjc353@encs.concordia.ca";
 
 
-            //return sendAndLogEmail($infectedEmployeeEmail, $subject, $message, $employee['FacilityID'], $employee['PersonID']);
+            return sendAndLogEmail($infectedEmployeeEmail, $subject, $message, $employee['FacilityID'], $employee['PersonID']);
         }
         return true;
     } catch (PDOException $e) {
@@ -215,20 +215,20 @@ function sendWeeklyScheduleEmails() {
             //$receiverEmail = $row['EmailAddress'];
             // Send email MAKE UP BULLSHIT WE DON;T WANT TO SEND IT TO ACTUAL EMAILS OR ELSE WE'RE FFFFFFFFF
             //$receiverEmail = "sentWeeklySchedule@lol.com";
-           // $receiverEmail = "qj_comp353_4@encs.concordia.ca";
+            $receiverEmail = "qj_comp353_4@encs.concordia.ca";
             $receiverID = $row['PersonID'];
             $senderFacilityID = $row['FacilityID'];
 
-            $receiverEmail = array(
-                'a_moranc@live.concordia.ca',
-                'Robert.chen@mail.concordia.ca',
-                'ay_man@live.concordia.ca',
-                'a_nduwum@live.concordia.ca',
-            );
+            // $receiverEmail = array(
+            //     'a_moranc@live.concordia.ca',
+            //     'Robert.chen@mail.concordia.ca',
+            //     'ay_man@live.concordia.ca',
+            //     'a_nduwum@live.concordia.ca',
+            // );
 
-            foreach ($receiverEmail as $emails) {
-                sendAndLogEmail($emails, $subject, $body, $senderFacilityID, $receiverID);
-            }
+            // foreach ($receiverEmail as $emails) {
+            //     sendAndLogEmail($emails, $subject, $body, $senderFacilityID, $receiverID);
+            // }
 
             return sendAndLogEmail($receiverEmail, $subject, $body, $senderFacilityID, $receiverID);
         }
