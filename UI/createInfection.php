@@ -4,6 +4,8 @@
 <?php
 // Database connection
 require_once 'connection.php';
+//allowing access to several email things
+require_once 'functions/CRUD_Email.php';
 
 // Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -22,7 +24,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $statement->bindParam(':infectionNumber', $infectionNumber);
     $statement->bindParam(':infectionType', $infectionType);
 
+
     if ($statement->execute()) {
+        //Get medicareCard
+        $sql = "SELECT E.MedicareCard AS mID
+            FROM Persons P  
+            WHERE P.PersonID = $personID
+            JOIN Employees E ON E.MedicareCard = P.MedicareCard";
+
+        $data = $conn_pdo->prepare($sql);
+        $data->execute();
+
+        $card = $data->fetch();
+
+        //Cancel schedule if true
+        cancelAssignmentsForInfectedEmployee($card['mID'], $dateOfInfection);
+
+
         $conn_pdo = null;
         // Redirect to the infection list page after successful insertion
         echo "<script>alert('Infection record added successfully!'); window.location.href = 'displayInfection.php';</script>";

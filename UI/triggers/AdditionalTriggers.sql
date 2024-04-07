@@ -91,3 +91,34 @@ END;
 DELIMITER ;
 
 DROP TRIGGER IF EXISTs before_insert_schedule_StartBiggerThanEnd;
+
+
+
+-- TRIGGER used to ensure the maximum allowed date (two weeks ago) and checks if the entered date of infection 
+-- is not more than two weeks ago.
+
+DELIMITER $$
+
+CREATE TRIGGER prevent_old_infections
+
+BEFORE INSERT ON HadInfections
+FOR EACH ROW
+BEGIN
+    DECLARE today DATE;
+    DECLARE max_allowed_date DATE;
+
+    -- Get today's date
+    SET today = CURDATE();
+
+    -- Calculate the maximum allowed date (two weeks ago)
+    SET max_allowed_date = DATE_SUB(today, INTERVAL 14 DAY);
+
+    -- Check if the DateOfInfection is more than two weeks ago
+    IF NEW.DateOfInfection < max_allowed_date THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Cannot insert old infection records (more than two weeks ago)';
+    END IF;
+END$$
+
+DELIMITER ;
+

@@ -7,11 +7,19 @@ function sendMail($to, $subject, $message) {
     $headers = "From: sender@example.com" . "\r\n";
     $headers .= "Reply-To: sender@example.com" . "\r\n";
 
-    $mailSent = mail($to, $subject, $message, $headers);
+    try {
+        // Attempt to send the email
+        $mailSent = mail($to, $subject, $message, $headers);
 
-    if ($mailSent) {
-        return true;
-    } else {
+        // Check if the email was sent successfully
+        if ($mailSent) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (Exception $e) {
+        // Handle any exceptions that occur during email sending
+        error_log("Error sending email: " . $e->getMessage());
         return false;
     }
 }
@@ -60,11 +68,12 @@ function sendAndLogEmail($to, $subject, $message, $senderID, $receiverID) {
 
 
 
-//This function cancels the schedule for an infected teacher
+//This function cancels the schedule for an infected employee
 function cancelAssignmentsForInfectedEmployee($medicareCard, $infectionDate) {
     global $conn_pdo;
 
-    $endDate = date('Y-m-d', strtotime($infectionDate . ' + 2 weeks'));
+
+    $endDate = date('m-d-Y', strtotime($infectionDate . ' + 2 weeks'));
 
     try {
         $sql = "UPDATE Schedule
@@ -81,7 +90,7 @@ function cancelAssignmentsForInfectedEmployee($medicareCard, $infectionDate) {
         return true;
     } catch (PDOException $e) {
         // Handle exceptions or errors
-        return false;
+        return "Failed to send canceled assignments warning emails: " . $e->getMessage();
     }
 }
 
@@ -94,41 +103,47 @@ function sendInfectedEmployeeWarningEmail($medicareCard) {
                             FROM Employees E
                             JOIN Persons P ON P.MedicareCard = E.MedicareCard
                             JOIN Facilities F ON E.FacilityID = F.FacilityID
-                            WHERE E.MedicareCard = $medicareCard";
+                            WHERE E.MedicareCard = :medicareCard";
             
          //Connect to database   
-        $data = $conn_pdo->query($query_employee);
-        $employee = $data->fetch(PDO::FETCH_ASSOC);
+        $data = $conn_pdo->prepare($query_employee);     
+        // Bind the parameter
+        $data->bindParam(':medicareCard', $medicareCard);
+        $data->execute();
+
+        $employee = $data->fetch();
 
         //while ($employee = $data->fetchAll(PDO::FETCH_ASSOC)) {
 
         // Define email parameters
-        $subject = "Warning: COVID-19 Infection Alert";
-        $message = "Dear colleague,\n\nOne of your coworkers ({$employee['FirstName']} {$employee['LastName']}) 
-                        has been infected with COVID-19. Please take necessary precautions and monitor your health.\n\n
-                        Best regards,\n\n
-                        {$employee['FacilityName']}.";
+        if ($employee) {
+            $subject = "Warning: COVID-19 Infection Alert";
+            $message = "Dear colleague,\n\nOne of your coworkers ({$employee['FirstName']} {$employee['LastName']}) 
+                            has been infected with COVID-19. Please take necessary precautions and monitor your health.\n\n
+                            Best regards,\n\n
+                            {$employee['FacilityName']}.";
 
-        // Send email MAKE UP BULLSHIT WE DON;T WANT TO SEND IT TO ACTUAL EMAILS OR ELSE WE'RE FFFFFFFFF
-        $infectedEmployeeEmail = "";
+            // Send email MAKE UP BULLSHIT WE DON;T WANT TO SEND IT TO ACTUAL EMAILS OR ELSE WE'RE FFFFFFFFF
+            $infectedEmployeeEmail = "GotInfected@lol.com";
+            $emailSent = sendMail($infectedEmployeeEmail, $subject, $message);
 
-        $emailSent = sendMail($infectedEmployeeEmail, $subject, $message);
+            // Log email in the database
+            //Since it wouldn't work as our email is fake, let's make it false
+            if (!$emailSent) {
+                $logQuery = "INSERT INTO EmailLog (email_date, sender, receiver, subject_email, body)
+                            VALUES (NOW(), :sender, :receiver, :subject, SUBSTRING(:body, 1, 100))";
 
-        // Log email in the database
-        if ($emailSent) {
-            $logQuery = "INSERT INTO EmailLog (emailID, email_date, sender, receiver, subject_email, body)
-                        VALUES (:emailID, NOW(), :sender, :receiver, :subject, :body)";
+                $logStatement = $conn_pdo->prepare($logQuery);
 
-            $logStatement = $conn_pdo->prepare($logQuery);
+                //$emailID = hexdec(uniqid()); // Generate a unique email ID
 
-            $emailID = uniqid(); // Generate a unique email ID
-
-            $logStatement->bindParam(':emailID', $emailID); 
-            $logStatement->bindParam(':sender', $employee['FacilityID']); //  FacilityID is used as sender
-            $logStatement->bindParam(':receiver', $employee['PersonID']); // PersonID is used as receiver
-            $logStatement->bindParam(':subject', $subject);
-            $logStatement->bindParam(':body', $message);
-            $logStatement->execute();
+                //$logStatement->bindParam(':emailID', $emailID); 
+                $logStatement->bindParam(':sender', $employee['FacilityID']); //  FacilityID is used as sender
+                $logStatement->bindParam(':receiver', $employee['PersonID']); // PersonID is used as receiver
+                $logStatement->bindParam(':subject', $subject);
+                $logStatement->bindParam(':body', $message);
+                $logStatement->execute();
+            }
         }
        // }
 
@@ -137,15 +152,9 @@ function sendInfectedEmployeeWarningEmail($medicareCard) {
 
     } catch (PDOException $e) {
         // Handle exceptions or errors
-        return false;
+        return "Failed to send infected employee warning emails: " . $e->getMessage();
     }
-
-    // Log email in the database (you can implement this part)
-
-    // Return true if email sent successfully, false otherwise
-
 }
-
 
 
 
@@ -159,7 +168,7 @@ function sendWeeklyScheduleEmails() {
 
     try {
         $sql = "SELECT e.MedicareCard, e.FacilityID, f.FacilityName, f.Address, f.City, f.Province,
-                        e.FirstName, e.LastName, e.EmailAddress, p.PersonID,
+                        p.FirstName, p.LastName, p.Email, p.PersonID,
                         s.Schedule_Date, s.StartTime, s.EndTime
                 FROM Employees e
                 JOIN Schedule s ON e.MedicareCard = s.MedicareCard
@@ -178,7 +187,7 @@ function sendWeeklyScheduleEmails() {
         while ($row = $data->fetchAll(PDO::FETCH_ASSOC)) {
 
             $subject = "{$row['FacilityName']} Schedule for " . date('l m-d-y', strtotime($nextSunday)) . " to " . date('l m-d-y', strtotime($nextSaturday));    
-            $body .= "Hello {$row['FirstName']} {$row['LastName']}, ({$row['EmailAddress']}). as a member of our facility,\n";
+            $body .= "Hello {$row['FirstName']} {$row['LastName']}, ({$row['Email']}). as a member of our facility,\n";
             $body .= "This is your schedule for the coming week:\n";
 
             for ($i = 0; $i < 7; $i++) {
@@ -194,7 +203,9 @@ function sendWeeklyScheduleEmails() {
             $body .= "Address: {$row['Address']}, {$row['City']}, {$row['Province']}\n";
 
 
-            $receiverEmail = $row['EmailAddress'];
+            //$receiverEmail = $row['EmailAddress'];
+            // Send email MAKE UP BULLSHIT WE DON;T WANT TO SEND IT TO ACTUAL EMAILS OR ELSE WE'RE FFFFFFFFF
+            $receiverEmail = "sentWeeklySchedule@lol.com";
             $receiverID = $row['PersonID'];
             $senderFacilityID = $row['FacilityID'];
 
@@ -204,7 +215,7 @@ function sendWeeklyScheduleEmails() {
         return true;
     } catch (PDOException $e) {
         // Handle exceptions or errors
-        return false;
+        return "Failed to send weekly emails: " . $e->getMessage();
     }
 }
 
