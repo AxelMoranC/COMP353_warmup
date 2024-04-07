@@ -76,6 +76,23 @@ function cancelAssignmentsForInfectedEmployee($medicareCard, $infectionDate) {
     $endDate = date('m-d-Y', strtotime($infectionDate . ' + 2 weeks'));
 
     try {
+        // Retrieve the email address of the infected employee
+        // $emailQuery = "SELECT EmailAddress FROM Persons WHERE MedicareCard = :medicareCard";
+        // $emailStatement = $conn_pdo->prepare($emailQuery);
+        // $emailStatement->bindParam(':medicareCard', $medicareCard);
+        // $emailStatement->execute();
+        // $emailResult = $emailStatement->fetch();
+        // $infectedEmployeeEmail = $emailResult['EmailAddress'];
+
+        // // Compose the email message
+        // $subject = "Assignment Cancellation Due to COVID-19 Infection";
+        // $message = "Dear Employee,\n\nYour assignment has been canceled due to a COVID-19 infection. Please contact your supervisor for further instructions.\n\nBest regards,\n\nYour Company";
+
+        // // Send email to the infected employee
+        // sendMail($infectedEmployeeEmail, $subject, $message);
+
+
+
         $sql = "UPDATE Schedule
                   SET StartTime = NULL, EndTime = NULL
                   WHERE MedicareCard = :medicareCard 
