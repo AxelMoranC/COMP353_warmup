@@ -32,7 +32,7 @@ function logEmail($sender, $receiver, $subject, $body) {
 
     try {
         $sql = "INSERT INTO EmailLog (email_date, sender, receiver, subject_email, body)
-                  VALUES (:emailDate, :sender, :receiver, :subject, :body)";
+                  VALUES (:emailDate, :sender, :receiver, :subject, SUBSTRING(:body, 1, 100))";
         $data = $conn_pdo->prepare($sql);
         $data->bindParam(':emailDate', $emailDate);
         $data->bindParam(':sender', $sender);
@@ -135,38 +135,30 @@ function sendInfectedEmployeeWarningEmail($medicareCard) {
         // Define email parameters
         if ($employee) {
             $subject = "Warning: COVID-19 Infection Alert";
-            $message = "Dear colleague,\n\nOne of your coworkers ({$employee['FirstName']} {$employee['LastName']}) 
-                            has been infected with COVID-19. Please take necessary precautions and monitor your health.\n\n
-                            Best regards,\n\n
-                            {$employee['FacilityName']}.";
+            $message = "Dear colleague,\r\n\r\nOne of your coworkers ({$employee['FirstName']} {$employee['LastName']}-> {$employee['MedicareCard']})\r\n";
+            $message .= "has been infected with COVID-19. Please take necessary precautions and monitor your health.\r\n\r\n";
+            $message .= "Best regards,\r\n\r\n";
+            $message .= "{$employee['FacilityName']}.";
 
             // Send email MAKE UP BULLSHIT WE DON;T WANT TO SEND IT TO ACTUAL EMAILS OR ELSE WE'RE FFFFFFFFF
-            $infectedEmployeeEmail = "GotInfected@lol.com";
-            $emailSent = sendMail($infectedEmployeeEmail, $subject, $message);
+            //$infectedEmployeeEmail = "qj_comp353_4@encs.concordia.ca";
 
-            // Log email in the database
-            //Since it wouldn't work as our email is fake, let's make it false
-            if (!$emailSent) {
-                $logQuery = "INSERT INTO EmailLog (email_date, sender, receiver, subject_email, body)
-                            VALUES (NOW(), :sender, :receiver, :subject, SUBSTRING(:body, 1, 100))";
+            $infectedEmail = array(
+                'a_moranc@live.concordia.ca',
+                'Robert.chen@mail.concordia.ca',
+                'ay_man@live.concordia.ca',
+                'a_nduwum@live.concordia.ca',
+            );
 
-                $logStatement = $conn_pdo->prepare($logQuery);
-
-                //$emailID = hexdec(uniqid()); // Generate a unique email ID
-
-                //$logStatement->bindParam(':emailID', $emailID); 
-                $logStatement->bindParam(':sender', $employee['FacilityID']); //  FacilityID is used as sender
-                $logStatement->bindParam(':receiver', $employee['PersonID']); // PersonID is used as receiver
-                $logStatement->bindParam(':subject', $subject);
-                $logStatement->bindParam(':body', $message);
-                $logStatement->execute();
+            foreach ($infectedEmail as $emails) {
+                sendAndLogEmail($emails, $subject, $message, $employee['FacilityID'], $employee['PersonID']);
             }
+            //$infectedEmployeeEmail = "qjc353@encs.concordia.ca";
+
+
+            //return sendAndLogEmail($infectedEmployeeEmail, $subject, $message, $employee['FacilityID'], $employee['PersonID']);
         }
-       // }
-
-        //Exit and return true TODO: ADD like a window alert or something
         return true;
-
     } catch (PDOException $e) {
         // Handle exceptions or errors
         return "Failed to send infected employee warning emails: " . $e->getMessage();
@@ -204,29 +196,41 @@ function sendWeeklyScheduleEmails() {
         while ($row = $data->fetchAll(PDO::FETCH_ASSOC)) {
 
             $subject = "{$row['FacilityName']} Schedule for " . date('l m-d-y', strtotime($nextSunday)) . " to " . date('l m-d-y', strtotime($nextSaturday));    
-            $body .= "Hello {$row['FirstName']} {$row['LastName']}, ({$row['Email']}). as a member of our facility,\n";
+            $body .= "Hello {$row['FirstName']} {$row['LastName']}, ({$row['Email']}). as a member of our facility,\r\n";
             $body .= "This is your schedule for the coming week:\n";
 
             for ($i = 0; $i < 7; $i++) {
                 $dayOfWeek = date('l', strtotime($nextSunday . " + $i days"));
                 $startTime = ($row["StartTime_$i"]) ? date('H:i', strtotime($row["StartTime_$i"])) : 'No Assignment';
                 $endTime = ($row["EndTime_$i"]) ? date('H:i', strtotime($row["EndTime_$i"])) : 'No Assignment';
-                $body .= "$dayOfWeek: $startTime - $endTime\n";
+                $body .= "$dayOfWeek: $startTime - $endTime\r\n";
             }
 
             //Finish
-            $body .= "Kind regards, \n\n";
-            $body = "hello, this is {$row['FacilityName']}\n";
-            $body .= "Address: {$row['Address']}, {$row['City']}, {$row['Province']}\n";
+            $body .= "Kind regards, \r\n\r\n";
+            $body = "hello, this is {$row['FacilityName']}\r\n";
+            $body .= "Address: {$row['Address']}, {$row['City']}, {$row['Province']}\r\n";
 
 
             //$receiverEmail = $row['EmailAddress'];
             // Send email MAKE UP BULLSHIT WE DON;T WANT TO SEND IT TO ACTUAL EMAILS OR ELSE WE'RE FFFFFFFFF
-            $receiverEmail = "sentWeeklySchedule@lol.com";
+            //$receiverEmail = "sentWeeklySchedule@lol.com";
+           // $receiverEmail = "qj_comp353_4@encs.concordia.ca";
             $receiverID = $row['PersonID'];
             $senderFacilityID = $row['FacilityID'];
 
-            sendAndLogEmail($receiverEmail, $subject, $body, $senderFacilityID, $receiverID);
+            $receiverEmail = array(
+                'a_moranc@live.concordia.ca',
+                'Robert.chen@mail.concordia.ca',
+                'ay_man@live.concordia.ca',
+                'a_nduwum@live.concordia.ca',
+            );
+
+            foreach ($receiverEmail as $emails) {
+                sendAndLogEmail($emails, $subject, $body, $senderFacilityID, $receiverID);
+            }
+
+            return sendAndLogEmail($receiverEmail, $subject, $body, $senderFacilityID, $receiverID);
         }
 
         return true;

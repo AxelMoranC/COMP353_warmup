@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo '<script>alert("Infected employee warning emails sent successfully.");</script>';
                 //echo '<script>window.location.href="Email.php"; </script>';
             } else {
-                echo '<script>alert("' . $result . '");</script>';
+                echo '<script>alert("Problem sending email: ' . $result . '");</script>';
                 echo '<script>window.location.href="Email.php"; </script>';
             }
         }
@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <form action="" method="post">
         <label for="infectedMedicareID">Infected Employee Medicare ID:</label>
         <input type="text" name="infectedMedicareID" id="infectedMedicareID" required>
-        <input type="submit" name="sendInfectedEmployeeEmail" value="Send Infected Employee Email">
+        <input type="submit" name="sendInfectedEmployeeEmail" value="Send Email to his colleagues">
     </form>
 
     <br />
