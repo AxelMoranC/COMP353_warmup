@@ -25,8 +25,8 @@ BEGIN
 
         -- Check if the latest vaccine was received within the past six months
         IF vaccine_received_date >= DATE_SUB(NEW.ScheduleDate, INTERVAL 6 MONTH) THEN
-            -- Proceed with the schedule insertion/update
-            -- No action needed here
+			-- Nothing
+            SET MESSAGE_TEXT='OK';
         ELSE
             -- Prevent the schedule insertion/update
             SIGNAL SQLSTATE '45000'
@@ -113,4 +113,3 @@ END$$
 DELIMITER ;
 
 DROP TRIGGER IF EXISTS two_hour_gap_between_work;
-

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Navigation Bar</title>
+    <!-- <title>Navigation Bar</title> -->
     <link rel="stylesheet" href="Styling/navigation.css" >
 </head>
 <body>
