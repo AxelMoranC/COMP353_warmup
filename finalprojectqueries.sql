@@ -277,6 +277,81 @@ INSERT INTO Schedule (MedicareCard, FacilityID, Schedule_Date, StartTime, EndTim
 ('MD2', 1, '2024-03-15', '08:00', '16:00'),
 ('MD3', 1, '2024-03-16', '08:00', '16:00');
 
+-- query #15
+SELECT 
+    p.FirstName,
+    p.LastName,
+    MIN(e.StartDate) AS FirstDayOfWorkAsNurse,
+    p.DateOfBirth,
+    p.Email,
+    COUNT(DISTINCT hi.DateOfInfection) AS TotalCOVID19Infections,
+    COUNT(DISTINCT hv.DateOfVaccination) AS TotalVaccines,
+    SUM(TIMESTAMPDIFF(HOUR, s.StartTime, s.EndTime)) AS TotalScheduledHours,
+    COUNT(DISTINCT sr.ResidenceID) AS TotalSecondaryResidences
+FROM 
+    Employees e
+JOIN 
+    Persons p ON e.MedicareCard = p.MedicareCard
+JOIN 
+    Schedule s ON e.MedicareCard = s.MedicareCard
+LEFT JOIN 
+    HadInfections hi ON p.PersonID = hi.PersonID AND hi.InfectionType = 'COVID-19' AND hi.DateOfInfection > CURDATE() - INTERVAL 14 DAY
+LEFT JOIN 
+    HasVaccines hv ON p.PersonID = hv.PersonID
+LEFT JOIN 
+    SecondaryResidence sr ON p.PersonID = sr.PersonID
+WHERE 
+    e.Job = 'nurse' AND (e.EndDate IS NULL OR e.EndDate > CURDATE())
+GROUP BY 
+    p.PersonID
+HAVING 
+    COUNT(DISTINCT e.FacilityID) >= 2
+ORDER BY 
+    FirstDayOfWorkAsNurse ASC, p.FirstName ASC, p.LastName ASC;
+
+-- add sample data to test out query #15
+INSERT INTO Residence (HouseType, Address, City, Province, PostalCode, ResidencePhoneNumber, AmountBedrooms) VALUES
+('house', '789 Home St', 'Townsville', 'State', '10101', '555-1111', 3),
+('apartment', '101 Apt Rd', 'Cityplace', 'Province', '20202', '555-2222', 2),
+('condominium', '202 Condo Ln', 'Ville', 'State', '30303', '555-3333', 2);
+
+-- Persons
+INSERT INTO Persons (FirstName, LastName, DateOfBirth, SocialSecurity, MedicareCard, PhoneNumber, Citizenship, Email, ResidenceID, StartedDateAtAddress) VALUES
+('TheShy', 'Doe', '1985-01-01', 'SN1', 'MA1', '123-4444', 'Canadian', 'mundo.doe@example.com', 31, '2020-01-01'),
+('Faker', 'Smith', '1991-02-02', 'SN2', 'MA2', '123-5678', 'Canadian', 'drlebron@example.com', 32, '2020-02-01');
+-- Employees (Nurses)
+INSERT INTO Employees (MedicareCard, FacilityID, Job, StartDate) VALUES
+('MA1', 1, 'nurse', '2015-01-10'),
+('MA1', 2, 'nurse', '2017-02-20'),
+('MA2', 1, 'nurse', '2016-03-15'),
+('MA2', 2, 'nurse', '2018-04-25');
+
+-- TO ADD (still not added b/c of error in hadinfections table for some reason)
+-- Infections
+INSERT INTO HadInfections (PersonID, DateOfInfection, InfectionNumber, InfectionType) VALUES
+(37, CURDATE() - INTERVAL 10 DAY, 1, 'COVID-19'),
+(38, CURDATE() - INTERVAL 12 DAY, 1, 'COVID-19');
+
+-- Vaccines
+INSERT INTO HasVaccines (PersonID, DateOfVaccination, DoseNumber, Location, Type) VALUES
+(37, '2021-05-01', 1, 'Central Hospital', 'Pfizer'),
+(37, '2021-06-01', 2, 'Central Hospital', 'Pfizer'),
+(38, '2021-07-01', 1, 'West Clinic', 'Moderna'),
+(38, '2021-08-01', 2, 'West Clinic', 'Moderna');
+
+-- Schedule
+INSERT INTO Schedule (MedicareCard, FacilityID, Schedule_Date, StartTime, EndTime) VALUES
+('MA1', 1, CURDATE() - INTERVAL 1 WEEK, '08:00', '16:00'),
+('MA2', 2, CURDATE() - INTERVAL 1 WEEK, '09:00', '17:00');
+
+-- Assuming valid ResidenceIDs 2 and 3 for secondary residences
+INSERT INTO SecondaryResidence (PersonID, ResidenceID, ResidenceType, StartDateAtAddress) VALUES
+(37, 12, 'Secondary', '2019-01-01'),
+(37, 13, 'Secondary', '2019-06-01'),
+(38, 14, 'Secondary', '2019-02-01'),
+(38, 15, 'Secondary', '2019-07-01');
+
+
 -- query #16
 SELECT 
     e.Job AS Role,
