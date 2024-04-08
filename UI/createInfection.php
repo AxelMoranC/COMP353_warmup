@@ -27,14 +27,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($statement->execute()) {
         //Get medicareCard
-        $sql = "SELECT E.MedicareCard AS mID
+        //Get medicareCard
+        $sql = "SELECT P.MedicareCard AS mID
             FROM Persons P  
-            JOIN Employees E ON E.MedicareCard = P.MedicareCard
             WHERE P.PersonID = :personID";
 
         $data = $conn_pdo->prepare($sql);
-
-        $data->bindParam(':personID', $personID);
+        $data->bindParam(':personID',$personID);
         $data->execute();
 
         $card = $data->fetch();
