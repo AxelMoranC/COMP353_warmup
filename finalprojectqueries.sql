@@ -294,3 +294,23 @@ LEFT OUTER JOIN HadInfections H ON H.PersonID = P.PersonID
 WHERE E.EndDate IS NULL 
 GROUP BY E.Job
 order by E.Job ASC;
+
+-- query 18
+-- For all provinces, give the total number of facilities, the total number of employees 
+-- currently working in the facilities, the total number of employees currently working 
+-- and infected by COVID-19, the maximum capacity of the facilities, and the total hours 
+-- scheduled in all facilities during a specific period. Results should be displayed in 
+-- ascending order by province
+SELECT 
+    F.Province,
+    COUNT(DISTINCT F.FacilityID) AS `Total Number Of Facilities`,
+    COUNT(DISTINCT CASE WHEN E.EndDate IS NULL OR H.PersonID IS NOT NULL THEN E.MedicareCard END) AS `Total Employees Working/Infected`,
+    SUM(DISTINCT F.Capacity) AS `Maximum Capacity`, -- Assuming they wantyed all capacity of the facilities together
+    SUM(TIMESTAMPDIFF(HOUR, S.StartTime, S.EndTime)) AS `Total Hours Scheduled`
+FROM Facilities F
+JOIN Employees E ON E.FacilityID = F.FacilityID
+JOIN Persons P ON P.MedicareCard = E.MedicareCard
+LEFT JOIN HadInfections H ON H.PersonID = P.PersonID
+LEFT JOIN Schedule S ON S.MedicareCard = E.MedicareCard
+GROUP BY F.Province
+ORDER BY F.Province ASC;
