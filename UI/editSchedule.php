@@ -2,6 +2,7 @@
 
 <?php 
 require_once 'connection.php';
+require_once 'functions/CRUD_Schedule.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Process form submission to update schedule details
@@ -12,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $startTime = $_POST["startTime"];
     $endTime = $_POST["endTime"];
     
-    updateSchedule($medicareCard, $facilityID, $scheduleDate, $startTime, $endTime);
+    updateSchedule($scheduleID, $medicareCard, $facilityID, $scheduleDate, $startTime, $endTime);
 }
 
 

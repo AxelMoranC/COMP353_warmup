@@ -4,32 +4,40 @@
 function addRegister($firstname, $lastname, $dateOfBirth, $socialSecurity, $medicareCard, $phoneNumber, $citizenship,$email, $residenceID, $startedDateAtAddress) 
 {
     global $conn_pdo;
-    // Prepare SQL statement to insert data into Persons table
-    $sql = "INSERT INTO Persons (FirstName, LastName, DateOfBirth, SocialSecurity, MedicareCard, PhoneNumber, Citizenship, Email, ResidenceID, StartedDateAtAddress) 
-            VALUES (:firstName, :lastName, :dateOfBirth, :socialSecurity, :medicareCard, :phoneNumber, :citizenship, :email, :residenceID, :startedDateAtAddress)";
 
-    $statement = $conn_pdo->prepare($sql);
+    try {
+        // Prepare SQL statement to insert data into Persons table
+        $sql = "INSERT INTO Persons (FirstName, LastName, DateOfBirth, SocialSecurity, MedicareCard, PhoneNumber, Citizenship, Email, ResidenceID, StartedDateAtAddress) 
+                VALUES (:firstName, :lastName, :dateOfBirth, :socialSecurity, :medicareCard, :phoneNumber, :citizenship, :email, :residenceID, :startedDateAtAddress)";
 
-    // Bind parameters
-    $statement->bindParam(':firstName', $firstName);
-    $statement->bindParam(':lastName', $lastName);
-    $statement->bindParam(':dateOfBirth', $dateOfBirth);
-    $statement->bindParam(':socialSecurity', $socialSecurity);
-    $statement->bindParam(':medicareCard', $medicareCard);
-    $statement->bindParam(':phoneNumber', $phoneNumber);
-    $statement->bindParam(':citizenship', $citizenship);
-    $statement->bindParam(':email', $email);
-    $statement->bindParam(':residenceID', $residenceID);
-    $statement->bindParam(':startedDateAtAddress', $startedDateAtAddress);
+        $statement = $conn_pdo->prepare($sql);
 
-    // Execute the statement
-    if ($statement->execute()) {
-        echo "<script>alert('Person added successfully!');</script>";
-    } else {
-        echo "<script>alert('Failed to add person.');</script>";
+        // Bind parameters
+        $statement->bindParam(':firstName', $firstName);
+        $statement->bindParam(':lastName', $lastName);
+        $statement->bindParam(':dateOfBirth', $dateOfBirth);
+        $statement->bindParam(':socialSecurity', $socialSecurity);
+        $statement->bindParam(':medicareCard', $medicareCard);
+        $statement->bindParam(':phoneNumber', $phoneNumber);
+        $statement->bindParam(':citizenship', $citizenship);
+        $statement->bindParam(':email', $email);
+        $statement->bindParam(':residenceID', $residenceID);
+        $statement->bindParam(':startedDateAtAddress', $startedDateAtAddress);
+
+        // Execute the statement
+        if ($statement->execute()) {
+            $conn_pdo = null;
+            echo "<script>alert('Registration complete!'); window.location.href = 'displayPeople.php';</script>";
+        } else {
+            $conn_pdo = null;
+            echo "<script>alert('Registration failed....'); window.location.href = 'displayPeople.php';</script>";
+        }
+    }
+    catch(PDOException $e) {
+        $conn_pdo = null;
+        echo "<script>alert('{$e->getMessage()}'); window.location.href = 'displayPeople.php';</script>";
     }
 
-    $conn_pdo = null;
 }
 
 function updatePerson($personID, $firstName, $lastName, $dateOfBirth, $socialSecurity, $medicareCard, $phoneNumber, $citizenship, $email, $residenceID, $startedDateAtAddress) 

@@ -4,34 +4,41 @@ function createEmployee($medicareCard, $facilityID, $job, $startDate, $endDate= 
     //require_once 'connection.php';
     global $conn_pdo;
 
-    $sql = "INSERT INTO Employees 
-            (MedicareCard, FacilityID, Job, StartDate, EndDate) 
-            VALUES (:medicareCard, :facilityID, :job, :startDate, :endDate)";
-    
-    $data = $conn_pdo->prepare($sql);
+    try {
+        $sql = "INSERT INTO Employees 
+                (MedicareCard, FacilityID, Job, StartDate, EndDate) 
+                VALUES (:medicareCard, :facilityID, :job, :startDate, :endDate)";
+        
+        $data = $conn_pdo->prepare($sql);
 
-    $data->bindParam(':medicareCard', $medicareCard);
-    $data->bindParam(':facilityID', $facilityID);
-    $data->bindParam(':job', $job);
-    $data->bindParam(':startDate', $startDate);
+        $data->bindParam(':medicareCard', $medicareCard);
+        $data->bindParam(':facilityID', $facilityID);
+        $data->bindParam(':job', $job);
+        $data->bindParam(':startDate', $startDate);
 
-    // Bind EndDate as NULL if it's not provided
-    // Check if endDate is provided or not
-    if (!empty($endDate)) {
-        $data->bindParam(':endDate', $endDate);
-    } else {
-        // Bind a NULL value if endDate is empty
-        $data->bindValue(':endDate', null, PDO::PARAM_NULL);
+        // Bind EndDate as NULL if it's not provided
+        // Check if endDate is provided or not
+        if (!empty($endDate)) {
+            $data->bindParam(':endDate', $endDate);
+        } else {
+            // Bind a NULL value if endDate is empty
+            $data->bindValue(':endDate', null, PDO::PARAM_NULL);
+        }
+        
+        
+        // Execute the query
+        if ($data->execute()) {
+            $conn_pdo = null;
+            echo "<script>alert('Employee added successfully!'); window.location.href = 'displayEmployee.php';</script>";
+        } else {
+            $conn_pdo = null;
+            echo "<script>alert('Attempting to add employee....'); window.location.href = 'displayEmployee.php';</script>";
+        }
+
     }
-    
-    
-    // Execute the query
-    if ($data->execute()) {
+    catch(PDOException $e) {
         $conn_pdo = null;
-        echo "<script>alert('Employee added successfully!'); window.location.href = 'displayEmployee.php';</script>";
-    } else {
-        $conn_pdo = null;
-        echo "<script>alert('Attempting to add employee....'); window.location.href = 'displayEmployee.php';</script>";
+        echo "<script>alert('{$e->getMessage()}'); window.location.href = 'displayEmployee.php';</script>";
     }
 }
 

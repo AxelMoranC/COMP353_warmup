@@ -73,7 +73,7 @@ function cancelAssignmentsForInfectedEmployee($medicareCard, $infectionDate) {
     global $conn_pdo;
 
 
-    $endDate = date('m-d-Y', strtotime($infectionDate . ' + 2 weeks'));
+    $endDate = date('Y-m-d', strtotime($infectionDate . ' + 2 weeks'));
 
     try {
         // Retrieve the email address of the infected employee
@@ -96,10 +96,10 @@ function cancelAssignmentsForInfectedEmployee($medicareCard, $infectionDate) {
         $sql = "UPDATE Schedule
                   SET StartTime = NULL, EndTime = NULL, is_no_assignment = 0
                   WHERE MedicareCard = :medicareCard 
-                    AND Schedule_Date BETWEEN :infectionDate AND :endDate";
+                  AND Schedule_Date BETWEEN :infectionDate AND :endDate";
         
         $data = $conn_pdo->prepare($sql);
-        $data->bindParam(':medicareCard', $infectedMedicareCard);
+        $data->bindParam(':medicareCard', $medicareCard);
         $data->bindParam(':infectionDate', $infectionDate);
         $data->bindParam(':endDate', $endDate);
         $data->execute();
@@ -114,6 +114,7 @@ function cancelAssignmentsForInfectedEmployee($medicareCard, $infectionDate) {
 //This function sends an email to all the employees that one of their colleagues has been infected
 function sendInfectedEmployeeWarningEmail($medicareCard) {
     global $conn_pdo;
+    $isValid = false;
 
     try {
         $query_employee = "SELECT E.*, P.PersonID, P.FirstName, P.LastName,F.FacilityName
@@ -154,12 +155,12 @@ function sendInfectedEmployeeWarningEmail($medicareCard) {
             //     sendAndLogEmail($emails, $subject, $message, $employee['FacilityID'], $employee['PersonID']);
             // }
             $infectedEmployeeEmail = "qjc353@encs.concordia.ca";
-
+            $isValid = true;
 
             sendAndLogEmail($infectedEmployeeEmail, $subject, $message, $employee['FacilityID'], $employee['PersonID']);
         }
 
-        return true;
+        return $isValid;
     } catch (PDOException $e) {
         // Handle exceptions or errors
         return "Failed to send infected employee warning emails: " . $e->getMessage();
@@ -193,9 +194,11 @@ function sendWeeklyScheduleEmails() {
         $data->bindParam(':nextSaturday', $nextSaturday);
 
         $data->execute();
+        //$row = $data->fetch();
 
         //Send email to facilities and stuff
         while ($row = $data->fetch(PDO::FETCH_ASSOC)) {
+        //if ($row){
             $subject = "{$row['FAC']}. Schedule for " . date('l m-d-y', strtotime($nextSunday)) . " to " . date('l m-d-y', strtotime($nextSaturday));    
             $body = ''; // Initialize $body variable
 
@@ -204,14 +207,14 @@ function sendWeeklyScheduleEmails() {
 
             for ($i = 0; $i < 7; $i++) {
                 $dayOfWeek = date('l', strtotime($nextSunday . " + $i days"));
-                $startTime = ($row["STIME"]) ? date('H:i', strtotime($row["STIME"])) : 'No Assignment';
-                $endTime = ($row["ETIME"]) ? date('H:i', strtotime($row["ETIME"])) : 'No Assignment';
+                $startTime = ($row["STIME"]) ? date('H:i', strtotime($row["STIME"])) : 'NULL';
+                $endTime = ($row["ETIME"]) ? date('H:i', strtotime($row["ETIME"])) : 'NULL';
                 $body .= "$dayOfWeek: $startTime - $endTime\r\n";
             }
 
             //Finish
             $body .= "Kind regards, \r\n\r\n";
-            $body .= "hello, this is {$row['FAN']}\r\n";
+            $body .= "this is {$row['FAN']}\r\n";
             $body .= "Address: {$row['ADDR']}, {$row['CITY']}, {$row['PRO']}\r\n";
 
             $receiverEmail = "robert.chen@mail.concordia.ca";

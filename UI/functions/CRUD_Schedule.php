@@ -95,7 +95,7 @@ function createSchedule($medicareCard, $facilityID, $scheduleDate, $startTime, $
 }
 
 
-function updateSchedule($medicareCard, $facilityID, $scheduleDate, $startTime, $endTime) 
+function updateSchedule($scheduleID, $medicareCard, $facilityID, $scheduleDate, $startTime, $endTime) 
 {
     global $conn_pdo;
     // Update schedule in the database
@@ -107,12 +107,11 @@ function updateSchedule($medicareCard, $facilityID, $scheduleDate, $startTime, $
                                                EndTime = :endTime 
                                            WHERE scheduleID = :scheduleID;');
     $updateStatement->bindParam(':facilityID', $facilityID);
-    $updateStatement->bindParam(':medicareCard', $employeeID);
-    $updateStatement->bindParam(':scheduleDate', $date);
+    $updateStatement->bindParam(':medicareCard', $medicareCard);
+    $updateStatement->bindParam(':scheduleDate', $scheduleDate);
     $updateStatement->bindParam(':startTime', $startTime);
     $updateStatement->bindParam(':endTime', $endTime);
     $updateStatement->bindParam(':scheduleID', $scheduleID);
-    $updateStatement->execute();
     
         // Execute the statement
         if ($updateStatement->execute()) {

@@ -276,3 +276,21 @@ INSERT INTO Schedule (MedicareCard, FacilityID, Schedule_Date, StartTime, EndTim
 ('MD1', 1, '2024-03-15', '08:00', '16:00'),
 ('MD2', 1, '2024-03-15', '08:00', '16:00'),
 ('MD3', 1, '2024-03-16', '08:00', '16:00');
+
+
+
+-- query 17
+-- Provide a report of all the employees working in all the facilities by role. Report should 
+-- include for every role of the employees, the total number of employees currently 
+-- working in the facilities, and the total number of employees who have never been 
+-- infected by COVID-19. Report should be displayed in ascending order by role. 
+SELECT DISTINCT E.Job, 
+	   COUNT(DISTINCT P.PersonID) AS 'Total Employees', 
+       SUM( CASE WHEN H.PersonID IS NULL 
+			THEN 1 ELSE 0 END) AS 'Never Infected'
+FROM Employees E
+LEFT JOIN Persons P ON P.MedicareCard = E.MedicareCard
+LEFT OUTER JOIN HadInfections H ON H.PersonID = P.PersonID
+WHERE E.EndDate IS NULL 
+GROUP BY E.Job
+order by E.Job ASC;

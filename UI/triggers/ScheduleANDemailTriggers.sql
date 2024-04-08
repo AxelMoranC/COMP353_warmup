@@ -9,6 +9,11 @@ SELECT DISTINCT e.MedicareCard, e.FacilityID, f.FacilityName, f.Address, f.City,
                 JOIN Persons p ON e.MedicareCard = p.MedicareCard
                 WHERE s.Schedule_Date BETWEEN '2024-04-14' AND '2024-04-20';
 
+SELECT E.MedicareCard AS mID
+            FROM Persons P  
+            JOIN Employees E ON E.MedicareCard = P.MedicareCard            
+            WHERE P.PersonID = 1;
+            
 DELIMITER $$
 
 CREATE TRIGGER before_schedule_insert_update
