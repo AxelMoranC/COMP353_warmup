@@ -22,13 +22,9 @@ if (isset($_GET['id']) && isset($_GET['date']) && isset($_GET['dose'])) {
 
     // Check if vaccination record exists
     if (!$vaccination) {
-        echo "Vaccination record not found.";
-        exit();
+        echo "<script>alert('Error: Vaccination record not found.'); window.location.href = 'displayVaccination.php';</script>";
     }
-} else {
-    echo "Invalid request.";
-    exit();
-}
+} 
 
 // Handle form submission for updating vaccination record
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -56,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $conn_pdo = null;   
         // Handle error if update fails
-        echo "Error: Unable to update vaccination record.";
+        echo "<script>alert('Error: Unable to update vaccination record.'); window.location.href = 'displayVaccination.php';</script>";
     }
 }
 ?>

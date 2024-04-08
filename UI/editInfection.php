@@ -11,24 +11,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $newInfectionNum = $_POST["infectionNum"];
     $newInfectionType = $_POST["infectionType"];
 
-    // Update the infection record in the database
-    $sql = "UPDATE HadInfections SET DateOfInfection = :dateOfInfection, InfectionNumber = :infectionNum, InfectionType = :infectionType WHERE PersonID = :personID";
-    $data = $conn_pdo->prepare($sql);
-    $data->bindParam(':dateOfInfection', $newDateOfInfection);
-    $data->bindParam(':infectionNum', $newInfectionNum);
-    $data->bindParam(':infectionType', $newInfectionType);
-    $data->bindParam(':personID', $personID);
+    try {
+        // Update the infection record in the database
+        $sql = "UPDATE HadInfections SET DateOfInfection = :dateOfInfection, InfectionNumber = :infectionNum, InfectionType = :infectionType WHERE PersonID = :personID";
+        $data = $conn_pdo->prepare($sql);
+        $data->bindParam(':dateOfInfection', $newDateOfInfection);
+        $data->bindParam(':infectionNum', $newInfectionNum);
+        $data->bindParam(':infectionType', $newInfectionType);
+        $data->bindParam(':personID', $personID);
 
-    if ($data->execute()) {
-        $conn_pdo = null;        
-        // Redirect to the infections list page after successful update
-        echo "<script>alert('Infection record edited successfully!'); window.location.href = 'displayInfection.php';</script>";
-        exit();
-    } else {
+        if ($data->execute()) {
+            $conn_pdo = null;        
+            // Redirect to the infections list page after successful update
+            echo "<script>alert('Infection record edited successfully!'); window.location.href = 'displayInfection.php';</script>";
+            exit();
+        } else {
+            $conn_pdo = null;   
+            // Handle error if update fails
+            echo "<script>alert('Infection record could not be edited!'); window.location.href = 'displayInfection.php';</script>";
+        }
+    }
+    catch(PDOException $e) {
         $conn_pdo = null;   
         // Handle error if update fails
-        echo "Error: Unable to update infection record.";
-        exit();
+        echo "<script>alert('{$e->getMessage()}'); window.location.href = 'displayInfection.php';</script>";
     }
 }
 
@@ -47,9 +53,8 @@ if (isset($_GET['PersonID']) && isset($_GET['DateOfInfection']) && isset($_GET['
     $data->execute();
     $infection = $data->fetch(PDO::FETCH_ASSOC);
 } else {
-    echo "Invalid request.";
+    echo "<script>alert('Infection record could not be edited!'); window.location.href = 'displayInfection.php';</script>";
     $conn_pdo = null;
-    exit();
 }
 
 ?>
@@ -68,7 +73,7 @@ if (isset($_GET['PersonID']) && isset($_GET['DateOfInfection']) && isset($_GET['
 <body>
 <h1>Edit Infection Case</h1>
 
-<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
     <input type="hidden" name="personID" value="<?php echo $vaccination['PersonID']; ?>">
 
     <label for="dateOfVaccination">Date of Infection:</label><br>
