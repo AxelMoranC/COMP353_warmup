@@ -3,7 +3,6 @@ SHOW TRIGGERS;
 DELIMITER $$
 
 CREATE TRIGGER prevent_old_infections
-
 BEFORE INSERT ON HadInfections
 FOR EACH ROW
 BEGIN
@@ -19,12 +18,12 @@ BEGIN
 	    -- Get the maximum vaccination date for the person
     SET max_infection_date = 
 					(SELECT MAX(DateOfInfection) 
-						FROM HasVaccines WHERE PersonID = NEW.PersonID AND InfectionNumber = numOfInfections);
+						FROM HadInfections WHERE PersonID = NEW.PersonID AND InfectionNumber = numOfInfections);
     -- Calculate the maximum allowed date (two weeks ago)
     SET max_allowed_date = DATE_SUB(today, INTERVAL 14 DAY);
 
 
-	IF NEW.DateOfInfection = CURDATE() THEN
+	IF NEW.DateOfInfection = CURDATE() AND max_infection_date = NEW.DateOfInfection THEN
 		SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Cannot get infected twice in the same day!!!';
 	END IF;
@@ -46,7 +45,7 @@ BEGIN
     END IF;
     
         -- Ensure that the new DateOfVaccination is not lower than the maximum vaccination date for the same DoseNumber
-    IF max_infection_date IS NOT NULL AND NEW.DateOfInfection < max_infection_date THEN
+    IF max_infection_date IS NOT NULL AND NEW.DateOfInfection <= max_infection_date THEN
         SIGNAL SQLSTATE '45000' 
         SET MESSAGE_TEXT = 'Date of Infection cannot be earlier than the maximum infection date for the same infection number';
     END IF;

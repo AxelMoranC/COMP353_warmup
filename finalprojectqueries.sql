@@ -329,8 +329,10 @@ INSERT INTO Employees (MedicareCard, FacilityID, Job, StartDate) VALUES
 -- TO ADD (still not added b/c of error in hadinfections table for some reason)
 -- Infections
 INSERT INTO HadInfections (PersonID, DateOfInfection, InfectionNumber, InfectionType) VALUES
-(37, CURDATE() - INTERVAL 10 DAY, 1, 'COVID-19'),
-(38, CURDATE() - INTERVAL 12 DAY, 1, 'COVID-19');
+(37, (CURDATE() - INTERVAL 10 DAY), 2, 'COVID-19'),
+(38, (CURDATE() - INTERVAL 12 DAY), 2, 'COVID-19');
+
+DELETE FROM HadInfections WHERE PersonID="38" AND InfectionNumber=2;
 
 -- Vaccines
 INSERT INTO HasVaccines (PersonID, DateOfVaccination, DoseNumber, Location, Type) VALUES
@@ -339,17 +341,22 @@ INSERT INTO HasVaccines (PersonID, DateOfVaccination, DoseNumber, Location, Type
 (38, '2021-07-01', 1, 'West Clinic', 'Moderna'),
 (38, '2021-08-01', 2, 'West Clinic', 'Moderna');
 
+INSERT INTO HasVaccines (PersonID, DateOfVaccination, DoseNumber, Location, Type) VALUES
+(37, '2024-02-01', 3, 'Central Hospital', 'Johnson & Johsnon'),
+(38, '2024-03-01', 3, 'Central Hospital', 'Johnson & Johsnon');
+
 -- Schedule
 INSERT INTO Schedule (MedicareCard, FacilityID, Schedule_Date, StartTime, EndTime) VALUES
-('MA1', 1, CURDATE() - INTERVAL 1 WEEK, '08:00', '16:00'),
-('MA2', 2, CURDATE() - INTERVAL 1 WEEK, '09:00', '17:00');
+('MA1', 1, CURDATE() - INTERVAL 1 WEEK, '08:00', '16:00'), -- 37
+('MA2', 2, CURDATE() - INTERVAL 1 WEEK, '09:00', '17:00');--  38
+
+SELECT * FROM Persons;
 
 -- Assuming valid ResidenceIDs 2 and 3 for secondary residences
 INSERT INTO SecondaryResidence (PersonID, ResidenceID, ResidenceType, StartDateAtAddress) VALUES
 (37, 12, 'Secondary', '2019-01-01'),
 (37, 13, 'Secondary', '2019-06-01'),
 (38, 14, 'Secondary', '2019-02-01'),
-(38, 15, 'Secondary', '2019-07-01');
 
 
 -- query #16

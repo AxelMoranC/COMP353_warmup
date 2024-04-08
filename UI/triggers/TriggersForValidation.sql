@@ -1,9 +1,0 @@
-
-
-DELIMITER $$
-
-CREATE TRIGGER 
-
-
-
-DELIMITER ;
