@@ -277,7 +277,23 @@ INSERT INTO Schedule (MedicareCard, FacilityID, Schedule_Date, StartTime, EndTim
 ('MD2', 1, '2024-03-15', '08:00', '16:00'),
 ('MD3', 1, '2024-03-16', '08:00', '16:00');
 
-
+-- query #16
+SELECT 
+    e.Job AS Role,
+    COUNT(DISTINCT e.MedicareCard) AS TotalWorkingEmployees,
+    SUM(CASE WHEN hi.InfectionType = 'COVID-19' AND hi.DateOfInfection BETWEEN DATE_SUB(CURDATE(), INTERVAL 14 DAY) AND CURDATE() THEN 1 ELSE 0 END) AS TotalInfectedByCOVID
+FROM 
+    Employees e
+LEFT JOIN 
+    Persons p ON e.MedicareCard = p.MedicareCard
+LEFT JOIN 
+    HadInfections hi ON p.PersonID = hi.PersonID
+WHERE 
+    (e.EndDate IS NULL OR e.EndDate > CURDATE())
+GROUP BY 
+    e.Job
+ORDER BY 
+    e.Job ASC;
 
 -- query 17
 -- Provide a report of all the employees working in all the facilities by role. Report should 
