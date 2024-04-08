@@ -60,25 +60,37 @@ function createSchedule($medicareCard, $facilityID, $scheduleDate, $startTime, $
     // Insert new schedule into the database
     global $conn_pdo;
 
-    $insertStatement = $conn_pdo->prepare('INSERT INTO Schedule (MedicareCard, FacilityID, Schedule_Date, StartTime, EndTime) 
-    VALUES (:medicareCard, :facilityID, :scheduleDate, :startTime, :endTime);');
-    $insertStatement->bindParam(':medicareCard', $medicareCard);
-    $insertStatement->bindParam(':facilityID', $facilityID);
-    $insertStatement->bindParam(':scheduleDate', $scheduleDate);
-    $insertStatement->bindParam(':startTime', $startTime);
-    $insertStatement->bindParam(':endTime', $endTime);
-    $insertStatement->execute();
+    try {
+        $insertStatement = $conn_pdo->prepare('INSERT INTO Schedule (MedicareCard, FacilityID, Schedule_Date, StartTime, EndTime, is_no_assignment) 
+        VALUES (:medicareCard, :facilityID, :scheduleDate, :startTime, :endTime, 1);');
+        $insertStatement->bindParam(':medicareCard', $medicareCard);
+        $insertStatement->bindParam(':facilityID', $facilityID);
+        $insertStatement->bindParam(':scheduleDate', $scheduleDate);
+        $insertStatement->bindParam(':startTime', $startTime);
+        $insertStatement->bindParam(':endTime', $endTime);
 
-    // Execute the statement
-    if ($insertStatement->execute()) {
+        // Execute the statement
+        if ($insertStatement->execute()) {
+            $conn_pdo = null;
+            echo "<script>alert('Success!'); window.location.href = 'displaySchedule.php';</script>";
+        } 
+        else {
+            $conn_pdo = null;
+            echo "<script>alert('Failed'); window.location.href = 'displaySchedule.php';</script>";
+        }
+    }
+    catch (PDOException $e) {
+        // Handle exceptions or errors
         $conn_pdo = null;
-        echo "<script>alert('Success!'); window.location.href = 'displaySchedule.php';</script>";
-        exit();
-    } 
-    else {
-        $conn_pdo = null;
-        echo "<script>alert('Failed'); window.location.href = 'displaySchedule.php';</script>";
-        exit();
+        $errorMessage = $e->getMessage();
+            // Check if the error message indicates a trigger error
+        if (strpos($errorMessage, 'SIGNAL') !== false) {
+            echo "<script> alert('Failed to insert schedule: " . $e->getMessage() . "'); window.location.href = 'displaySchedule.php';</script>";
+        }
+        else {
+            echo "<script> alert('Failed to insert schedule: " . $e->getMessage() . "'); window.location.href = 'displaySchedule.php';</script>";
+        }
+
     }
 }
 

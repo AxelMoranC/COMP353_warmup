@@ -94,7 +94,7 @@ function cancelAssignmentsForInfectedEmployee($medicareCard, $infectionDate) {
 
 
         $sql = "UPDATE Schedule
-                  SET StartTime = NULL, EndTime = NULL
+                  SET StartTime = NULL, EndTime = NULL, is_no_assignment = 0
                   WHERE MedicareCard = :medicareCard 
                     AND Schedule_Date BETWEEN :infectionDate AND :endDate";
         
@@ -156,8 +156,9 @@ function sendInfectedEmployeeWarningEmail($medicareCard) {
             $infectedEmployeeEmail = "qjc353@encs.concordia.ca";
 
 
-            return sendAndLogEmail($infectedEmployeeEmail, $subject, $message, $employee['FacilityID'], $employee['PersonID']);
+            sendAndLogEmail($infectedEmployeeEmail, $subject, $message, $employee['FacilityID'], $employee['PersonID']);
         }
+
         return true;
     } catch (PDOException $e) {
         // Handle exceptions or errors
@@ -170,70 +171,63 @@ function sendInfectedEmployeeWarningEmail($medicareCard) {
 //This function sends a WeeklySchedule Email to all the employees from the same facility
 function sendWeeklyScheduleEmails() {
     global $conn_pdo;
+    $isValid = false;
 
     // Get next Sunday and Saturday dates
-    $nextSunday = date('m-d-y', strtotime('next Sunday'));
-    $nextSaturday = date('m-d-y', strtotime($nextSunday . ' + 6 days'));
+    $nextSunday = date('Y-m-d', strtotime('next Sunday'));
+    $nextSaturday = date('Y-m-d', strtotime($nextSunday . ' + 6 days'));
 
     try {
-        $sql = "SELECT e.MedicareCard, e.FacilityID, f.FacilityName, f.Address, f.City, f.Province,
-                        p.FirstName, p.LastName, p.Email, p.PersonID,
-                        s.Schedule_Date, s.StartTime, s.EndTime
-                FROM Employees e
-                JOIN Schedule s ON e.MedicareCard = s.MedicareCard
-                JOIN Facilities f ON e.FacilityID = f.FacilityID
-                JOIN Persons p ON e.MedicareCard = p.MedicareCard
-                WHERE s.Schedule_Date BETWEEN :nextSunday AND :nextSaturday";
+        $sql = "SELECT DISTINCT e.MedicareCard AS MEDIC , e.FacilityID AS FAC, f.FacilityName AS FAN, 
+                f.Address AS ADDR, f.City AS CITY, f.Province AS PRO,
+                p.FirstName AS FNAME, p.LastName AS LNAME, p.Email AS EM, p.PersonID AS PID,
+                s.Schedule_Date AS SDATE, s.StartTime AS STIME, s.EndTime AS ETIME
+            FROM Employees e
+            JOIN Schedule s ON (e.MedicareCard = s.MedicareCard AND e.FacilityID = s.FacilityID)
+            JOIN Facilities f ON e.FacilityID = f.FacilityID
+            JOIN Persons p ON e.MedicareCard = p.MedicareCard
+            WHERE s.Schedule_Date BETWEEN :nextSunday AND :nextSaturday";
 
         $data = $conn_pdo->prepare($sql);
         $data->bindParam(':nextSunday', $nextSunday);
         $data->bindParam(':nextSaturday', $nextSaturday);
 
         $data->execute();
-        //$result = $data->fetchAll(PDO::FETCH_ASSOC);
 
         //Send email to facilities and stuff
-        while ($row = $data->fetchAll(PDO::FETCH_ASSOC)) {
+        while ($row = $data->fetch(PDO::FETCH_ASSOC)) {
+            $subject = "{$row['FAC']}. Schedule for " . date('l m-d-y', strtotime($nextSunday)) . " to " . date('l m-d-y', strtotime($nextSaturday));    
+            $body = ''; // Initialize $body variable
 
-            $subject = "{$row['FacilityName']} Schedule for " . date('l m-d-y', strtotime($nextSunday)) . " to " . date('l m-d-y', strtotime($nextSaturday));    
-            $body .= "Hello {$row['FirstName']} {$row['LastName']}, ({$row['Email']}). as a member of our facility,\r\n";
+            $body = "Hello {$row['FNAME']} {$row['LNAME']}, ({$row['EM']}). as a member of our facility,\r\n";
             $body .= "This is your schedule for the coming week:\n";
 
             for ($i = 0; $i < 7; $i++) {
                 $dayOfWeek = date('l', strtotime($nextSunday . " + $i days"));
-                $startTime = ($row["StartTime_$i"]) ? date('H:i', strtotime($row["StartTime_$i"])) : 'No Assignment';
-                $endTime = ($row["EndTime_$i"]) ? date('H:i', strtotime($row["EndTime_$i"])) : 'No Assignment';
+                $startTime = ($row["STIME"]) ? date('H:i', strtotime($row["STIME"])) : 'No Assignment';
+                $endTime = ($row["ETIME"]) ? date('H:i', strtotime($row["ETIME"])) : 'No Assignment';
                 $body .= "$dayOfWeek: $startTime - $endTime\r\n";
             }
 
             //Finish
             $body .= "Kind regards, \r\n\r\n";
-            $body = "hello, this is {$row['FacilityName']}\r\n";
-            $body .= "Address: {$row['Address']}, {$row['City']}, {$row['Province']}\r\n";
+            $body .= "hello, this is {$row['FAN']}\r\n";
+            $body .= "Address: {$row['ADDR']}, {$row['CITY']}, {$row['PRO']}\r\n";
 
+            $receiverEmail = "robert.chen@mail.concordia.ca";
+            $receiverID = $row['PID'];
+            $senderFacilityID = $row['FAC'];
 
-            //$receiverEmail = $row['EmailAddress'];
-            // Send email MAKE UP BULLSHIT WE DON;T WANT TO SEND IT TO ACTUAL EMAILS OR ELSE WE'RE FFFFFFFFF
-            //$receiverEmail = "sentWeeklySchedule@lol.com";
-            $receiverEmail = "qj_comp353_4@encs.concordia.ca";
-            $receiverID = $row['PersonID'];
-            $senderFacilityID = $row['FacilityID'];
-
-            // $receiverEmail = array(
-            //     'a_moranc@live.concordia.ca',
-            //     'Robert.chen@mail.concordia.ca',
-            //     'ay_man@live.concordia.ca',
-            //     'a_nduwum@live.concordia.ca',
-            // );
-
-            // foreach ($receiverEmail as $emails) {
-            //     sendAndLogEmail($emails, $subject, $body, $senderFacilityID, $receiverID);
-            // }
-
-            return sendAndLogEmail($receiverEmail, $subject, $body, $senderFacilityID, $receiverID);
+            if (sendAndLogEmail($receiverEmail, $subject, $body, $senderFacilityID, $receiverID)) {
+                $isValid = true;
+            } else {
+                return false;
+            }
         }
 
-        return true;
+        // Return true if at least one email was sent successfully
+        return $isValid;
+
     } catch (PDOException $e) {
         // Handle exceptions or errors
         return "Failed to send weekly emails: " . $e->getMessage();

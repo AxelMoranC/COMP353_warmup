@@ -31,7 +31,7 @@ DELIMITER $$
                             FROM Facility WHERE FacilityID = NEW.FacilityID);
         
         IF (facility_id = 0 OR facility_id < 0 ) THEN
-            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'ResidenceID does not exist in Residence table';
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'FacilityID does not exist in Facility table';
         END IF;
     END$$
 DELIMITER ;

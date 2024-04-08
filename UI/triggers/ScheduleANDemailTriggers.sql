@@ -1,3 +1,14 @@
+SELECT * FROM Schedule;
+
+SELECT DISTINCT e.MedicareCard, e.FacilityID, f.FacilityName, f.Address, f.City, f.Province,
+                        p.FirstName, p.LastName, p.Email, p.PersonID,
+                        s.Schedule_Date, s.StartTime, s.EndTime
+                FROM Employees e
+                JOIN Schedule s ON (e.MedicareCard = s.MedicareCard AND e.FacilityID = s.FacilityID)
+                JOIN Facilities f ON e.FacilityID = f.FacilityID
+                JOIN Persons p ON e.MedicareCard = p.MedicareCard
+                WHERE s.Schedule_Date BETWEEN '2024-04-14' AND '2024-04-20';
+
 DELIMITER $$
 
 CREATE TRIGGER before_schedule_insert_update
@@ -13,7 +24,7 @@ BEGIN
         FROM HasVaccines H
         JOIN Persons P ON P.PersonID = H.PersonID
         JOIN Employees E ON E.MedicareCard = P.MedicareCard
-        WHERE MedicareCard = NEW.MedicareCard
+        WHERE E.MedicareCard = NEW.MedicareCard
     ) INTO employee_vaccinated;
 
     IF employee_vaccinated THEN
@@ -23,7 +34,7 @@ BEGIN
         FROM HasVaccines H
 		JOIN Persons P ON P.PersonID = H.PersonID
         JOIN Employees E ON E.MedicareCard = P.MedicareCard
-        WHERE MedicareCard = NEW.MedicareCard;
+        WHERE E.MedicareCard = NEW.MedicareCard;
 
         -- Check if the latest vaccine was received within the past six months
         IF vaccine_received_date <= DATE_SUB(NEW.Schedule_Date, INTERVAL 6 MONTH) THEN
@@ -40,9 +51,26 @@ END$$
 
 DELIMITER ;
 
-
 DROP TRIGGER IF EXISTS before_schedule_insert_update;
 
+-- ALTER TABLE Schedule DROP INDEX Schedule_date;
+
+-- ALTER TABLE Schedule
+-- ADD CONSTRAINT Schedule_medicareCard FOREIGN KEY (MedicareCard) REFERENCES Employees(MedicareCard),
+-- ADD CONSTRAINT Schedule_facility_id FOREIGN KEY (FacilityID) REFERENCES Facilities(FacilityID);
+-- SHOW keys FROM  Schedule;
+-- SELECT * FROM Schedule;
+
+INSERT INTO Schedule(MedicareCard,FacilityID, Schedule_Date, StartTime, EndTime, is_no_assignment)
+VALUES('M888888888', 1, '2024-04-15','08:00:00','15:00:00', 1);
+
+INSERT INTO Schedule(MedicareCard,FacilityID, Schedule_Date, StartTime, EndTime, is_no_assignment)
+VALUES('M888888888', 1, '2024-04-15','16:00:00','18:00:00', 1);
+
+SELECT * FROM Schedule;
+
+DELETE FROM Schedule WHERE MedicareCard='M888888888' AND StartTime='16:00:00';
+SHOW TRIGGERS;
 
 
 -- TRIGGER FOR THIS CONDITION:
@@ -75,6 +103,7 @@ DROP TRIGGER IF EXISTS support_four_weeks_ahead
 
 --Ensure 2 hour gap
 DELIMITER $$
+
 CREATE TRIGGER two_hour_gap_between_work
 BEFORE INSERT ON Schedule
 FOR EACH ROW
@@ -86,20 +115,20 @@ BEGIN
     SELECT COUNT(*)
     INTO existing_schedule_amount
     FROM Schedule
-    WHERE MedicareCard = NEW.MedicareCard
-    AND Schedule_Date = NEW.Schedule_Date
-    AND FacilityID = NEW.FacilityID
-    AND (EndTime > NEW.StartTime);
+    WHERE Schedule.MedicareCard = NEW.MedicareCard
+    AND Schedule.Schedule_Date = NEW.Schedule_Date
+    AND Schedule.FacilityID = NEW.FacilityID
+    AND (Schedule.EndTime < NEW.StartTime);
 
-    IF existing_schedule_count > 0 THEN
+    IF existing_schedule_amount > 0 THEN
         -- Get the end time of the latest schedule for the same employee on the same day
         SELECT EndTime
         INTO previous_end_time
         FROM Schedule
-        WHERE MedicareCard = NEW.MedicareCard
-        AND Schedule_Date = NEW.Schedule_Date
-        AND FacilityID = NEW.FacilityID
-        ORDER BY EndTime DESC
+        WHERE Schedule.MedicareCard = NEW.MedicareCard
+        AND Schedule.Schedule_Date = NEW.Schedule_Date
+        AND Schedule.FacilityID = NEW.FacilityID
+        ORDER BY Schedule.EndTime DESC
         LIMIT 1;
 
         -- Check if the gap between the previous schedule and the new one is less than two hours

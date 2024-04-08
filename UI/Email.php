@@ -32,8 +32,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo '<script>window.location.href="Email.php"; </script>';
         } else {
             $conn_pdo = null;
-            echo '<script>alert("' . $result . '");</script>';
-            echo '<script>window.location.href="Email.php"; </script>';
+            echo '<script>alert("Failed to send weekly email, check for schedules");</script>';
+            //echo '<script>window.location.href="Email.php"; </script>';
         }
     }
 }
