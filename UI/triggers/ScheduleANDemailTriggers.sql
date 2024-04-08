@@ -10,24 +10,23 @@ BEGIN
     -- Check if the employee is vaccinated
     SELECT EXISTS (
         SELECT 1
-        FROM VaccinationRecords
-        WHERE EmployeeID = NEW.EmployeeID
-        AND VaccineType = 'COVID-19'
+        FROM HasVaccines H
+        JOIN Persons P ON P.PersonID = H.PersonID
+        JOIN Employees E ON E.MedicareCard = P.MedicareCard
+        WHERE MedicareCard = NEW.MedicareCard
     ) INTO employee_vaccinated;
 
     IF employee_vaccinated THEN
         -- Retrieve the date of the latest COVID-19 vaccine received by the employee
-        SELECT MAX(VaccinationDate)
+        SELECT MAX(DateOfVaccination)
         INTO vaccine_received_date
-        FROM VaccinationRecords
-        WHERE EmployeeID = NEW.EmployeeID
-        AND VaccineType = 'COVID-19';
+        FROM HasVaccines H
+		JOIN Persons P ON P.PersonID = H.PersonID
+        JOIN Employees E ON E.MedicareCard = P.MedicareCard
+        WHERE MedicareCard = NEW.MedicareCard;
 
         -- Check if the latest vaccine was received within the past six months
-        IF vaccine_received_date >= DATE_SUB(NEW.ScheduleDate, INTERVAL 6 MONTH) THEN
-			-- Nothing
-            SET MESSAGE_TEXT='OK';
-        ELSE
+        IF vaccine_received_date <= DATE_SUB(NEW.Schedule_Date, INTERVAL 6 MONTH) THEN
             -- Prevent the schedule insertion/update
             SIGNAL SQLSTATE '45000'
             SET MESSAGE_TEXT = 'Employee is not vaccinated with a COVID-19 vaccine in the past six months.';
@@ -38,6 +37,7 @@ BEGIN
         SET MESSAGE_TEXT = 'Employee is not vaccinated with a COVID-19 vaccine.';
     END IF;
 END$$
+
 DELIMITER ;
 
 
@@ -62,7 +62,7 @@ BEGIN
     SET max_allowed_date = DATE_ADD(CURDATE(), INTERVAL 4 WEEK);
 
     -- Check if the scheduled date is within the allowed range
-    IF NEW.ScheduleDate > max_allowed_date THEN
+    IF NEW.Schedule_Date > max_allowed_date THEN
         -- Prevent the insertion of the new schedule
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Scheduling four weeks ahead of time is not supported.';
@@ -79,25 +79,25 @@ CREATE TRIGGER two_hour_gap_between_work
 BEFORE INSERT ON Schedule
 FOR EACH ROW
 BEGIN
-    DECLARE existing_schedule_count INT;
+    DECLARE existing_schedule_amount INT;
     DECLARE previous_end_time TIME;
 
     -- Count the number of existing schedules for the same employee on the same day
     SELECT COUNT(*)
-    INTO existing_schedule_count
+    INTO existing_schedule_amount
     FROM Schedule
-    WHERE EmployeeID = NEW.EmployeeID
-    AND ScheduleDate = NEW.ScheduleDate
+    WHERE MedicareCard = NEW.MedicareCard
+    AND Schedule_Date = NEW.Schedule_Date
     AND FacilityID = NEW.FacilityID
-    AND (EndTime > NEW.StartTime OR EndTime IS NULL);
+    AND (EndTime > NEW.StartTime);
 
     IF existing_schedule_count > 0 THEN
         -- Get the end time of the latest schedule for the same employee on the same day
         SELECT EndTime
         INTO previous_end_time
         FROM Schedule
-        WHERE EmployeeID = NEW.EmployeeID
-        AND ScheduleDate = NEW.ScheduleDate
+        WHERE MedicareCard = NEW.MedicareCard
+        AND Schedule_Date = NEW.Schedule_Date
         AND FacilityID = NEW.FacilityID
         ORDER BY EndTime DESC
         LIMIT 1;
